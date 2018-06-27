@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "johno.com",
+  "scripts": {
+    "start": "x0 pages"
+  },
+  "dependencies": {
+    "@compositor/kit": "^1.0.47",
+    "@compositor/x0": "^6.0.0",
+    "@rebass/markdown": "^1.0.0-1",
+    "rebass": "^2.0.0"
+  }
+}

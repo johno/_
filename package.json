@@ -2,12 +2,20 @@
   "private": true,
   "name": "johno.com",
   "scripts": {
-    "start": "x0 pages"
+    "start": "x0 pages",
+    "build": "x0 build pages",
+    "deploy": "now dist --static",
+    "prebuild": "rm -rf dist",
+    "predeploy": "npm run build"
   },
   "dependencies": {
     "@compositor/kit": "^1.0.47",
     "@compositor/x0": "^6.0.0",
     "@rebass/markdown": "^1.0.0-1",
-    "rebass": "^2.0.0"
+    "rebass": "^2.0.0",
+    "styled-components": "^3.3.3"
+  },
+  "x0": {
+    "title": "johno"
   }
 }

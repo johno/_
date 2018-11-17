@@ -1,0 +1,19 @@
+{
+  "name": "img-color",
+  "description": "Get an image with a particular size and color",
+  "version": "0.0.1",
+  "author": "John Otander",
+  "repository": "johno/_",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro api.js"
+  },
+  "dependencies": {
+    "jimp": "^0.5.6"
+  },
+  "devDependencies": {
+    "get-query-param": "^2.0.3",
+    "micro": "^9.3.3"
+  }
+}

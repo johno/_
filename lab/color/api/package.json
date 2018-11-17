@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "micro"
+  },
+  "dependencies": {
+    "colored-box": "0.0.1",
+    "get-query-param": "^2.0.3",
+    "micro": "^9.3.3"
+  }
+}

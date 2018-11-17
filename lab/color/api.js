@@ -1,7 +1,7 @@
 const { send } = require('micro')
 const Jimp = require('jimp')
 const getParam = require('get-query-param')
-const img = require('colored-box')
+const img = require('.')
 
 module.exports = (req, res) => {
   const size = getParam('size', req.url) || 64

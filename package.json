@@ -3,10 +3,9 @@
   "name": "johno.com",
   "scripts": {
     "start": "x0 pages",
+    "clean": "rm -rf dist",
     "build": "x0 build pages",
-    "deploy": "now dist --static",
-    "prebuild": "rm -rf dist",
-    "predeploy": "npm run build"
+    "now-build": "npm run build && npm run build"
   },
   "dependencies": {
     "@compositor/kit": "^1.0.47",

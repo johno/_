@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     { "src": "package.json", "use": "@now/static" },
-    { "src": "lab/colored-box", "use": "@now/node-server" }
+    { "src": "lab/color/api.js", "use": "@now/node-server" }
   ],
   "alias": [
     "johno.com"

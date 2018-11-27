@@ -5,9 +5,9 @@
   "author": "John Otander",
   "repository": "johno/_",
   "license": "MIT",
-  "main": "index.js",
+  "main": "img-color.js",
   "scripts": {
-    "start": "micro api.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "jimp": "^0.5.6"

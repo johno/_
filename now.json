@@ -1,8 +1,8 @@
 {
   "version": 2,
   "builds": [
-    { "src": "package.json", "use": "@now/static" },
-    { "src": "lab/color/api.js", "use": "@now/node-server" }
+    { "src": "package.json", "use": "@now/static-build" },
+    { "src": "lab/color/index.js", "use": "@now/node" }
   ],
   "alias": [
     "johno.com"

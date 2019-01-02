@@ -4,6 +4,10 @@ I was inspired by a post that [Jason Lengstorf][jason] wrote on [How to be Posit
 It's too easy to only remember and reflect on the negative stuff that happens during your day.
 For 2019 I figured I'd write out some positive things for each day, forcing me to think back on the good things that happened.
 
+This is intended to be mostly personal and likely of little use to others.
+But, I figured I'd build it as a page on my site in the spirit of being open, and perhaps adding some accountability.
+Maybe it will inspire someone else to do the same and it brings some more positivity into their life as well.
+
 Since I'm a nerd, I figure I'd write it in a changelog format for 2019.
 
 ### 1/1/2019

@@ -2,6 +2,6 @@
 
 ```
 ghclone johno/_
-npm i
-npm start
+yarn
+yarn start
 ```

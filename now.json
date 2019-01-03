@@ -1,10 +1,20 @@
 {
   "version": 2,
   "builds": [
-    { "src": "package.json", "use": "@now/static-build" },
-    { "src": "lab/color/index.js", "use": "@now/node" }
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": {
+        "distDir": "public"
+      }
+    },
+    {
+      "src": "lab/color/index.js",
+      "use": "@now/node"
+    }
   ],
   "alias": [
-    "johno.com"
+    "johno.com",
+    "www.johno.com"
   ]
 }

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "gatsby": "latest",
-    "gatsby-theme-minimal-blog": "ci",
+    "gatsby-theme-minimal-blog": "^0.0.4-ci.6",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   }

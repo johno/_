@@ -4793,10 +4793,10 @@ gatsby-source-filesystem@^2.0.12:
     valid-url "^1.0.9"
     xstate "^3.1.0"
 
-gatsby-theme-minimal-blog@ci:
-  version "0.0.4-ci.3"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-minimal-blog/-/gatsby-theme-minimal-blog-0.0.4-ci.3.tgz#01633125f0f4e7414cf9eb4250b1df9d05f290cb"
-  integrity sha512-u0ZairhhRjM1btCsp+0UKqkNlruYNs1HWZnA4C29gILsMZP8s6OpwKY8bsWvcA6Knnm8ViAELApxuC8fuw/JRQ==
+gatsby-theme-minimal-blog@^0.0.4-ci.6:
+  version "0.0.4-ci.6"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-minimal-blog/-/gatsby-theme-minimal-blog-0.0.4-ci.6.tgz#677abdfd70db3301212d7900760fc0571f533c78"
+  integrity sha512-M2MXk+i8NWSY+dMbIFwLeaviF208Al7VrVhSOHLOub0dS+uSh15pWKb1ZARjyzAEiIWdmIKJCNA1Fp7CfJyI6Q==
   dependencies:
     "@mdx-js/mdx" "^0.16.0"
     "@mdx-js/tag" "^0.16.0"
@@ -4805,16 +4805,16 @@ gatsby-theme-minimal-blog@ci:
     gatsby-plugin-page-creator "^2.0.5"
     gatsby-plugin-styled-components "^3.0.4"
     gatsby-source-filesystem "^2.0.12"
-    gatsby-ui "^0.0.4-ci.3+37b6854"
+    gatsby-ui "^0.0.4-ci.6+b8e36f1"
     react "^16.7.0"
     react-dom "^16.7.0"
     styled-components "^4.1.3"
     styled-system "^3.2.0"
 
-gatsby-ui@^0.0.4-ci.3+37b6854:
-  version "0.0.4-ci.3"
-  resolved "https://registry.yarnpkg.com/gatsby-ui/-/gatsby-ui-0.0.4-ci.3.tgz#7630d605000e5c616fe619a51405df23b884d166"
-  integrity sha512-68yum+QB/RNoyXdoUZHlgv1F0ncaJ6jmgkAmGsoIPOWTA93dJkca5EWszOOLYDz81OpFbsNDVkB1NAMILzyLXQ==
+gatsby-ui@^0.0.4-ci.6+b8e36f1:
+  version "0.0.4-ci.6"
+  resolved "https://registry.yarnpkg.com/gatsby-ui/-/gatsby-ui-0.0.4-ci.6.tgz#162c669232a88674030cdcbd72d0b68042fb66e6"
+  integrity sha512-w/qQSzcedESaVk/27dYuZVsYdbo1atsH3LlsaO0xB0oJG0ormYHJpMZjZ2Q2O/dKvvj75MzSMywhAzNKtY74Kw==
   dependencies:
     "@mdx-js/tag" "^0.16.6"
     prism-react-renderer "^0.1.5"

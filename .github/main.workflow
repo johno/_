@@ -24,7 +24,7 @@ action "site:master" {
 
 action "site:alias" {
   uses = "actions/zeit-now@9fe84d5"
-  args = "alias `cat $HOME/ZEIT.txt`"
+  args = "alias"
   secrets = ["ZEIT_TOKEN"]
   needs = ["site:master"]
 }

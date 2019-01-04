@@ -2,12 +2,14 @@
   "private": true,
   "name": "johno.com",
   "scripts": {
-    "start": "gatbsy develop",
-    "build": "gatbsy build",
+    "start": "gatsby develop",
+    "build": "gatsby build",
     "now-build": "yarn build"
   },
   "dependencies": {
     "gatsby": "latest",
-    "gatsby-theme-minimal-blog": "^0.0.1"
+    "gatsby-theme-minimal-blog": "ci",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
   }
 }

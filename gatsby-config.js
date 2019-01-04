@@ -1,5 +1,8 @@
 module.exports = {
   __experimentalThemes: [
-    'gatbsy-theme-minimal-blog'
+    {
+      resolve: 'gatsby-theme-minimal-blog',
+      options: {}
+    }
   ]
 }

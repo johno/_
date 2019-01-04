@@ -11,7 +11,7 @@ action "site:publish" {
 
 action "site:sha-alias" {
   uses = "actions/zeit-now@9fe84d5"
-  args = "alias `cat /github/home/deploy.txt` $GITHUB_SHA"
+  args = "alias `cat $HOME/$GITHUB_ACTION.txt` $GITHUB_SHA"
   secrets = ["ZEIT_TOKEN"]
   needs = ["site:publish"]
 }

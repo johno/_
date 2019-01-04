@@ -6,12 +6,12 @@ workflow "site" {
 action "site:publish" {
   uses = "actions/zeit-now@9fe84d5"
   secrets = ["ZEIT_TOKEN"]
-  args = "--public --no-clipboard > $HOME/$GITHUB_ACTION.txt"
+  args = "--public --no-clipboard > $HOME/ZEIT.txt"
 }
 
 action "site:sha-alias" {
   uses = "actions/zeit-now@9fe84d5"
-  args = "alias `cat $HOME/$GITHUB_ACTION.txt` $GITHUB_SHA"
+  args = "alias `cat $HOME/ZEIT.txt` $GITHUB_SHA"
   secrets = ["ZEIT_TOKEN"]
   needs = ["site:publish"]
 }

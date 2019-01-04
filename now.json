@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "name": "johno",
+  "alias": [
+    "johno.com",
+    "www.johno.com"
+  ],
   "builds": [
     {
       "src": "package.json",
@@ -12,9 +17,5 @@
       "src": "lab/color/index.js",
       "use": "@now/node"
     }
-  ],
-  "alias": [
-    "johno.com",
-    "www.johno.com"
   ]
 }

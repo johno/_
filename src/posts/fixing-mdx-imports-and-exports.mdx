@@ -1,0 +1,861 @@
+---
+title: Fixing MDX imports and exports
+date: 2019-02-12
+path: /diff/mdx-imports-and-exports
+tags:
+  - mdx
+  - babel
+  - diff
+---
+
+PR: https://github.com/mdx-js/mdx/pull/399
+
+As [MDX][mdx] gets more usage we've been experiencing some growing pains with our import/export parsing.
+There have been two type primary types of bugs that are a direct result of using regexes rather than a formal parser like [babel][].
+With MDX, we handle imports and exports during the tokenization phase by naively checking them.
+Until now this has worked _okay_, but it breaks in weird ways, especially with default exports.
+
+## Imports in MDX
+
+With MDX you can import components, libraries, or other MDX documents.
+This lets users do interesting things like:
+
+```js
+import { Component } from '../components'
+
+# Hello, component!
+
+<Component />
+```
+
+## Exports in MDX
+
+Exports in MDX are powerful because they allow document authors to emit data similarly to frontmatter.
+Though, they're a bit different because they're pure JavaScript which lets you use imports to make your exports more dynamic without having to create a custom plugin to map author names to author data.
+
+In my opinion, this more clearly indicates intent and is more intuitive than frontmatter-style implementations.
+Also, since MDX supports [remark][] plugins, you can use frontmatter if you'd like anyway!
+
+```js
+import authors from '../data/authors'
+
+export const metadata = {
+  authors: [authors.fred, authors.velma],
+  tags: props.tags
+}
+```
+
+### The default export
+
+The default export, in particular, is important because we handle it in a special way.
+It's used as the wrapper element for the MDX content.
+MDX users leverage this as a way to specify an export at the document level.
+
+This is also the source of some bugs.
+
+#### Grouped exports
+
+With our hacky regex-based default export detection we are unable to properly parse out the default export when they're grouped together.
+This is brittle and a terrible developer experience (DX).
+
+```js
+import Layout from '../ui'
+
+export default Layout
+export const metadata = {
+  some: 'stuff'
+}
+
+# Markdown content
+
+...
+```
+
+This is not ideal because it's proper syntax, and is confusing to the user when they're forced to add unnecessary newlines.
+
+#### Newline separation beween imports and exports
+
+If your imports and exports aren't separated by newlines it causes issues
+
+```js
+import Layout from '../ui'
+export default Layout
+```
+
+This is quite a bummer and shows how brittle MDX handling of exports can be.
+MDX shouldn't require particular formatting for exports to work, that's up to the user or [prettier][].
+
+## Why didn't you start with babel?
+
+It's probably best to start with why this problem exists now that it's been described.
+Ultimately it boils down to the fact that software is about tradeoffs and sometimes you just need to ship.
+
+We consciously chose to build the initial implementation of MDX without using babel in order to keep it as lightweight as possible.
+I firmly think this was the right decision at the time since it's sometimes too easy to reach for large tools to solve a single, small problem.
+However, MDX has grown beyond our wildest dreams and folks are building things more advanced than we ever imagined.
+
+As such, we've reached the tipping point to solve this "The Right Way".
+
+## Getting started with the fix
+
+###### _Note_: This is written as a step by step guide of my development process when implementing the fix. It's the first of a series I'm beginning where I write about my work on OSS while I code it.
+
+### Installing dependencies
+
+The first thing I need to do is add the babel parsing and any syntactic plugins we need.
+We have a [test](https://github.com/mdx-js/mdx/blob/14d9b19a8998cf39c0e09acceadfc03041a9a128/packages/mdx/test/index.test.js#L19-L25)
+that shows the expected plugins for parsing that includes JSX syntax and handling
+[object rest spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
+
+```sh
+yarn workspace remark-mdx add @babel/core @babel/plugin-syntax-jsx @babel/plugin-proposal-object-rest-spread
+```
+
+### Writing some fixtures
+
+I knew I'd written a comment somewhere on GitHub that outlined some of the parsing issues so I searched around for a bit,
+luckily GitHub search is decent so I was able to [dig it up](https://github.com/mdx-js/mdx/issues/345#issuecomment-445938464).
+
+For the default export I needed to pull out the default export it and assign it as a variable.
+
+```js
+// packages/remark-mdx/tests/fixtures/exports.js
+module.exports = [
+  {
+    description: 'Handles basic usecase of default export',
+    mdx: 'export default props => <article {...props} />'
+  },
+  {
+    description: 'Handles an import that is later exported',
+    mdx: [
+      "import Layout from './Foo'",
+      '',
+      'export default Layout'
+    ].join('\n')
+  },
+  {
+    description: 'Separates import from the default export',
+    mdx: [
+      "import Foo from './foo'",
+      'export default props => <article {...props} />'
+    ].join('\n')
+  },
+  {
+    description: 'Handles other types of exports',
+    mdx: 'export const metadata = { some: "stuff" }'
+  }
+]
+```
+
+These fixtures aren't exhaustive, but there are plenty to get started.
+It's time to write the tests for the fixtures.
+
+### Writing the failing test
+
+```sh
+cp packages/remark-mdx/tests/inline-parsing.test.js packages/remark-mdx/tests/export-parsing.test.js
+```
+
+I then modified the test to pull in the proper test fixtures.
+
+```js
+const remarkMDX = require('..')
+const mdx = require('../../mdx')
+
+const fixtures = require('./fixtures/exports')
+
+fixtures.forEach(fixture => {
+  it(fixture.description, async () => {
+    const result = await mdx(fixture.mdx)
+
+    expect(result.trim()).toContain(fixture.result)
+  })
+})
+```
+
+Then we could run the tests and ensure they're failing like we expect.
+
+```
+yarn workspace remark-mdx test
+```
+
+#### An example failure
+
+For the second example, with the export default not separated by empty line we will expect it to fail since we haven't begun parsing import/export nodes.
+We will get output like the following:
+
+```
+  ● Separates import from the default export
+
+    expect(string).toContain(value)
+
+    Expected string:
+      "import Foo from './foo'
+    export default props => <article {...props} />
+
+    const layoutProps = {
+
+    };
+    export default class MDXContent extends React.Component {
+      constructor(props) {
+        super(props)
+        this.layout = null
+      }
+      render() {
+        const { components, ...props } = this.props
+
+        return <MDXTag
+                 name=\"wrapper\"
+
+                 components={components}>
+               </MDXTag>
+      }
+    }"
+    To contain value:
+      "import Foo from './foo'
+    const __MDXLayout__ = props => <article {...props} />"
+
+       8 |     const result = await mdx(fixture.mdx)
+       9 |
+    > 10 |     expect(result.trim()).toContain(fixture.result)
+         |                           ^
+      11 |   })
+      12 | })
+      13 |
+```
+
+### Separating imports and exports
+
+The MDX parser will collect import and export nodes by
+[tokenizing them](https://github.com/mdx-js/mdx/blob/14d9b19a8998cf39c0e09acceadfc03041a9a128/packages/remark-mdx/index.js#L101-L119)
+but it doesn't currently parse separate imports/exports in the same block.
+It continues to [`eat`](https://github.com/remarkjs/remark/tree/master/packages/remark-parse#eatsubvalue)
+up to the next empty newline. We still want to continue
+eating up to the next empty newline since MDX requires empty lines to separate
+import/export/JSX syntax from Markdown. However, we also want to split up
+imports and exports into their [own nodes](https://github.com/mdx-js/specification#ast).
+
+This is where babel comes in. When we encounter an import or export node
+we will first unpack it and separate each import and export before
+creating a new node or nodes in the AST.
+
+#### Using a module
+
+The first thing that jumps out to me here is that I'm going to want to
+get more "low-level" with my initial tests without having to pass them
+all the way through to MDX core. I'd like to be able to pass a string to a function
+that uses babel and gives me an object pack of node types and their
+values which I can then use with `remark`'s `eat` function.
+
+I create a new file:
+
+```js
+// packages/remark-mdx/extract-imports-and-exports.js
+function tokenizeEsSyntax(eat, value) {
+  const index = value.indexOf(EMPTY_NEWLINE)
+  const subvalue = index !== -1 ? value.slice(0, index) : value
+
+  if (isExport(subvalue) || isImport(subvalue)) {
+    const [first, ...rest] = extractImportsAndExports(subvalue)
+
+    eat(subvalue)(first)
+
+    rest.forEach(node => eat('')(node))
+  }
+}
+```
+
+And then scaffold out our new module:
+
+```js
+// extract-imports-and-exports
+module.exports = value => {
+  const nodes = []
+
+  // Parse all the things
+
+  return nodes
+}
+```
+
+Then update our test:
+
+```js
+// packages/remark-mdx/test/export-parsing.test.js
+const extract = require('../extract-imports-and-exports')
+
+const fixtures = require('./fixtures/exports')
+
+fixtures.forEach(fixture => {
+  it(fixture.description, () => {
+    const result = extract(fixture.mdx)
+
+    expect(result).toMatchSnapshot(fixture.result)
+  })
+})
+```
+
+For now, we'll use snapshot testing since we basically just want to log diffs as we work on an implementation.
+
+Then I consulted some projects that I'm familiar with and some that Google turns up:
+
+#### Related babel code to draw "inspiration"
+
+- [babel-plugin-get-jsx-props](https://github.com/c8r/babel-plugin-get-jsx-props)
+- [babel-transform-imports](https://bitbucket.org/amctheatres/babel-transform-imports/src/3a2b5d4e3348?at=master)
+- [gatsby-mdx](https://github.com/ChristopherBiscardi/gatsby-mdx/blob/1318430f5a0847ccfb09047c2d455fac7f5f29d0/packages/gatsby-mdx/utils/babel-plugin-gather-exports/index.js)
+
+### Implementing a custom plugin
+
+The goal here is to declare all possible visitors we're interested in for imports and exports.
+For the first pass we just want to separate imports and exports.
+Let's check the [AST docs](https://github.com/babel/babel/blob/d349b74a4fd2c41a0342204ac9bbc9f0f484a845/packages/babel-parser/ast/spec.md)
+
+What is of interest here is the [Module definitions](https://github.com/babel/babel/blob/d349b74a4fd2c41a0342204ac9bbc9f0f484a845/packages/babel-parser/ast/spec.md#modules).
+
+#### Visiting default export declarations
+
+I decided to start with the default exports since they've been the most troublesome.
+
+```js
+const {transformSync} = require('@babel/core')
+const generate = require('@babel/generator').default
+const declare = require('@babel/helper-plugin-utils').declare
+
+class BabelPluginExtractImportsAndExports {
+  constructor() {
+    this.state = { nodes: [] }
+
+    this.plugin = declare(api => {
+      api.assertVersion(7)
+
+      return {
+        visitor: {
+          ExportDefaultDeclaration(path) {
+            const declaration = path.node.declaration
+
+            console.log(declaration)
+          }
+        }
+      }
+    })
+  }
+}
+
+module.exports = value => {
+  const instance = new BabelPluginExtractImportsAndExports()
+
+  transformSync(value, {
+    plugins: [
+      '@babel/plugin-syntax-jsx',
+      '@babel/plugin-proposal-object-rest-spread',
+      instance.plugin
+    ]
+  })
+
+  return instance.state.nodes
+}
+```
+
+I needed to, once the default export declaration is visited, add it to the nodes state as raw code.
+Babel's [generator](https://babeljs.io/docs/en/babel-generator) is the tool for the job.
+
+#### Return the default export
+
+```js
+class BabelPluginExtractImportsAndExports {
+  constructor(code) {
+    const nodes = []
+    this.state = { nodes }
+
+    this.plugin = declare(api => {
+      api.assertVersion(7)
+
+      return {
+        visitor: {
+          ExportDefaultDeclaration(path) {
+            const declaration = path.node.declaration
+
+            const value = generate(declaration, {}, code).code
+            nodes.push({ type: 'export', value })
+          }
+        }
+      }
+    })
+  }
+}
+```
+
+Then I could run my test and verify there was output (it'd cause my snapshot to fail).
+
+```sh
+yarn workspace remark-mdx test
+```
+
+```sh
+  ● Separates import from the default export
+
+    expect(value).toMatchSnapshot()
+
+    Received value does not match stored snapshot "Separates import from the default export: import Foo from './foo'
+    const __MDXLayout__ = props => <article {...props} /> 1".
+
+    - Snapshot
+    + Received
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "type": "export",
+    +     "value": "props => <article {...props} />",
+    +   },
+    + ]
+```
+
+#### Return the import
+
+I can't forget about imports either, it's mostly copy pasta from the default export.
+
+```js
+ImportDeclaration(path) {
+  const declaration = path.node.declaration
+
+  const value = generate(declaration, {}, code).code
+  nodes.push({ type: 'import', value })
+}
+```
+
+I updated the snapshot as well.
+
+```
+yarn workspace remark-mdx -u
+```
+
+### Handle named exports
+
+Lastly, I needed to handle named exports which include things like metadata or component exports found in MDX documents.
+
+```js
+ExportNamedDeclaration(path) {
+  const declaration = path.node.declaration
+  const value = generate(declaration, {}, code).code
+
+  nodes.push({ type: 'export', value })
+}
+```
+
+Things are starting to look good now.
+However, I noticed that the imports weren't being properly written out as code.
+They are empty strings in the snapshots so I needed to figure out what was going on there.
+
+So I started with a `console.log(declaration)`.
+It was `undefined` so I changed it to `console.log(path.node)`.
+This had node data and I realized that the named imports/exports should be handled differently.
+
+We only care about the declaration in the default exports since they're inlined into the MDX wrapper.
+However, we want the entire node for the named imports/exports because they're used directly in the transpiled output.
+
+Now we're left with:
+
+```js
+class BabelPluginExtractImportsAndExports {
+  constructor(code) {
+    const nodes = []
+    this.state = { nodes }
+
+    this.plugin = declare(api => {
+      api.assertVersion(7)
+
+      return {
+        visitor: {
+          ExportDefaultDeclaration(path) {
+            const declaration = path.node.declaration
+            const value = generate(declaration, {}, code).code
+
+            nodes.push({ type: 'export', value })
+          },
+          ExportNamedDeclaration(path) {
+            const value = generate(path.node, {}, code).code
+
+            nodes.push({ type: 'export', value })
+          },
+          ImportDeclaration(path) {
+            const value = generate(path.node, {}, code).code
+
+            nodes.push({ type: 'import', value })
+          }
+        }
+      }
+    })
+  }
+}
+```
+
+#### Babel generator adds a semicolon
+
+Weirdly enough, the generator added a trailing semicolon to the imports and named exports, so I hacked in a replace:
+
+```js
+const stripTrailingSemi = str => str.replace(/;$/, '')
+```
+
+#### Add default key to node
+
+During the MDX transpilation, for the default export we check for the existence of a `default` key, so I needed to add that back in as well:
+
+```js
+ExportDefaultDeclaration(path) {
+  const declaration = path.node.declaration
+  const value = generate(declaration, {}, code).code
+
+  nodes.push({ type: 'export', value, default: true })
+}
+```
+
+## Wiring it all together
+
+Now that we are parsing the imports and exports we need to update the tokenizer to use the exported nodes:
+
+```js
+function tokenizeEsSyntax(eat, value) {
+  const index = value.indexOf(EMPTY_NEWLINE)
+  const subvalue = index !== -1 ? value.slice(0, index) : value
+
+  if (isExport(subvalue) || isImport(subvalue)) {
+    const [first, ...rest] = extractImportsAndExports(subvalue)
+
+    eat(subvalue)(first)
+
+    rest.forEach(node => eat('')(node))
+  }
+}
+```
+
+### Test it all together
+
+Currently, the remark-mdx library where we're adding these parsing improvements isn't
+used in the core MDX library, so we will have to manually wire all the transpilation
+plugins together:
+
+```js
+const transpile = mdx => {
+  const result = unified()
+    .use(remarkParse)
+    .use(remarkMDX)
+    .use(mdxAstToMdxHast)
+    .use(mdxHastToJsx)
+    .processSync(mdx)
+
+  return result.contents
+}
+
+it('correctly transpiles', () => {
+  const result = transpile(FIXTURE)
+
+  expect(result).toMatchSnapshot()
+})
+```
+
+## PR reviews
+
+After [opening up a PR](https://github.com/mdx-js/mdx/pull/399)
+for these changes, I received some feedback from @wooorm and @ChristopherBiscardi.
+
+- https://github.com/mdx-js/mdx/pull/399#pullrequestreview-202960560
+- https://github.com/mdx-js/mdx/pull/399#pullrequestreview-203519705
+
+@wooorm's feedback is a bit more complex to address (but valid!) so we'll start with
+@ChristopherBiscardi's.
+
+### Improving test fixtures
+
+Chris brought up a good point regarding ensuring we handle multiline exports.
+Based on the way we're breaking up the nodes and parsing I'd be surprised if it
+didn't work, but we should definitely be more thorough in our tests here to protect
+against migrations.
+
+I added a test for both a multiline export and a multiline default export.
+
+```js
+  {
+    description: 'Handles multiline exports',
+    mdx: [
+      'export const metadata = {',
+      '  some: "stuff"',
+      '}'
+    ].join('\n')
+  },
+  {
+    description: 'Handles multiline default exports',
+    mdx: [
+      'export default props => (',
+      '  <main {...props} />',
+      ')'
+    ].join('\n')
+  }
+```
+
+```sh
+yarn workspace remark-mdx test
+```
+
+I verified the snapshot and it all looks good.
+Interestingly, I also noticed that babel was formatting the single line
+const export to be formatted as a multiline. This is a bit of a bummer
+because anyone transforming MDX with plugins and writing back to MDX
+will be getting their JS blocks formatted differently. We can look into
+that at another time.
+
+### Preserving positional information
+
+Titus brought up a good point as well regarding positional information.
+Since we're eating up the export node with as `first` we lose all the positional
+information of other nodes in that block.
+
+Here's his comment in full:
+
+> This way loses positional information, which could be a problem for tooling in the remark/mdx ecosystems (not for MDX -> JSX). Now `first` gets the positional info for the whole eaten value, and `rest` gets the position at the end of `value` as their start and end positions.
+>
+> You could use `eat.now()` first, to get the position we’re at, and then I’d believe babel in `extractImportsAndExports` has access to the positions of the import/export nodes, so you could patch the positions there.
+>
+>Then finally, you could `eat(subvalue)` to mark the text as parsed, but that not use the returned function, as the nodes already have position info attached?
+
+This is definitely an issue I wasn't considering. We really want to
+ensure the nodes are properly constructed with positional information.
+We're going to have to merge babel and remark nodes more thoroughly.
+This will also be a touch tricky since the code format that babel
+generates won't be the exact substring that `eat` will want since
+babel generate might modify the JS a bit.
+
+#### Get positional information from babel
+
+Naturally, my first step is to `console.log` the node in `ExportDefaultDeclaration`.
+I then see that there's are `start` and `end` keys.
+It appears they map directly to the declaration itself.
+This is consistent with the [docs](https://github.com/babel/babel/blob/master/packages/babel-parser/ast/spec.md#node-objects)
+
+This is great, looks like we can just destructure the value and then `slice` it out:
+
+```js
+console.log(path.node)
+const { start, end } = path.node
+const raw = code.slice(start, end)
+console.log(raw)
+```
+
+We get the exact output we expect. The raw string for the export. This now
+allows us to handle the format issue discussed earlier. Rather than using
+babel generate, we can pass the sliced value back and correctly use remark's
+eat.
+
+```js
+class BabelPluginExtractImportsAndExports {
+  constructor(code) {
+    const nodes = []
+    this.state = {nodes}
+
+    this.plugin = declare(api => {
+      api.assertVersion(7)
+
+      return {
+        visitor: {
+          ExportDefaultDeclaration(path) {
+            const { start, end } = path.node
+            const value = code.slice(start, end)
+
+            nodes.push({type: 'export', value, default: true})
+          },
+          ExportNamedDeclaration(path) {
+            const { start, end } = path.node
+            const value = code.slice(start, end)
+
+            nodes.push({type: 'export', value })
+          },
+          ImportDeclaration(path) {
+            const { start, end } = path.node
+            const value = code.slice(start, end)
+
+            nodes.push({type: 'import', value})
+          }
+        }
+      }
+    })
+  }
+}
+```
+
+Then we can simplify the node creation for the AST:
+
+```js
+if (isExport(subvalue) || isImport(subvalue)) {
+  const nodes = extractImportsAndExports(subvalue)
+
+  nodes.map(node => {
+    eat(node.value)(node)
+  })
+}
+```
+
+Now we can run the tests (which should fail!).
+
+```sh
+yarn workspace remark-mdx test
+```
+
+And then update the snapshots:
+
+```sh
+yarn workspace remark-mdx test
+```
+
+This is looking good, however there's still an error.
+
+#### Fixing the `eat` error
+
+```sh
+ FAIL  test/test.js
+  ● correctly transpiles
+
+    Incorrectly eaten value: please report this warning on https://git.io/vg5Ft
+
+      106 |
+      107 |     nodes.map(node => {
+    > 108 |       eat(node.value)(node)
+          |       ^
+      109 |     })
+      110 |   }
+      111 | }
+
+      at validateEat (../../node_modules/remark-parse/lib/tokenizer.js:147:11)
+      at eat (../../node_modules/remark-parse/lib/tokenizer.js:232:7)
+      at eat (index.js:108:7)
+          at Array.map (<anonymous>)
+      at Of.map (index.js:107:11)
+      at Of.tokenize [as tokenizeBlock] (../../node_modules/remark-parse/lib/tokenizer.js:58:18)
+      at Of.parse (../../node_modules/remark-parse/lib/parse.js:33:20)
+      at Function.parse (node_modules/unified/index.js:271:45)
+      at pipelineParse (node_modules/unified/index.js:23:16)
+      at wrapped (../../node_modules/trough/wrap.js:25:19)
+```
+
+So let's catch the error and log the node in question:
+
+```js
+if (isExport(subvalue) || isImport(subvalue)) {
+  console.log(subvalue)
+  const nodes = extractImportsAndExports(subvalue)
+  nodes.map(node => {
+    console.log(node)
+    eat(node.value)(node)
+  })
+}
+```
+
+It results in the following error:
+
+```sh
+ FAIL  test/test.js
+  ● Console
+
+    console.log index.js:105
+      import Foo from './bar'
+      export { Baz } from './foo'
+      export default Foo
+    console.log index.js:108
+      { type: 'import', value: "import Foo from './bar'" }
+    console.log index.js:108
+      { type: 'export', value: "export { Baz } from './foo'" }
+
+  ● correctly transpiles
+
+    Incorrectly eaten value: please report this warning on https://git.io/vg5Ft
+
+      107 |     nodes.map(node => {
+      108 |       console.log(node)
+    > 109 |       eat(node.value)(node)
+          |       ^
+      110 |     })
+      111 |   }
+      112 | }
+
+      at validateEat (../../node_modules/remark-parse/lib/tokenizer.js:147:11)
+      at eat (../../node_modules/remark-parse/lib/tokenizer.js:232:7)
+      at eat (index.js:109:7)
+          at Array.map (<anonymous>)
+      at Of.map (index.js:107:11)
+      at Of.tokenize [as tokenizeBlock] (../../node_modules/remark-parse/lib/tokenizer.js:58:18)
+      at Of.parse (../../node_modules/remark-parse/lib/parse.js:33:20)
+      at Function.parse (node_modules/unified/index.js:271:45)
+      at pipelineParse (node_modules/unified/index.js:23:16)
+      at wrapped (../../node_modules/trough/wrap.js:25:19)
+```
+
+This is useful because we're seeing that the error is occurring because we're eating the nodes
+out of order! Whoops!
+
+That means we need to add the `start` value to the nodes and then sort them before returning.
+We should also strip back out the `start` so we're not emitting data that doesn't need to
+be there. After all, as soon as `eat` happens, that same positional info will be added back.
+
+```js
+return instance.state.nodes
+  .sort((a, b) => a.start - b.start)
+  .map(({ start, ...node }) => node)
+```
+
+Unfortunately this didn't seem to fix it. I suspect it has to do with the newline being
+missed. Since babel doesn't see the newlines between the different imports and exports
+as part of the declarations, they're ignored. First thing I checked is whether babel
+has a way to pull out this whitespace metadata. We could turn them into nodes and then
+zip it back together.
+
+##### Partitioning the string
+
+It didn't look like babel supports that, so I decided to try another approach: partitioning
+the string. From our babel parsing visitors we can return just the `start` value and
+use that to slice the string itself into multiple parts.
+
+In order to achieve this, we only need to return the `start` value of each node and
+handle the partition after we sort the nodes.
+
+```js
+const partitionString = (str, indices) => {
+  let index = 0
+
+  return indices.reduce((acc, curr) => {
+    index += 1
+    const val = str.slice(curr, indices[index])
+    acc.push(val)
+    return acc
+  }, [])
+}
+
+module.exports = value => {
+  const instance = new BabelPluginExtractImportsAndExports(value)
+
+  transformSync(value, {
+    plugins: [
+      '@babel/plugin-syntax-jsx',
+      '@babel/plugin-proposal-object-rest-spread',
+      instance.plugin
+    ]
+  })
+
+  const sortedNodes = instance.state.nodes.sort((a, b) => a.start - b.start)
+  const nodeStarts = sortedNodes.map(n => n.start)
+  const values = partitionString(value, nodeStarts)
+
+  return sortedNodes.map(({start, ...node}, i) => {
+    const value = values[i]
+    return {...node, value}
+  })
+}
+```
+
+[mdx]: https://mdxjs.com
+
+[babel]: https://babeljs.io
+
+[remark]: https://github.com/remarkjs
+
+[prettier]: https://prettier.io

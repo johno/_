@@ -7,9 +7,9 @@
     "now-build": "yarn build"
   },
   "dependencies": {
-    "gatsby": "^2.0.90",
-    "gatsby-theme-sideways": "^0.0.5-ci.9",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "gatsby": "^2.1.4",
+    "gatsby-theme-sideways": "^0.0.5-ci.10",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2"
   }
 }

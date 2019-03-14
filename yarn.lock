@@ -4470,10 +4470,10 @@ gatsby-source-filesystem@^2.0.25:
     valid-url "^1.0.9"
     xstate "^3.1.0"
 
-gatsby-theme-digital-garden@^0.0.1-alpha.5:
-  version "0.0.1-alpha.5"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.1-alpha.5.tgz#c940d8eb0392ea0f7309fa71bdd4dc71781e64dd"
-  integrity sha512-GPiJYPT6HaB6yzoiJkY4lo1ze51rS3ty7CUQyRTHIt83SaTJu9kGE+H/6jlYQDYp/woZ8hs0q+WScDtTInhpIg==
+gatsby-theme-digital-garden@^0.0.1-alpha.6:
+  version "0.0.1-alpha.6"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.1-alpha.6.tgz#d6c6762e8467359c332952e63b0db7a2d48e56c6"
+  integrity sha512-oWT8cgWP0dQr1fKJzURpYym9QmN9aqdmy8DIA0obinydtoA9PLdVXvSjFY8UzxfNuvTQmTksTijj770kvSbe6A==
   dependencies:
     gatsby-plugin-meta-redirect "^1.1.1"
     gatsby-plugin-page-creator "^2.0.10"

@@ -4,11 +4,12 @@
   "scripts": {
     "start": "gatsby develop",
     "build": "gatsby build",
+    "deploy": "now switch johno && now && now alias $(pbpaste) johno.com && now alias $(pbpaste) www.johno.com",
     "now-build": "yarn build"
   },
   "dependencies": {
     "gatsby": "^2.1.32",
-    "gatsby-theme-digital-garden": "^0.0.1-alpha.5",
+    "gatsby-theme-digital-garden": "^0.0.1-alpha.6",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"
   }

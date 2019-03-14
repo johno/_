@@ -4470,16 +4470,17 @@ gatsby-source-filesystem@^2.0.25:
     valid-url "^1.0.9"
     xstate "^3.1.0"
 
-gatsby-theme-digital-garden@^0.0.1-alpha.8:
-  version "0.0.1-alpha.8"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.1-alpha.8.tgz#54e1ccad705359345a56abb8488f3fc6e9d2dc12"
-  integrity sha512-T8vR0CEoj9/knrz30UtUwkxOs7NRbVZYVrU6Hid6aaKddeQP0m12EN5k4H5+owVozNMwk3lxjmYd6A5+WtnP0A==
+gatsby-theme-digital-garden@^0.0.1-alpha.9:
+  version "0.0.1-alpha.9"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.1-alpha.9.tgz#85525285764ef53cda69c748d4b4812daaaae609"
+  integrity sha512-sylLlrPsc3zxGlLMwz1W3lb2Hpf2pH9jumjhrcHSK+9GkyL8lO7SI1wBC6huC7SV3okjGyNfje7ihWMJi6E4AA==
   dependencies:
     gatsby-plugin-meta-redirect "^1.1.1"
     gatsby-plugin-page-creator "^2.0.10"
     gatsby-source-filesystem "^2.0.25"
     gatsby-theme-system "^0.0.2"
     is-present "^1.0.0"
+    react-feather "^1.1.6"
 
 gatsby-theme-system@^0.0.2:
   version "0.0.2"
@@ -8241,6 +8242,11 @@ react-error-overlay@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-3.0.0.tgz#c2bc8f4d91f1375b3dad6d75265d51cd5eeaf655"
   integrity sha512-XzgvowFrwDo6TWcpJ/WTiarb9UI6lhA4PMzS7n1joK3sHfBBBOQHUc0U4u57D6DWO9vHv6lVSWx2Q/Ymfyv4hw==
+
+react-feather@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.6.tgz#2a547e3d5cd5e383d3da0128d593cbdb3c1b32f7"
+  integrity sha512-iCofWhTjX+vQwvDmg7o6vg0XrUg1c41yBDZG+l83nz1FiCsleJoUgd3O+kHpOeWMXuPrRIFfCixvcqyOLGOgIg==
 
 react-helmet@^5.2.0:
   version "5.2.0"

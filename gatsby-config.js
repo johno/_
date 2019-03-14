@@ -1,13 +1,14 @@
 module.exports = {
   siteMetadata: {
-    title: 'johno',
-    twitterHandle: '4lpine',
-    githubHandle: 'johno'
+    title: 'johno'
   },
   __experimentalThemes: [
     {
-      resolve: 'gatsby-theme-sideways',
-      options: {}
+      resolve: 'gatsby-theme-digital-garden',
+      options: {
+        postsPath: '/writing',
+        notesPath: '/txt'
+      }
     }
   ]
 }

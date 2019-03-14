@@ -12,10 +12,6 @@
       "config": {
         "distDir": "public"
       }
-    },
-    {
-      "src": "lab/color/index.js",
-      "use": "@now/node"
     }
   ]
 }

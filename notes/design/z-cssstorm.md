@@ -1,3 +1,5 @@
+# A random thing I wrote one night about how atomic/functional/utility CSS isn't as effective as CSS in JS
+
 I love atomic css because it can bring consistency and clarity to an app, especially legacy apps.
 
 It can be introduced ad hoc to build out new pages and components, even RESPONSIVELY!

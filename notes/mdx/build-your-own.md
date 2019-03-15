@@ -2,8 +2,10 @@
 
 > Understand ASTs by implementing your own MDX
 
+
 ## Goals
 
+Write your own plugin: https://mdxjs.com/guides/writing-a-plugin
 
 ## Demo
 

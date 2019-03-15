@@ -1,0 +1,61 @@
+---
+title: Authorable format
+path: /authorable-format
+date: 2019-03-15
+tags:
+  - writing
+  - mdx
+  - oss
+---
+
+One of the key motivators for me creating [MDX](https://mdxjs.com) is that I desperately needed a way to write long-form content while mixing in a few components. When it comes to long-form content I think we can all agree that [Markdown](https://daringfireball.net/projects/markdown/) is the best format for authoring. Its syntax is simple and stays out of the way of your content. It's natural.
+
+It's _authorable_.
+
+What I mean by authorable is that it's a format that can be naturally written in by all members of a cross-functional team after some learning - from engineering to marketing. This format can then be "compiled" into a publishable format like HTML.
+
+When designing and building MDX we made sure we'd keep these wonderful characteristics of Markdown but to mix in a bit more functionality.
+
+## Components
+
+Where Markdown is lacking is when it comes to authoring content that's immersive and dynamic. With components we have a new powerful building block and it's a bummer when we can't easily integrate them into our content. Sometimes you have this awesome chart that's in your app that you'd love to embed in a blog post.
+
+Historically, we've worked around this limitation. In WordPress, this is known as a shortcode and often looks something like: `[[youtube FJJ8hWDXWGs]]`.  Shortcodes are nice, but what happens when you want to modify it slightly? In most cases you end up with complex shortcodes or invented syntax.
+
+In other cases you can write Markdown plugins for custom blogs or embed HTML that references some JavaScript to handle it for you.
+
+If you go all in on JSX, you can import special one-off components at the page level, and then trivially add a bit of margin to the top if you need to:
+
+```
+<div style={{ marginTop: '20px' }}>
+  <Youtube id="FJJ8HWDXWGs" />
+</div>
+```
+
+This is an incredibly liberating authoring experience. It's also explicit and unsurprising.
+
+## WYSIWYG editing
+
+Though MDX is an authorable format, it's unrealistic to expect everyone to enjoy writing it. That's where the WYSIWYG comes into play. It can serve as an editing abstraction that sits on top of MDX.
+
+The current generation of WYSIWYG and rich text editors often speak "JSON schema" which is unfortunate. This means that what you're saving doesn't have human meaning and is often in some type of proprietary format. If you opt out of that particular editor you then have to transform it to HTML or custom Markdown syntax. The escape hatch is difficult to engage and you can suddenly find yourself locked in.
+
+### Serialization
+
+The JSX piece in MDX has interesting implications on serialization because it's essentially a JSON tree of function calls. The raw MDX string, that developers can comfortably write, contains all the metadata needed for handling complex needs. JSX isn't even framework specific any more. It was popularized by React but is now natively supported by many others. It's a syntax that folks are adopting and _usually_ loving.
+
+### This all sounds theoretical
+
+It is, but right now I'm actually writing this with an MDX WYSIWYG prototype. MDX goes in and MDX comes out. This prototype uses [slate](https://www.slatejs.org), a super powerful library, which of course has its own internal schema for editing and rendering, but that's an implementation detail. The inputs and outputs are the important part. Not to mention, with this kind of control we can even add blocks embedding and editing with pure JSX components.
+
+This gets interesting with new design tools like Framer X and Modulz. Firstly, because you can render the components in your editor to see what your blog post will actually look like when you write it. But you can also expose controls for the different props that a component accepts. This means you can embed `<Alert>Watch out!</Alert>` directly and then change its variant in a UI if you don't want to write the JSX.
+
+It's also awesome because now you can use this anywhere. Write to your own GitHub repo, write to your headless CMS, write to your local directory.
+
+## Future
+
+There's a lot in store for the future as well. [Brent Jackson](https://twitter.com/jxnblk) is experimenting with a project called [mdx-blocks](https://github.com/jxnblk/mdx-blocks) where you can design your MDX content directly. With the v1 alpha of MDX, it's no longer even React specific. Any framework or library that speaks JSX can implement a custom pragma to take over rendering the document!
+
+---
+
+Thanks to [@chrisbiscardi](https://twitter.com/chrisbiscardi) and [@jarredsumner](https://twitter.com/jarredsumner) who have been working with me on this unnamed MDX editor prototype to try and make it a reality.

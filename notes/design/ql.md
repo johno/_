@@ -1,13 +1,17 @@
 # DesignQL
 
+__This is a work in progress idea I've been formalizing, this will eventually be moved into a repo that implements it__.
+
+Related: https://github.com/styled-system/styled-system/blob/0dfc3b2afe39d07fc1e94b261295901bca1d9ff1/docs/theme-specification.md
+
 A self-documenting design system specification for GraphQL.
 
 ```gql
 query {
   theme {
     colors
-    boxShadows
-    a11yCombos {
+    shadows
+    colorStyles {
       contrast
       backgroundColor
       color

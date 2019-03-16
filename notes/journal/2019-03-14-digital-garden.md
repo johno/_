@@ -63,3 +63,9 @@ be passing this work off to Gatsby's data layer.
 - https://joelhooks.com/digital-garden
 - https://stackingthebricks.com/how-blogs-broke-the-web/
 - https://tomcritchlow.com/2019/02/17/building-digital-garden/
+
+## Ordering content
+
+- priority
+- sorting based on view count
+- random

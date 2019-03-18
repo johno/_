@@ -125,7 +125,7 @@ import { css, meta, html } from '../some/file.html'
 MDX in particular heavily uses loaders (and Parcel plugins) as its interface
 for being included in a project. This allows it to transpile MDX into a pure
 JSX string that can then be used by different frameworks. For its React
-implementation it wraps the JSX with a functional component, imports the
+implementation, it wraps the JSX with a functional component, imports the
 needed dependencies, and specifies it’s custom pragma.
 
 ```js
@@ -198,7 +198,7 @@ users that have custom needs to layer in a loader that is executed before MDX.
 It’s a clean interface to operate on, and most importantly, keeps MDX core as
 lightweight as possible.
 
-Here’s an example of a custom frontMatter loader with MDX:
+Here’s an example of a custom frontmatter loader with MDX:
 
 ```js
 const matter = require('gray-matter')
@@ -218,6 +218,8 @@ ${content}
 This is a custom loader that should be executed _before_ the built in MDX loader
 so that the new functionality is mixed in properly. MDX will ignore the frontmatter
 in a file because remark will parse it, but the nodes in the AST won't be processed.
+However, since this loader runs first and will turn it into an export, this
+will be properly transpiled by MDX. Pretty neat.
 
 ## Conclusion
 

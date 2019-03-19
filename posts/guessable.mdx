@@ -6,31 +6,57 @@ date: 2019-03-19
 
 # Guessable
 
-When building and designing applications and websites we want to be productive and efficient. It's often easy to forget what's needed to achieve it, especially when we're lost in complex systems. Productivity requires predictability, ease of use, and intuitiveness. Efficient means little cognitive overhead and making prototyping as rapid as possible. In essence, this means an API is guessable.
+When building and designing for the web we want to be productive and efficient.
+It's often easy to forget what's needed to achieve that, especially when we're
+lost in complex systems. Productivity requires predictability, ease of use, and
+intuitiveness. Efficient means little cognitive overhead and making prototyping
+as rapid as possible. In essence, this means an API is guessable.
 
-Let's consider a UI library that has a collection of colors. We have a Text component that accepts a `color` prop for any color in the design system. We can specify the color naming in a multitude of ways. One of the more popular naming schemes is reminiscent of color names, so you have something like:
+Let's consider a UI library that has a collection of colors. We have a Text
+component that accepts a `color` prop for any color in the design system.
+We can specify the color naming in a multitude of ways. One of the more popular
+naming schemes is reminiscent of color names, so you have something like:
 
 ```
-export const colors = {,,  black: '#000',,,  darkGray: '#333',,,  gray: '#666',,,  lightGray: '#999',,,  lighterGray: '#ccc',,,  white: '#fff',,}
+export const colors = {
+  black: '#000',
+  darkGray: '#333',
+  gray: '#666',
+  lightGray: '#999',
+  lighterGray: '#ccc',
+  white: '#fff'
+}
 ```
 
-When you have a component that needs gray text, that's relatively simple to achieve:
+When you have a component that needs gray text, that's straightforward:
 
 ```
 <Text color="gray">My gray text</Text>
 ```
 
-Though, this gets problematic when you need colors that are slightly lighter or darker. If you're using `gray` and need something different you're left wondering: Is the next color `lightGray`, `mediumGray`, or is it something different?
+Though, this gets problematic when you need colors that are slightly lighter
+or darker. If you're using `gray` and need something different you're left
+wondering: Is the next color `lightGray`, `mediumGray`, or is it something
+different?
 
-When you apply specific naming to an idea or concept you can override it with more specificity. This breaks down as colors evolve.
+When you apply specific naming to an idea or concept you can override it with
+more specificity. This breaks down as colors evolve.
 
 If you need to introduce a color between `lightGray` and `lighterGray` what do you do?
 
-This is important to consider for design systems, especially for large organizations, because these decisions have to stand the test of time. They also have to be practical for designing and developing. If you're stuck trying to remember the color scale for `purple` you're going to be dealing with unnecessary cognitive overhead.
+This is important to consider for design systems, especially for large
+organizations, because these decisions have to stand the test of time.
+They also have to be practical for designing and developing. If you're
+stuck trying to remember the color scale for `purple` you're going to be
+dealing with unnecessary cognitive overhead.
 
 ## Numeric scales
 
-Libraries like Tachyons, Basscss, and Styled System introduced the concept of numeric scales at the design system level. This helped to remove the overhead of figuring out color or spacing because you could increment classes or props to achieve a larger/smaller or darker/lighter effect. This helped to pioneer rapid UI development and is why I use Styled System to this day.
+Libraries like Tachyons, Basscss, and Styled System introduced the concept of
+numeric scales at the design system level. This helped to remove the overhead of
+figuring out color or spacing because you could increment classes or props to
+achieve a larger/smaller or darker/lighter effect. This helped to pioneer rapid
+UI development and is why I use Styled System to this day.
 
 Consider the following component that could be found anywhere in an app or site:
 
@@ -38,25 +64,31 @@ Consider the following component that could be found anywhere in an app or site:
 <Box padding={3} backgroundColor="tomato" />
 ```
 
-Now consider the scenario where a stakeholder wants more padding and the background to be gray. As a designer or engineer you can quickly start to enumerate through possible scales.
+Now consider the scenario where a stakeholder wants more padding and the
+background to be gray. As a designer or engineer you can quickly start to
+enumerate through possible scales.
 
 ```
 <Box padding={4} backgroundColor="gray" />
 ```
 
-They're happy with the change, but want the gray to be darker. You know that `gray` has a scale so you can target that near the middle:
+They're happy with the change, but want the gray to be darker. You know that
+`gray` has a scale so you can target that near the middle:
 
 ```
 <Box padding={4} backgroundColor="grays.5" />
 ```
 
-You're working quickly and your stakeholder can't believe how quickly you're making these changes. But, they want the gray to be a bit lighter. No problem, you adjust the scale:
+You're working quickly and your stakeholder can't believe how quickly you're
+making these changes. But, they want the gray to be a bit lighter. No problem,
+you adjust the scale:
 
 ```
 <Box padding={4} backgroundColor="grays.6" />
 ```
 
-Oops, upon live reload you realize you went the wrong way, so you go the other direction:
+Oops, upon live reload you realize you went the wrong way, so you go the other
+direction:
 
 ```
 <Box padding={4} backgroundColor="grays.4" />
@@ -64,42 +96,111 @@ Oops, upon live reload you realize you went the wrong way, so you go the other d
 
 Now you've achieved the desired results and we can unpack what just happened.
 
-Numeric scales are crucial for a few reasons. They allow engineers to quickly move up and down scales to find the values that stakeholders are hoping for. They also allow designers to work with constraints that fit 90% of use cases so consistency is maintained for most scenarios.
+Numeric scales are crucial for a few reasons. They allow engineers to quickly
+move up and down scales to find the values that stakeholders are hoping for.
+They also allow designers to work with constraints that fit 90% of use cases
+so consistency is maintained for most scenarios.
 
-For everyone building with the system, it's guessable. Quickly being able to move up and down a scale, even when you can't remember which way is which, allows you to quickly make tweaks that adhere to a larger design system.
+For everyone building with the system, it's guessable. Quickly being able to move
+up and down a scale, even when you can't remember which way is which, allows you to
+quickly make tweaks that adhere to a larger design system.
 
 ### Consistency
 
-These scales should persist throughout a design system wherever relevant. When this occurs, many aspects suddenly become guessable without familiarity with the property. If you're dealing with box shadows and you need a Card component to have more depth and you're presented with `<Card shadow={2} />` you will have an idea on how to increase or decrease that depth by leveraging the scale.
+These scales should persist throughout a design system wherever relevant.
+When this occurs, many aspects suddenly become guessable without
+familiarity with the property. If you're dealing with box shadows and
+you need a Card component to have more depth and you're presented with
+`<Card shadow={2} />` you will have an idea on how to increase or
+decrease that depth by leveraging the scale.
+
+## Memorable
+
+Something that's guessable needs to be memorable. This is often achieved
+by an API that is explicit, simple, and draws from concepts that are
+expected to be known by end users.
+
+Gatsby Themes introduced a concept known as component shadowing and I
+think it's a perfect example. The idea with this feature is that users
+of a theme can override a component or functionality by using a folder
+naming convention.
+
+For example, if you've installed `gatsby-theme-blog` and you want to
+customize the author bio you can introduce your own component following
+a particular naming convention: `src/gatsby-theme-blog/components/author-bio.js`.
+Now, in place of the theme's AuthorBio component is overridden with the
+user's.
+
+This convention is memorable because the contract is rather thin and
+users are used to interacting with the file system, especially when
+creating components. Gatsby users are already working out of the `src`
+directory, so the desire to override a theme's component becomes
+`touch src/THEME-NAME/components/COMPONENT-NAME.js`.
+
+After my first time shadowing a component I never needed to consult the
+docs again. I _accidentally_ absorbed and remembered the API.
 
 ## Easy to try
 
-An API that's meant to be guessable should also be easy to try. This means that when you're not sure whether you should increment or decrement a number you're empowered to give it a try. Empowerment to give it a try means that the tooling ensures that this is efficient. That includes live reloading, source maps, and projects like React Devtools that improve the debugging experience.
+An API that's meant to be guessable should also be easy to try. This means
+that when you're not sure whether you should increment or decrement a number
+you're empowered to give it a try. Empowerment to give it a try means that the
+tooling ensures that this is efficient. That includes live reloading, source
+maps, and projects like React Devtools that improve the debugging experience.
 
-When a designer or developer knows a change will show up in the browser in 1s, they're happier to work with the constraints because the feedback loop is instant. They can iterate towards the end product without having to consult long docs or reading the source code of a component.
+This inspires confidence in the system because you're not punished for guessing.
 
-## Yarn
+When a designer or developer knows a change will show up in the browser in 1s,
+they're happier to work with the constraints because the feedback loop is instant.
+They can iterate towards the end product without having to consult long docs or
+reading the source code of a component.
 
-A guessable API does what you think it should whenever you employ it. This is something I think `yarn` gets right on a few levels. By default yarn runs the install. This means the default entrypoint of the CLI does what you'd typically want with your package manager. It also automatically adds a dependency to your `package.json` after you `yarn add`. This is another subtle difference but greatly benefits new users.
+## Remove guessing with defaults
+
+A guessable API does what you think it should whenever you employ it. This is
+something I think `yarn` gets right on a few levels. By default yarn runs the
+install. This means the default entrypoint of the CLI does what you'd typically
+want with your package manager. It also automatically adds a dependency to your
+`package.json` after you `yarn add`. This is another subtle difference but greatly
+benefits new users.
+
+It removes the need for guessing because default behaviors are built in.
 
 ### It's not perfect
 
-I wouldn't call `yarn` perfect either. Some of it's guessability is lost when you consider it's attempt to be a replacement for `npm`. Commands are subtly different, making switching between the tools cumbersome and frustrating, and there aren't built in aliases for the same commands.
+I wouldn't call `yarn` perfect either. Some of it's guessability is lost when you
+consider it's attempt to be a replacement for `npm`. Commands are subtly different,
+making switching between the tools cumbersome and frustrating, and there aren't built
+in aliases for the same commands.
 
-`npm` standardized on unix-y conventions for commands, so existing programs (like `ls`) have a similar counterpart in `npm`. However, in `yarn`, you're forced to write out `list`. This makes the tool less guessable, and for no real benefit.
+`npm` standardized on unix-y conventions for commands, so existing programs (like `ls`)
+have a similar counterpart in `npm`. However, in `yarn`, you're forced to write out `list`.
+This makes the tool less guessable, and for no real benefit.
 
 ### Diverging from the standard
 
-It makes sense to have different needs in an API. In fact you might even want to purposefully _evolve_ the API. However, from a tooling standpoint like `yarn`, it'd be nearly no overhead to alias the `ls` command with a soft warning to use `list`.
+It makes sense to have different needs in an API. In fact you might even want to
+purposefully _evolve_ the API. However, from a tooling standpoint like `yarn`,
+it'd be nearly no overhead to alias the `ls` command with a soft warning to use
+`list`.
 
-When making guessable software we often overlook this aspect. We should more gently steer towards the direction we might think is better, but to respect the tooling that came before it. We should ease the transition and not leave people getting frustrated and then typing in `-h` and being presented with a terminal filled with 50 or so options.
+When making guessable software we often overlook this aspect. We should more
+gently steer towards the direction we might think is better, but to respect
+the tooling that came before it. We should ease the transition and not leave
+people getting frustrated and then typing in `-h` and being presented with a
+terminal filled with 50 or so options.
 
 ## Community buy in
 
-As tools and ideas begin to converge we might even be lucky enough to see common standards become accepted. This includes ideas like the Styled System Theme Specification that seeks to standardize the commonalities in a design system's `theme.js`. When a community arrives at a common spec, everyone benefits.
+As tools and ideas begin to converge we might even be lucky enough to see
+common standards become accepted. This includes ideas like the Styled System
+Theme Specification that seeks to standardize the commonalities in a design
+system's `theme.js`. When a community arrives at a common spec, everyone
+benefits.
 
-I hope to see other tools converge on standards and guessable APIs that leave end users feeling productive and confident.
+I hope to see other tools converge on standards and guessable APIs that leave end
+users feeling productive and confident.
 
-## Convention
-
-Buy in is often represented by tooling authors and the greater community. When patterns develop we start to see conventions. When we're lucky we also see standards.
+Buy in is often represented by tooling authors and the greater community.
+When patterns develop we start to see conventions. When we're lucky we also
+see standards.

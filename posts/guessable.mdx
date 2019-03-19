@@ -39,10 +39,11 @@ or darker. If you're using `gray` and need something different you're left
 wondering: Is the next color `lightGray`, `mediumGray`, or is it something
 different?
 
-When you apply specific naming to an idea or concept you can override it with
-more specificity. This breaks down as colors evolve.
+When you apply specific naming to an idea or concept you can only override it with
+more specificity. This breaks down as colors palettes evolve and grow.
 
-If you need to introduce a color between `lightGray` and `lighterGray` what do you do?
+If you need to introduce a color between `lightGray` and `lighterGray` what do
+you do?
 
 This is important to consider for design systems, especially for large
 organizations, because these decisions have to stand the test of time.
@@ -52,7 +53,7 @@ dealing with unnecessary cognitive overhead.
 
 ## Numeric scales
 
-Libraries like Tachyons, Basscss, and Styled System introduced the concept of
+Libraries like Tachyons, Basscss, and Styled System helped to introduce the concept of
 numeric scales at the design system level. This helped to remove the overhead of
 figuring out color or spacing because you could increment classes or props to
 achieve a larger/smaller or darker/lighter effect. This helped to pioneer rapid
@@ -99,11 +100,12 @@ Now you've achieved the desired results and we can unpack what just happened.
 Numeric scales are crucial for a few reasons. They allow engineers to quickly
 move up and down scales to find the values that stakeholders are hoping for.
 They also allow designers to work with constraints that fit 90% of use cases
-so consistency is maintained for most scenarios.
+so consistency is maintained for most scenarios. Magic numbers and values are
+kept to a minimum.
 
 For everyone building with the system, it's guessable. Quickly being able to move
 up and down a scale, even when you can't remember which way is which, allows you to
-quickly make tweaks that adhere to a larger design system.
+rapidly make tweaks that adhere to a larger design system.
 
 ### Consistency
 
@@ -118,7 +120,7 @@ decrease that depth by leveraging the scale.
 
 Something that's guessable needs to be memorable. This is often achieved
 by an API that is explicit, simple, and draws from concepts that are
-expected to be known by end users.
+already understood by end users.
 
 Gatsby Themes introduced a concept known as component shadowing and I
 think it's a perfect example. The idea with this feature is that users
@@ -128,32 +130,32 @@ naming convention.
 For example, if you've installed `gatsby-theme-blog` and you want to
 customize the author bio you can introduce your own component following
 a particular naming convention: `src/gatsby-theme-blog/components/author-bio.js`.
-Now, in place of the theme's AuthorBio component is overridden with the
-user's.
+Now, in place of the theme's AuthorBio component, the user's component
+is now rendered.
 
 This convention is memorable because the contract is rather thin and
 users are used to interacting with the file system, especially when
-creating components. Gatsby users are already working out of the `src`
-directory, so the desire to override a theme's component becomes
+creating components. The steps to override a theme's component becomes
 `touch src/THEME-NAME/components/COMPONENT-NAME.js`.
 
 After my first time shadowing a component I never needed to consult the
 docs again. I _accidentally_ absorbed and remembered the API.
 
-## Easy to try
+## Guess confidently
 
 An API that's meant to be guessable should also be easy to try. This means
 that when you're not sure whether you should increment or decrement a number
-you're empowered to give it a try. Empowerment to give it a try means that the
-tooling ensures that this is efficient. That includes live reloading, source
-maps, and projects like React Devtools that improve the debugging experience.
+you're empowered to give it a go with your best guess. Empowerment to give
+it a try means that the tooling ensures that this is efficient. That includes
+live reloading, source maps, and projects like React Devtools that improve the
+debugging experience.
 
 This inspires confidence in the system because you're not punished for guessing.
 
 When a designer or developer knows a change will show up in the browser in 1s,
 they're happier to work with the constraints because the feedback loop is instant.
 They can iterate towards the end product without having to consult long docs or
-reading the source code of a component.
+reading the source code of a component. The process is fluid.
 
 ## Remove guessing with defaults
 
@@ -169,7 +171,7 @@ It removes the need for guessing because default behaviors are built in.
 ### It's not perfect
 
 I wouldn't call `yarn` perfect either. Some of it's guessability is lost when you
-consider it's attempt to be a replacement for `npm`. Commands are subtly different,
+consider it's intended to be a replacement for `npm`. Commands are subtly different,
 making switching between the tools cumbersome and frustrating, and there aren't built
 in aliases for the same commands.
 

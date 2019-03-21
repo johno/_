@@ -1,0 +1,77 @@
+---
+title: React Hooks and stale state
+path: /react-hooks-stale-state
+date: 2019-03-21
+---
+
+If you're using React Hooks you might encounter a scenario where your
+`useState` hook doesn't appear to be updating the value. This can occur
+when you're mutating the state value in place and the calling `setState`.
+React performs a quick comparison so it will bail out of an update when
+the object instance is the same which will result in a stale value.
+
+Later on, if something else causes a rerender of the component you will
+suddenly see the fresh state leaving you scratching your head.
+
+Consider the following example which illustrates the issue. It's a component
+that adds a number to the array whenever the button is clicked. After
+the button is clicked 3 times it should show: `1,2,3`.
+
+```js
+import React, { useState } from 'react'
+
+function Numbers() {
+  const [numbers, setNumbers] = useState([]);
+
+  const addToNumbers = () => {
+    numbers.push(numbers.length);
+    setNumbers(numbers);
+  };
+
+  return (
+    <div className="App">
+      <div>{numbers.join(",")}</div>
+      <button onClick={addToNumbers}>Add number</button>
+    </div>
+  );
+}
+```
+
+If you were to render this component and click the button three times
+you'd see that there is no number update happening.
+
+Since `addToNumbers` is mutating the state value directly it won't
+be properly updated. If you avoid mutation and instead clone the
+state array of numbers you will see rendering occur as you expect:
+
+```js
+import React, { useState } from 'react'
+
+function Numbers() {
+  const [numbers, setNumbers] = useState([]);
+
+  const addToNumbers = () => {
+    setNumbers([ ...numbers, numbers.length ]);
+  };
+
+  return (
+    <div className="App">
+      <div>{numbers.join(",")}</div>
+      <button onClick={addToNumbers}>Add number</button>
+    </div>
+  );
+}
+```
+
+## All together
+
+I've created a CodeSandbox example that uses both methods of state
+setting with different buttons. It's interesting to see because
+you can click the array mutation version twice, and then the array
+mutation version, and then see the proper numbers render.
+
+This is a result of the mutation version _properly_ setting the new
+state. Though, React doesn't think a new value exists so it doesn't
+actually rerender.
+
+[See the CodeSandbox in action](https://codesandbox.io/s/9jr5nx234p)

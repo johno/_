@@ -6,7 +6,7 @@ date: 2019-03-21
 
 If you're using React Hooks you might encounter a scenario where your
 `useState` hook doesn't appear to be updating the value. This can occur
-when you're mutating the state value in place and the calling `setState`.
+when you're mutating the state value in place and then calling `setState`.
 React performs a quick comparison so it will bail out of an update when
 the object instance is the same which will result in a stale value.
 
@@ -75,3 +75,7 @@ state. Though, React doesn't think a new value exists so it doesn't
 actually rerender.
 
 [See the CodeSandbox in action](https://codesandbox.io/s/9jr5nx234p)
+
+## Resources
+
+- https://reactjs.org/docs/hooks-reference.html#usestate

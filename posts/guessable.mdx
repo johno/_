@@ -1,7 +1,7 @@
 ---
 title: Guessable
 path: /guessable
-date: 2019-03-19
+date: 2019-03-22
 ---
 
 When building and designing for the web we want to be productive and efficient.
@@ -115,6 +115,22 @@ you need a Card component to have more depth and you're presented with
 `<Card shadow={2} />` you will have an idea on how to increase or
 decrease that depth by leveraging the scale.
 
+### GraphQL and GraphiQL
+
+GraphQL is a technology that has gained a lot of popularity for a multitude of
+reasons. Firstly, it's great for clients to be able to query for the exact data
+that they want in one go, but I think it's discoverability has really helped it
+take off.
+
+With GraphQL you can generate documentation so users of an API don't have to guess,
+or when they do, they can make educated guesses based on the documentation when
+trying to figure out a query.
+
+Then comes GraphiQL, it improves discoverability immensely with the ability to
+try queries and even use keyboard shortcuts, like `CMD + SPACE`, to see what
+possible properties are available. It's a dream and improves the developer
+workflow immensely.
+
 ## Memorable
 
 Something that's guessable needs to be memorable. This is often achieved
@@ -191,6 +207,24 @@ gently steer towards the direction we might think is better, but to respect
 the tooling that came before it. We should ease the transition and not leave
 people getting frustrated and then typing in `-h` and being presented with a
 terminal filled with 50 or so options.
+
+### Divergence
+
+When two tools diverge, or address the same tooling concerns like npm and yarn we
+end up with a lot of cognitive overhead. This is a massive impedance to guessability.
+Five years ago you could bootstrap nearly every Node.js project with
+
+```sh
+npm install && npm start
+```
+
+Now, as a frequent user of open source projects you have to `cat package.json` right
+after you clone a project to check for script names, workspaces, and other features
+that will dictate which CLI tool to use.
+
+I'm not complaining, because I don't contribute to either project, and have noticed that
+they've both made eachother better. But this type of overhead when you can work in
+more than 20 projects in a single week can be daunting. It's definitely not guessable.
 
 ## Community buy in
 

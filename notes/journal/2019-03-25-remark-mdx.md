@@ -1,7 +1,5 @@
 ---
-title: MDX: A remark plugin
-path: /unified-mdx
-date: 2019-03-25
+title: remark-mdx
 ---
 
 The [MDX](https://github.com/mdx-js/mdx) library is built on

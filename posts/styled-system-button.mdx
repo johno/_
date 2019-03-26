@@ -1,0 +1,276 @@
+---
+title: Building a button with Styled System
+path: /styled-system-button
+date: 2019-03-25
+---
+
+If you've used a component with style functions from the [styled-system](https://styled-system.com)
+library you might want to bring the API to all your projects. If that's the case we'll walk through how
+to build a button component using Styled System.
+
+In this tutorial we'll go over using a styled function, theming providers, and variants.
+
+[See the CodeSandbox](https://codesandbox.io/s/wql9613x4w)
+
+## Install the dependencies
+
+For this example we'll be using Emotion, but any CSS-in-JS library will work.
+
+```
+yarn add styled-system @emotion/core @emotion/styled emotion-theming
+```
+
+Next, we create a basic styled button
+
+```js
+import styled from "@emotion/styled";
+
+const Button = styled("button")({});
+```
+
+And add some basic styles:
+
+```js
+const Button = styled("button")({
+  appearance: "button",
+  border: 0,
+  outline: 0
+});
+```
+
+## Add some color
+
+Now that we have some styling it's time to introduce some color. We can do that using the `color`
+function from Styled System. We do this by passing it as another argument after the style object:
+
+```js
+import styled from "@emotion/styled";
+import { color } from "styled-system";
+
+const Button = styled("button")({
+  appearance: "button",
+  border: 0,
+  outline: 0
+},
+  color
+);
+```
+
+This exposes to props to the Button component: `color` and `backgroundColor` so you can use the
+component like so:
+
+```js
+<Button color="white" backgroundColor="tomato">Hello, world!</Button>
+```
+
+Then, if we want to add defaults we can use `defaultProps`:
+
+```js
+Button.defaultProps = {
+  color: "white",
+  backgroundColor: "blue"
+};
+```
+
+## Use a theme
+
+Now that we're setting colors on the Button component we want to use a ThemeProvider to use
+a globally defined theme for all components. We can achieve that with `emotion-theming` and
+then wrapping the app. Styled System will _automatically_ tie into the theme and return a value
+if it exists.
+
+```js
+import styled from "@emotion/styled";
+import { ThemeProvider } from "emotion-theming";
+import { color } from "styled-system";
+
+const theme = {
+  space: [0, 2, 4, 8, 16, 32],
+  colors: {
+    blue: '#07c',
+    tomato: 'tomato',
+    purple: 'purple'
+  }
+}
+
+function Demo() {
+  return (
+    <ThemeProvider theme={theme}>
+      <Button>Styled System Button!</Button>
+    </ThemeProvider>
+  );
+}
+```
+
+## Add padding and font size
+
+Similarly to `color`, we can add in `space` and `fontSize` to add more style props to the Button.
+
+```js
+import styled from "@emotion/styled";
+import { ThemeProvider } from "emotion-theming";
+import { color, space, fontSize } from "styled-system";
+
+const Button = styled("button")(
+  {
+    appearance: "button",
+    border: 0,
+    outline: 0
+  },
+  color,
+  space,
+  fontSize
+);
+
+Button.defaultProps = {
+  color: "white",
+  backgroundColor: "blue",
+  px: 4,
+  py: 3,
+  fontSize: 2
+};
+
+const theme = {
+  space: [0, 2, 4, 8, 16, 32],
+  fontSizes: [14, 16, 18, 24, 32],
+  colors: {
+    blue: "#07c",
+    tomato: "tomato",
+    purple: "purple"
+  }
+};
+
+function Demo() {
+  return (
+    <ThemeProvider theme={theme}>
+      <Button>Styled System Button!</Button>
+    </ThemeProvider>
+  );
+}
+```
+
+Now the button can have `padding`, `margin`, and `fontSize` set.
+
+## buttonStyle
+
+For buttons it's common to have a need for a `variant` prop which can
+determine interrelated styles like color, box shadow, or anything else.
+
+You can use a special `buttonStyle` key in your theme and then import the
+`buttonStyle` function from styled-system.
+
+```js
+import styled from "@emotion/styled";
+import { ThemeProvider } from "emotion-theming";
+import { buttonStyle, space, fontSize } from "styled-system";
+
+const Button = styled("button")(
+  {
+    appearance: "button",
+    border: 0,
+    outline: 0
+  },
+  buttonStyle,
+  space,
+  fontSize
+);
+
+Button.defaultProps = {
+  variant: "primary",
+  px: 4,
+  py: 3,
+  fontSize: 2
+};
+
+const baseTheme = {
+  space: [0, 2, 4, 8, 16, 32],
+  fontSizes: [14, 16, 18, 24, 32],
+  colors: {
+    blue: "#07c",
+    tomato: "tomato",
+    purple: "purple"
+  }
+};
+
+const theme = {
+  ...baseTheme,
+  buttons: {
+    primary: {
+      color: 'white',
+      backgroundColor: baseTheme.colors.blue
+    },
+    secondary: {
+      color: 'white',
+      backgroundColor: baseTheme.colors.purple
+    },
+    danger: {
+      color: 'white',
+      backgroundColor: baseTheme.colors.tomato
+    }
+  }
+}
+```
+
+Now you can use `primary`, `secondary`, and `danger` variants in your Button
+like so:
+
+```js
+<Button variant="danger">I'm tomato!</Button>
+```
+
+## Custom variants
+
+You can specify any number of other style variants using the `variant` function.
+With it you can specify custom keys in the theme object and even a custom prop.
+Below is an example with a `size` variant for Button:
+
+```js
+import { buttonStyle, space, fontSize, variant } from "styled-system";
+
+const buttonSize = variant({
+  prop: "size",
+  key: "buttonSizes"
+});
+
+const theme = {
+  ...baseTheme,
+  buttons: {
+    primary: {
+      color: "white",
+      backgroundColor: baseTheme.colors.blue
+    },
+    secondary: {
+      color: "white",
+      backgroundColor: baseTheme.colors.purple
+    },
+    danger: {
+      color: "white",
+      backgroundColor: baseTheme.colors.tomato
+    }
+  },
+  buttonSizes: {
+    medium: {
+      fontSize: baseTheme.fontSizes[2],
+      padding: `8px 16px`
+    },
+    large: {
+      fontSize: baseTheme.fontSizes[4],
+      padding: `16px 32px`
+    }
+  }
+};
+```
+
+Now you can change the button sizing like so:
+
+```js
+<Button size="large">I'm large</Button>
+```
+
+## Conclusion
+
+Using this approach you can create components that can do essentially anything.
+Especially with the `variant` prop you can create enums that map to groups of
+styling which ensure a great developer experience.
+
+[See the CodeSandbox](https://codesandbox.io/s/wql9613x4w)

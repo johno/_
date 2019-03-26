@@ -267,6 +267,72 @@ Now you can change the button sizing like so:
 <Button size="large">I'm large</Button>
 ```
 
+### Border radius
+
+If you want to add a border radius prop to your component you can first create
+a `radii` key in your theme.
+
+```js
+const baseTheme = {
+  space: [0, 2, 4, 8, 16, 32],
+  fontSizes: [14, 16, 18, 24, 32],
+  colors: {
+    blue: "#07c",
+    tomato: "tomato",
+    purple: "purple"
+  },
+  radii: [0, 2, 4, 8]
+};
+```
+
+Then you can add import the `borderRadius` function from Styled System and
+pass it to the Button component definition. You can also set a default so
+that all buttons will take on the same border radius value.
+
+```js
+import {
+  borderRadius,
+  buttonStyle,
+  space,
+  fontSize,
+  variant
+} from "styled-system";
+
+// ...
+
+const Button = styled("button")(
+  {
+    appearance: "button",
+    border: 0,
+    outline: 0
+  },
+  borderRadius,
+  buttonStyle,
+  buttonSize,
+  space,
+  fontSize
+);
+
+Button.defaultProps = {
+  borderRadius: 2
+}
+```
+
+## That's not all
+
+Since Button uses the `space` function from Styled System you can set custom margin or
+padding. This is nice for adjacent buttons when you want to add a bit of margin on the
+left of the second.
+
+```js
+<Button>Button 1</Button>
+<Button marginLeft={2}>Button 2</Button>
+```
+
+This is a great workflow for when you want to add spacing quickly and efficiently to a bit
+of markup. By default, it will ensure that design system scales will be used so that things
+remain consistent.
+
 ## Conclusion
 
 Using this approach you can create components that can do essentially anything.

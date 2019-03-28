@@ -5061,10 +5061,10 @@ gatsby-telemetry@^1.0.3:
     stack-utils "1.0.2"
     uuid "3.3.2"
 
-gatsby-theme-digital-garden-blog@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden-blog/-/gatsby-theme-digital-garden-blog-0.0.9.tgz#fd022ba5306fd8f3194cf84f0c141f5bde65c5ac"
-  integrity sha512-0K9rmpMkrjiAxoR1XHYlNA6eMVXjWavzsSTv0r98zvCDqnpkRFm3HJnwIfPMVVjt/G1DR8SFH5+KJ5EQzxauYA==
+gatsby-theme-digital-garden-blog@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden-blog/-/gatsby-theme-digital-garden-blog-0.0.10.tgz#1acc764ca16d97595d567f61485390f60355e67c"
+  integrity sha512-2zLo2bDoppcsYLYuN21nt+6JvOBnwtFUzFN9CvB8oVUhHO04CVmo0hBuehz2077uIeC4o4INXjMXbVTQMl09zQ==
   dependencies:
     gatsby-plugin-meta-redirect "^1.1.1"
     gatsby-plugin-og-image "0.0.1"
@@ -5076,10 +5076,10 @@ gatsby-theme-digital-garden-blog@^0.0.9:
     mdx-blocks "^0.0.3"
     react-feather "^1.1.6"
 
-gatsby-theme-digital-garden@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.9.tgz#9deb065c078d38503cc62283e006159b7c47cd00"
-  integrity sha512-1sObRZd2Sp0znZnFNsSz43wCbHx1GaXiuiR9z7dIrp7GTqg3muBaoB0iFW54jhWrhoSc2Qrf5Ou4V/qEvpFIEA==
+gatsby-theme-digital-garden@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.10.tgz#ccfea5116c122e63f5f73fefd52e6a6e24dbe9eb"
+  integrity sha512-J0IT8ZEm+BjZlBOwd2ArAYqBUUfoY9aj7V0431ZTqUxn0kleE9QyC3r1pfagQQHv9tAMBbHylp1QUpsoDCkvjQ==
   dependencies:
     gatsby-plugin-meta-redirect "^1.1.1"
     gatsby-plugin-og-image "0.0.1"

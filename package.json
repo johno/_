@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "gatsby": "^2.3.3",
-    "gatsby-theme-digital-garden": "^0.0.9",
-    "gatsby-theme-digital-garden-blog": "^0.0.9",
+    "gatsby-theme-digital-garden": "^0.0.10",
+    "gatsby-theme-digital-garden-blog": "^0.0.10",
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
   }

@@ -6,8 +6,16 @@ module.exports = {
     {
       resolve: 'gatsby-theme-digital-garden',
       options: {
-        postsPath: '/writing',
-        notesPath: '/txt'
+        notesPath: '/txt',
+        mdxLayouts: {
+          default: require.resolve('gatsby-theme-digital-garden/src/components/layout')
+        }
+      }
+    },
+    {
+      resolve: 'gatsby-theme-digital-garden-blog',
+      options: {
+        postsPath: '/writing'
       }
     }
   ]

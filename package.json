@@ -8,9 +8,10 @@
     "now-build": "yarn build"
   },
   "dependencies": {
-    "gatsby": "^2.1.32",
-    "gatsby-theme-digital-garden": "^0.0.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "gatsby": "^2.3.3",
+    "gatsby-theme-digital-garden": "^0.0.9",
+    "gatsby-theme-digital-garden-blog": "^0.0.9",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5"
   }
 }

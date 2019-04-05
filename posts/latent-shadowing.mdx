@@ -1,0 +1,220 @@
+---
+title: Latent shadowing
+path: /latent-shadowing
+date: 2019-04-05
+tags:
+  - gatsby
+  - themes
+---
+
+With Gatsby Themes we've been thinking about the different layers that
+will likely exist in the ecosystem. When I try to boil it down I end up
+with something like:
+
+- **Data Provider:** Source of your data (CMS, file system, etc.)
+- **Data Model:** Shape of your data after transformation (BlogPost, PortfolioItem, StoreItem, etc.)
+- **Templating:** Runs GraphQL queries and programmatically creates pages
+- **Rendering:** Accepts props and renders React components
+
+## Emerging patterns
+
+The Data Provider and Data Model handle the sourcing of data and its
+transformation to a standard type/schema. In the wild there are pretty
+standardized object types like BlogPosts and StoreItems so we could
+expose officially supported models.
+
+Additionally, the templating system is something that's pretty standard
+as well. Blog posts might be rendered to different pages like `/writing`
+or `/thoughts` in place of `/blog` but that's a configuration detail. If
+we also expose a standard set of templating themes we open up a new layer
+for themes developers that can operate _entirely_ in the React/styling
+world without touching `gatsby-node.js` or GraphQL.
+
+## Rendering
+
+The rendering layer is where we'll see a lot of exciting innovation since
+suddenly designers and developers will be able to build powerful Gatsby
+sites and applications without needing to learn Gatsby's node APIs or
+GraphQL. This is great because we can now operate at a new layer of abstraction
+that [progressively discloses complexity](https://lengstorf.com/progressive-disclosure-of-complexity/).
+
+In essence, new themes will be able to be built on top of other themes
+that leverage Component Shadowing to tap into the rendering of a page
+and customize it.
+
+## Horizontal composition
+
+We anticipate horizontal composition to be a common pattern for combining
+themes together. When you think about the architecture of websites, they're
+often grouped based on their data source.
+
+So we can consider a scenario where a theme author wants to build `gatsby-theme-tomato`
+which supports a blog, portfolio, and ecommerce store. Then end user of
+the theme, if using all three sources, would end up with a theme composition
+looking like the following:
+
+```
+gatsby-provider-shopify => gatsby-data-store => gatsby-theme-ecommerce       \
+
+gatsby-provider-contentful => gatsby-data-blog => gatsby-theme-blog  ---  gatsby-theme-tomato
+
+gatsby-provider-instagram => gatsby-data-portfolio => gatsby-theme-portfolio /
+```
+
+Ideally, `gatsby-theme-tomato` would be able to build React components that
+interfaced with the themes above and not need to know about how they source
+data or even render the templates. With Component Shadowing, this is possible!
+
+## Gatsby Theme Tomato
+
+If we know the architecture of a theme that we'll support we can
+now create a "bag of components" that are built around Latent Shadowing. This
+allows the `gatsby-theme-tomato` developer to support a collection of built in themes
+that are automatically activated when the data source and template are "turned on"
+when a theme like `gatsby-theme-blog` is installed and configured.
+
+```
+├── gatsby-theme-tomato
+   ├── gatsby-config.js
+   ├── gatsby-node.js
+   ├── package.json
+   └── src
+       ├── components
+       │   ├── header.js
+       │   ├── footer.js
+       │   ├── layout.js
+       │   ├── ...
+       ├── gatsby-theme-blog
+       │   └── components
+       │       ├── post.js
+       │       └── posts.js
+       ├── gatsby-theme-store
+       │   └── components
+       │       └── store.js
+       ├── gatsby-theme-portfolio
+           ├── portfolio.js
+           └── portfolio-item.js
+```
+
+If a user starts with the following config:
+
+```js
+// gatsby-config.js
+module.exports = {
+  __experimentalThemes: [
+    'gatsby-theme-blog',
+    'gatsby-theme-tomato'
+  ]
+}
+```
+
+All the blog posts will be rendered by `gatsby-theme-tomato` because the theme is
+shadowing the Post and Posts components which are being rendered by the templates
+in `gatsby-theme-blog`.
+
+Then, down the road a user might decide they want to add a portfolio:
+
+```js
+// gatsby-config.js
+module.exports = {
+  __experimentalThemes: [
+    'gatsby-theme-blog',
+    'gatsby-theme-portfolio',
+    'gatsby-theme-tomato'
+  ]
+}
+```
+
+When `gatsby develop` is restarted, `gatsby-theme-tomato` takes over the
+rendering of the portfolio theme as well.
+
+This is leveraging Latent Shadowing.
+
+## A real world application
+
+I'm currently working on a project called
+[Digital Garden](https://github.com/johno/digital-garden) that is using
+Latent Shadowing.
+
+The idea is that `gatsby-theme-digital-garden` is the base. It sources your
+`notes` directory and creates pages for each note and a directory listing.
+This is the default behavior and is meant to be mixed in with any existing
+Gatsby site.
+
+However, I want to be able to add in additional functionality to the ecosystem
+if you're starting with the base. So, for my own site I wanted blog functionality
+as well. So I've added `gatsby-theme-digital-garden-blog` which is intended to be
+a sibling of `gatsby-theme-digital-garden`. All components and styling thus live
+in the base theme and lay dormant _until_ `gatsby-theme-digital-garden-blog`
+activates.
+
+```
+├── gatsby-theme-digital-garden
+│   └── src
+│       ├── components
+│       │   ├── directory-list.js
+│       │   ├── file-list.js
+│       │   ├── header.js
+│       │   ├── layout.js
+│       │   ├── note.js
+│       │   ├── notes.js
+│       │   └── ui.js
+│       ├── gatsby-theme-digital-garden-blog
+│       │   └── components
+│       │       ├── header.js
+│       │       ├── layout.js
+│       │       ├── post.js
+│       │       └── posts.js
+│       ├── templates
+│       │   ├── note.js
+│       │   └── notes.js
+└── gatsby-theme-digital-garden-blog
+    └── src
+        └── templates
+            ├── post.js
+            └── posts.js
+```
+
+It's an interesting approach because the rendering of any theme in the Digital
+Garden ecosystem is supported in the base theme and the templating for some
+functionality like the blog or portfolio needs to be installed and added to
+the Gatsby config:
+
+```js
+// gatsby-config.js
+module.exports = {
+  __experimentalThemes: [
+    'gatsby-theme-digital-garden',
+    'gatsby-theme-digital-garden-blog'
+  ]
+}
+```
+
+### Why should the base theme handle rendering?
+
+In the context of Digital Garden, I want a single design token configuration to
+automatically apply to all components. Down the road we'll also add functionality
+like light/dark mode and other ways to customize layouts and other aspects.
+
+Due to these needs it makes sense for all the components to be colocated. You could
+also break out these components to a standalone npm library that's shared amongst
+all Digital Garden themes, but these components will only ever be used as a Gatsby
+theme so there isn't a need.
+
+## Conclusion
+
+Latent Shadowing can be a powerful way as a theme author to add support for a collection
+of themes that handle data sourcing, page creation, and templating. You can operate
+solely at the React level and build new things without needing to dive into the lower
+levels of Gatsby until you need to. You simply write components that lay dormant until
+they're activated by a sibling theme.
+
+---
+
+Thanks to [@jxnblk](https://twitter.com/jxnblk) for coining the term.
+My working name was _"predictive shadowing"_ and knew a better word
+was eluding me.
+
+Thanks to [@jlengstorf](https://twitter.com/jlengstorf) and
+[@chrisbiscardi](https://twitter.com/chrisbiscardi) for nerding out
+with me a bunch on this topic.

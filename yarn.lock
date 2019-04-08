@@ -5347,10 +5347,10 @@ gatsby-theme-digital-garden-blog@^0.0.15:
     mdx-blocks "^0.0.3"
     react-feather "^1.1.6"
 
-gatsby-theme-digital-garden@^0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.15.tgz#5d535bfa42e91c632906daf7a9a3adfe60857c3d"
-  integrity sha512-gOXxWNcFb2fjfLcGexg7MCr1pawcch8fJTQq2GfPQIA8dIRlyaOHu92WruZAGfZDjOdJ0jc/uv/d8r+NsuBe4Q==
+gatsby-theme-digital-garden@^0.0.16:
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.0.16.tgz#75cd90d6a8dc0ece211612f1319dd8084b74529f"
+  integrity sha512-jyBBDXLvtly5D6FiZx0DwyHc3FQWKDBMRs/9aDceKFEjqYAIeXIEI33WZ3MM4QmxZyfk9Qi7WqDGek8odJSvTg==
   dependencies:
     "@emotion/core" "^10.0.10"
     "@mdx-js/mdx" "^1.0.0-rc.0"
@@ -5368,10 +5368,10 @@ gatsby-theme-digital-garden@^0.0.15:
     react-feather "^1.1.6"
     theme-ui "^0.0.0-5"
 
-gatsby@^2.3.14:
-  version "2.3.14"
-  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.3.14.tgz#38df02cbb33407cf7cb48bbf5d53b25dd7aeb8cc"
-  integrity sha512-5ELb1SpYYNt+5/38NwyaFrOSPtVwEjhxIKsaeglrD1jDhi8mycXezBrf+IFNE/I0r0K7BtER36W1oB+FH3fQ2g==
+gatsby@^2.3.15:
+  version "2.3.15"
+  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.3.15.tgz#d9e690fd6bc36e99ea996c9f6688196ea99b2fa7"
+  integrity sha512-ri3/uRQwEJf5uXVt3sFXJuhraf3nUBUa2OQimy7iJCKnfHwyRaOLYKxgJqrfA+Nsqb3UoYNscgSMRYR41763zQ==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     "@babel/core" "^7.0.0"
@@ -9302,10 +9302,10 @@ react-reconciler@^0.20.1:
     prop-types "^15.6.2"
     scheduler "^0.13.6"
 
-react-three-fiber@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-2.0.3.tgz#82e9fc4302a483ac0094966e279da9e7b1bb357d"
-  integrity sha512-PcLa1sn3f9/FOVAS/UGLUI2myJL5p5LH1xSTXDthGYOS7L0Rb+MEHTVJSeaQqZrkWOLYaEdp9YCxLeu/FbEMTw==
+react-three-fiber@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-2.0.4.tgz#b0d4794f3aabce398b9612165f017df5b8e9f29f"
+  integrity sha512-mxs+5+PXN40d7Il2Ympl/n5GqN932ewbSUxyOR/yco+2zC9hofNt7WX0IYmujPLJ/N+117jiULwEw/Rh0KFNJg==
   dependencies:
     "@babel/runtime" "^7.3.4"
     lodash-es "^4.17.11"

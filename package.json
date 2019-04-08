@@ -12,6 +12,8 @@
     "gatsby-theme-digital-garden": "^0.0.15",
     "gatsby-theme-digital-garden-blog": "^0.0.15",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-three-fiber": "^2.0.3",
+    "three": "^0.103.0"
   }
 }

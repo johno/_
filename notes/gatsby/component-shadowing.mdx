@@ -15,6 +15,30 @@ If you've installed `gatsby-theme-blog` you'll notice that it renders a
 which is used in the BlogPost template. If you'd like to change the component you can do so
 with Component Shadowing.
 
+### Theme file structure
+
+`gatsby-theme-blog` has the following file structure (note that some files are
+ommitted for brevity):
+
+```
+gatsby-theme-blog
+├── package.json
+├── src
+│   ├── components
+│   │   ├── bio.js
+│   │   ├── layout.js
+│   │   ├── profile-pic.jpg
+│   │   └── tokens
+│   │       └── index.js
+│   ├── gatsby-theme-blog-core
+│   │   └── components
+│   │       └── blog-post.js
+│   └── utils
+│       └── typography.js
+```
+
+### Implementing a Shadow
+
 Component Shadowing uses a naming convention to determine which component will be rendered.
 So, in order to override the Bio component in `gatsby-theme-blog` you'd create a file named
 `src/gatsby-theme-blog/components/bio.js`.

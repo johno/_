@@ -2,13 +2,33 @@ module.exports = {
   siteMetadata: {
     title: 'johno'
   },
-  __experimentalThemes: [
+  plugins: [
     {
       resolve: 'gatsby-theme-digital-garden',
       options: {
         notesPath: '/txt',
         mdxLayouts: {
           default: require.resolve('gatsby-theme-digital-garden/src/components/layout')
+        },
+        header: {
+          home: {
+            href: '/',
+            label: 'johno'
+          },
+          links: [
+            {
+              href: '/writing',
+              label: 'Writing'
+            },
+            {
+              href: '/txt',
+              label: 'Notes'
+            },
+            {
+              href: '/contact',
+              label: 'Contact'
+            }
+          ]
         }
       }
     },

@@ -8,12 +8,12 @@
     "now-build": "yarn build"
   },
   "dependencies": {
-    "gatsby": "^2.3.24",
-    "gatsby-theme-digital-garden": "^0.0.22",
-    "gatsby-theme-digital-garden-blog": "^0.0.22",
+    "gatsby": "^2.13.2",
+    "gatsby-theme-digital-garden": "^0.1.0",
+    "gatsby-theme-digital-garden-blog": "^0.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-three-fiber": "^2.0.8",
-    "three": "^0.103.0"
+    "react-three-fiber": "^2.2.9",
+    "three": "^0.106.2"
   }
 }

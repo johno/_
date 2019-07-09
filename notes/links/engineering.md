@@ -1,0 +1,1 @@
+- "Turning the database inside out with Apache Samza" by Martin Kleppmann: https://www.youtube.com/watch?time_continue=100&v=fU9hR3kiOK0

@@ -10,7 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "jimp": "^0.5.6"
+    "jimp": "^0.6.0"
   },
   "devDependencies": {
     "get-query-param": "^2.0.3",

@@ -1,0 +1,219 @@
+---
+title: Presentational Context
+path: /presentational-context
+date: 2019-07-10
+---
+
+MDX helped popularize placing components in context and using
+them to render in child components. At the time, it seemed
+like a unique need for MDX, since it made sense to declare
+your component mapping for Markdown elements in one place
+(your layout) so that all MDX documents will know what component
+to render.
+
+Then we began to see more potential usages for libraries like
+[Theme UI](https://theme-ui.com) and [Blocks](https://mdx-blocks.com).
+Now it's a UI pattern so it's time to coin it.
+
+To the user it means: **"when you an encounter an h1 in MDX, render
+MyH1 instead"**.
+
+This avoids needing to use global, or scoped, CSS styles to
+target MDX documents and even allows users to layer in more
+complex components like a REPL.
+
+This is Presentational Context.
+
+## Why?
+
+The Presentational Context approach is powerful because **it allows
+parent context to control rendering at any level of its tree**.
+
+It's akin to the following CSS:
+
+```css
+.purple-h1s h1 { color: rebeccapurple; }
+```
+
+> Cascading DOM with React Context
+>
+> - [Spicy Mark Dalgleish meme](https://mobile.twitter.com/markdalgleish/status/1148695292381806592)
+
+With context you control more than the styling. You control the
+DOM output, you control its functionality. This allows you to layer
+in interactivity or swap out `h1`s for `h2`s in nested documents to
+ensure proper semantic markup hierarchies.
+
+## Composition
+
+An added benefit of this approach is that you can compose
+your presentational components throughout a single tree.
+
+```js
+// src/pages/some-page.js
+// ...
+export default () => (
+  <MDXProvider components={components}>
+    <SomeMDXDocument />
+    <AnotherMDXDocument />
+    <MDXProvider components={faqComponents}>
+      <FaqMDXDocument />
+    </MDXProvider>
+  </MDXProvider>
+)
+```
+
+This is the cascade that Mark Dalgleish is referring to. This allows
+you to target the presentation of components at the document level
+by composing providers and documents together.
+
+### Opting out
+
+Adopting a pattern found in [styled-components](https://styled-components.com)
+and [emotion](https://emotion.sh) you can allow for a function to be passed
+to the provider. It will receive the outer context's components which can
+be used to customize the merge and even drop the outer components entirely.
+
+##### Merging in an `h1` from outer context:
+
+```js
+// src/pages/some-page.js
+// ...
+export default () => (
+  <MDXProvider components={components}>
+    <SomeMDXDocument />
+    <MDXProvider components={({ h1 }) => { ...faqComponents, h1}}>
+      <FaqMDXDocument />
+    </MDXProvider>
+  </MDXProvider>
+)
+```
+
+##### Dropping all outer context components
+
+```js
+// src/pages/some-page.js
+// ...
+export default () => (
+  <MDXProvider components={components}>
+    <SomeMDXDocument />
+    <MDXProvider components={() => { ...faqComponents, h1}}>
+      <FaqMDXDocument />
+    </MDXProvider>
+  </MDXProvider>
+)
+```
+
+This provides a lot of control for users by leveraging composition
+without a lot of cognitive overhead.
+
+## How does it work?
+
+For this example, let's dive into how the
+[MDXProvider](https://mdxjs.com/getting-started#mdxprovider)
+works. MDXProvider is essentially
+[vanilla React context](https://reactjs.org/docs/context.html).
+
+It receives an object of components that might look like:
+
+```js
+{
+  h1: props => <h1 {...props} color="tomato" />,
+  blockquote: BlockQuote,
+  code: PrismCodeBlock
+}
+```
+
+It then merges that object with any outer context components
+and adds that entire object to context. Below is _nearly_ the
+entirety for the official MDXProvider's implementation:
+
+```js
+import React from 'react'
+
+const MDXContext = React.createContext({})
+
+export const withMDXComponents = Component => props => {
+  const allComponents = useMDXComponents(props.components)
+
+  return <Component {...props} components={allComponents} />
+}
+
+export const useMDXComponents = (components = {}) => {
+  const contextComponents = React.useContext(MDXContext)
+
+  return { ...contextComponents, ...components }
+}
+
+export const MDXProvider = props => {
+  const allComponents = useMDXComponents(props.components)
+
+  return (
+    <MDXContext.Provider value={allComponents}>
+      {props.children}
+    </MDXContext.Provider>
+  )
+}
+
+export default MDXContext
+```
+
+Thanks to React hooks, any other component can now pull
+in these components with `const components = useMDXComponents()`.
+Pretty rad.
+
+### Rendering with context
+
+The render step of MDX is a bit more complex because it uses
+a [custom pragma](https://mdxjs.com/blog/custom-pragma/), but in
+essence it works by tapping into context when an h1 is encountered
+and renders the h1 component if it exists.
+
+```js
+// src/components/renderer.js
+export default ({ tagName, ...props }) => {
+  const components = useMDXComponents()
+  const component = components[tagName] || tagName
+
+  return React.createElement(component, props)
+}
+```
+
+Using the component:
+
+```js
+<Renderer tagName="h1">Hello, world!</Renderer>
+```
+
+## Does it scale?
+
+So far we have found that it does, and have yet to see evidence to the
+contrary. In some circumstances it can result in smaller SSR-ed documents
+because **prism output can sometime 10x DOM output when rendered to markup**.
+Granted, this is only the case after rehydration, but that's a fine tradeoff
+for content-heavy sites with multi-page visits.
+
+## The future
+
+A valid drawback of this approach is the fact that sometime computation
+heavy components are brought into the runtime (like syntax highlighting)
+which can add bloat to the page.
+
+However, that's something we can address more intelligently at build time.
+This isn't yet something supported by any frameworks (that I know of), but
+during the SSR step we could perform static analysis on MDX syntax, like a
+code block that can either be syntax highlighted _or_ a REPL, and render
+different components.
+
+### Bundle splitting shortcodes
+
+Current implementations bundle all components passed to the MDXProvider which
+can include [shortcodes](https://mdxjs.com/blog/shortcodes/). We can take the
+static analysis even farther by determining which components are used in which
+document, and only bundle those for a particular page.
+
+## Conclusion
+
+Using context to handle presentational components can be a powerful pattern.
+It's something I've found to be more idiomatic React for MDX's use case and
+it feels pretty nice in [Theme UI](https://theme-ui.com) as well.

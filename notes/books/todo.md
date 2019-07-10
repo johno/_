@@ -8,3 +8,4 @@ order.
 - Organizing Knowledge - https://www.amazon.com/Organising-Knowledge-Taxonomies-Organisational-Effectiveness-ebook/dp/B00N4TPJO6/ref=sr_1_1?keywords=organising+knowledge&qid=1552830979&s=gateway&sr=8-1-spell
 - Content Design - https://www.amazon.com/Content-design-Sarah-Richards/dp/1527209180/ref=sr_1_fkmrnull_1?crid=1J145EOOURGLT&keywords=content+design+sarah+richards&qid=1552831054&s=gateway&sprefix=content+design%2Caps%2C215&sr=8-1-fkmrnull
 - Don't Call It That - https://elialtman.com/artifacts/dont-call-it-that
+- Shape Up: Stop Running in Circles and Ship Work that Matters - https://basecamp.com/shapeup

@@ -29,20 +29,22 @@ This is Presentational Context.
 The Presentational Context approach is powerful because **it allows
 parent context to control rendering at any level of its tree**.
 
+> Cascading DOM with React Context
+>
+> - [Spicy Mark Dalgleish meme](https://mobile.twitter.com/markdalgleish/status/1148695292381806592)
+
 It's akin to the following CSS:
 
 ```css
 .purple-h1s h1 { color: rebeccapurple; }
 ```
 
-> Cascading DOM with React Context
->
-> - [Spicy Mark Dalgleish meme](https://mobile.twitter.com/markdalgleish/status/1148695292381806592)
+But it's a bit more nuanced.
 
 With context you control more than the styling. You control the
 DOM output, you control its functionality. This allows you to layer
-in interactivity or swap out `h1`s for `h2`s in nested documents to
-ensure proper semantic markup hierarchies.
+in interactivity. It even allows you to swap out `h1`s for `h2`s in
+nested documents to ensure proper semantic markup hierarchies.
 
 ## Composition
 

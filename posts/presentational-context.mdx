@@ -11,12 +11,11 @@ your component mapping for Markdown elements in one place
 (your layout) so that all MDX documents will know what component
 to render.
 
-Then we began to see more potential usages for libraries like
+> When you encounter an h1 in MDX, render MyH1 instead.
+
+Then, we began to see more potential usages for libraries like
 [Theme UI](https://theme-ui.com) and [Blocks](https://mdx-blocks.com).
 Now it's a UI pattern so it's time to coin it.
-
-To the user it means: **"when you an encounter an h1 in MDX, render
-MyH1 instead"**.
 
 This avoids needing to use global, or scoped, CSS styles to
 target MDX documents and even allows users to layer in more
@@ -31,7 +30,7 @@ parent context to control rendering at any level of its tree**.
 
 > Cascading DOM with React Context
 >
->  — [Spicy Mark Dalgleish meme](https://mobile.twitter.com/markdalgleish/status/1148695292381806592)
+>  — [🔥🌶 Spicy Mark Dalgleish meme](https://mobile.twitter.com/markdalgleish/status/1148695292381806592)
 
 It's akin to the following CSS (contextual styling):
 

@@ -42,9 +42,9 @@ const allStyles = {
     fontSize: 3,
   },
   pre: {
+    ...styles.pre,
     fontSize: 3,
-    padding: 4,
-    ...styles.pre
+    padding: 4
   }
 }
 

@@ -4,10 +4,20 @@ path: /composition-over-configuration
 date: 2019-03-26
 ---
 
+Composition over configuration is a key tenet in [MDX](https://mdxjs.com)
+and where it departs from existing Markdown approaches. It allows authors
+to import and mix in functionality (as a component) rather than overloading
+Markdown syntax.
+
+Not to mention, syntax overloading is typically done at the build tool level
+which means a plugin that's intended to target a handful of pages happens
+across the board.
+
 Composition is powerful because it's a "simple" abstraction that's
 meant to combine functionality between two otherwise separate parts.
 It tends to be less leaky than configuration-based approaches and
-avoids framework coupling in convention-based approaches.
+avoids framework coupling. Another benefit is the fact that composition
+becomes more flexible and explicit.
 
 In essence, composition can be boiled down to:
 
@@ -27,7 +37,28 @@ f(g(x))
 ```
 
 For the purposes of this post we'll be mostly focusing on functional
-composition and how it relates to components.
+composition and how it relates to components in React/[MDX]().
+
+First, let's consider where configuration falls short.
+
+## Configuration is typically global
+
+In most cases, configuration is applied globally to a project or framework.
+For example, let's consider remark plugins in [Gatsby](https://gatsbyjs.org).
+
+When you apply a plugin to the global remark transformer it will affect
+every document in the project. This can be problematic when you just need
+to add in a responsive Youtube embed in a single Markdown file. What's also
+interesting, is a project will typically _already_ have a Youtube component
+that's used somewhere else (perhaps in a JSX-based page).
+
+## Suboptimal workflow
+
+The plugin workflow also departs from the parts of the project you're spending
+most of your time in. If you're building for the web you're typically writing
+content or building components for new pages, layouts, etc. You're operating
+at an abstraction layer that's typically above the notion of configuration and
+plugins (which is a good thing!).
 
 ## Components over configuration
 
@@ -39,7 +70,7 @@ Domain Specific Language (DSL), but it's one that is generally accepted
 in the wider community and really isn't much more than a shortcut
 for function calls.
 
-JSX and components provide an expressive way to express composition
+JSX and components provide an expressive syntax for composition
 that can cut out configuration in a lot of cases. This is a good thing
 because composition is only introduced where it's invoked and doesn't
 cause global side effects.
@@ -65,9 +96,14 @@ Component composition allows you to layer specific needs.
 
 ##### Components can be abstracted
 
+When there's a common usage, a composition can be tucked away.
+
 ```js
 <ImageWithCitation src="12345" alt="numbers" photography="Fred Flintstone" />
 ```
+
+It's important to note that `ImageWithCitation` is a contrived example
+that is better expressed as two separate, sibling components.
 
 ### Combining common elements
 
@@ -75,6 +111,9 @@ In the above example you might find that as a project evolves that
 all Youtube components are accompanied by a wrapping ResponsiveIframe
 component. After that pattern becomes solidifed you can create a
 new component, ResponsiveYoutube and begin using that in its place.
+
+This allows small changes to be made in one place that will be reflected
+in all call sites for the component.
 
 What makes this especially powerful is the fact that you don't have
 to immediately port the existing usage right away. That can happen
@@ -89,24 +128,16 @@ is needed. Libraries can expose more "batteries included" components as
 the primary API surface area which can be broken back apart to create something
 more bespoke.
 
-## Configuration is (typically) global
+If `CustomYoutube` component consists of `ResponsiveIframe` and `Youtube`
+you can break away from the composite component to add one-off usage.
 
-In most cases, configuration is applied globally to a project or framework.
-For example, let's consider remark plugins in [Gatsby](https://gatsbyjs.org).
-
-When you apply a plugin to the global remark transformer it will affect
-every document in the project. This can be problematic when you just need
-to add in a responsive Youtube embed in a single Markdown file. What's also
-interesting, is a project will typically _already_ have a Youtube component
-that's used somewhere else (perhaps in a JSX-based page).
-
-## Suboptimal workflow
-
-The plugin workflow also departs from the parts of the project you're spending
-most of your time in. If you're building for the web you're typically writing
-content or building components for new pages, layouts, etc. You're operating
-at an abstraction layer that's typically above the notion of configuration and
-plugins (which is a good thing!).
+```js
+<ResponsiveIframe>
+  <TomatoBorder>
+    <Youtube id="12345" />
+  </TomatoBorder>
+</ResponsiveIframe>
+```
 
 ## Composition is evolving
 

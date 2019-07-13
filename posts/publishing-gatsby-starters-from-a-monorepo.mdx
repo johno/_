@@ -1,0 +1,139 @@
+---
+title: Publishing Gatsby starters from a monorepo
+date: 2019-07-12
+path: /publishing-gatsby-starters-from-monorepo
+tags:
+  - tooling
+  - github-actions
+---
+
+When building Gatsby Themes it's becoming common to use a yarn
+workspace that contains themes and their related starters. This
+workflow is great because you can build your theme as a package
+while configuring it as the end user.
+
+This lets you do something like:
+
+```sh
+yarn workspace gastby-starter-documentation develop
+```
+
+In this scenario we have a the following folder structure:
+
+```
+├── examples
+│   └── gatsby-starter-documentation
+│       ├── gatsby-config.js
+│       ├── package.json
+│       └── readme.md
+├── package.json
+├── packages
+│   └── gatsby-theme-documentation
+│       ├── gatsby-config.js
+│       ├── gatsby-node.js
+│       ├── index.js
+│       ├── package.json
+│       └── readme.md
+└── readme.md
+```
+
+`packages/gatsby-theme-documentation` contains the theme
+library and `examples/gatsby-starter-documentation` contains
+the starter.
+
+However, `gatsby new` only scaffolds out projects from a
+single repo, monorepos aren't currently supported. This means
+that you'll have to clone each example and push it to a
+standalone repo. Luckily, you can automate that with a
+GitHub Action!
+
+I've created an action based on Gatsby's own tooling for
+handling official starters: https://github.com/johno/actions-push-subdirectories
+
+> Shoutout to [Dustin Schau](https://mobile.twitter.com/schaudustin)
+> who wrote the original script I repurposed into a GitHub
+> Action
+
+Using `actions-push-subdirectories` we can create a workflow
+that first checks to make sure a commit landed on master, and
+if it has, it will then push the latest in `examples/gatsby-starter-documentation`
+to `johno/gatsby-starter-documentation`.
+
+The workflow we will build looks like:
+
+![image](https://user-images.githubusercontent.com/1424573/61172705-90ab9080-a545-11e9-8de3-c8433c6f50ba.png)
+
+First, we can use the built-in git filter to only run
+the rest of the workflow when a commit hits the
+master branch.
+
+```
+action "master" {
+  uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
+  args = "branch master"
+}
+```
+
+Then we need to use `johno/actions-push-subdirectories`. Note
+that you'll need to specify args for both the directory of examples
+and the GitHub username. And of course, set an `API_TOKEN_GITHUB`
+key that has permissions to write to your repos.
+
+![image](https://user-images.githubusercontent.com/1424573/61172771-ad949380-a546-11e9-8ed8-b6cfdde99f25.png)
+
+```
+action "push-subdirectories" {
+  uses = "johno/actions-push-subdirectories@master"
+  needs = ["master"]
+  args = "examples johno"
+  secrets = [
+    "GITHUB_TOKEN",
+    "API_TOKEN_GITHUB",
+  ]
+}
+```
+
+Then, we need to set the workflow to resolve our last
+step.
+
+```
+workflow "Publish starter" {
+  on = "push"
+  resolves = ["push-subdirectories"]
+}
+```
+
+And all together:
+
+```
+workflow "Publish starter" {
+  on = "push"
+  resolves = ["push-subdirectories"]
+}
+
+action "master" {
+  uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
+  args = "branch master"
+}
+
+action "push-subdirectories" {
+  uses = "johno/actions-push-subdirectories@master"
+  needs = ["master"]
+  args = "examples johno"
+  secrets = [
+    "GITHUB_TOKEN",
+    "API_TOKEN_GITHUB",
+  ]
+}
+```
+
+You'll notice that it almost seems backwards. We set which
+action we want to resolve, and then work backwards using
+`needs`. Luckily there's the nice workflow editor to make
+it easier.
+
+## Conclusion
+
+Using a GitHub Action to publish read only starters from a
+monorepo is a rad way to automate working with the existing
+Gatsby project scaffold tooling.

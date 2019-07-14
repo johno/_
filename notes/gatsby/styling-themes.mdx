@@ -23,7 +23,7 @@ To get started it's important to describe what questions I was seeking to answer
 - What is an acceptable learning curve?
 - What's the best fit?
 
-It's important that theme styling is robust, flexible, and composable. After all, it's realistic to expect Gatsby sites to combine multiple
+It's important that theme styling is robust, flexible, and composable. After all, it's realistic to expect Gatsby sites to compose multiple
 themes and we want that process to be the best that it can possibly be. Standardizing some type of convention or set of conventions will ensure
 that themes which "opt in" will typically be composable with each other without issue.
 
@@ -32,7 +32,7 @@ concerns are related, and in the perfect world, will draw from the same design s
 
 ## BEM or BEM-like
 
-I originally came to the scene during the Less/Sass and Bootstrap era and built numerous production apps with Bootstrap and custom themes.
+I originally came to the scene during the Less/Sass and Bootstrap era and built numerous production apps with Bootstrap and custom themes (many of which I built from scratch).
 It was wonderfully powerful how you could build UI quickly but always snowballed out of control. Always. Custom styling required complex
 configuration and inevitably required insane selectors. It was brittle and you were left feeling like you were fighting the framework.
 
@@ -82,7 +82,12 @@ and we ended up with `gatsby-theme-blog-dark` that was essentially nothing more 
 }
 ```
 
-Not to mention this is susceptible to clashing with other themes. The good part about this experiment is it did start to really
+Not to mention this is susceptible to clashing with other themes.
+Themes can introduce their own variables that clash with others, and not to mention,
+the load order can potentially affect the CSS order on the page.
+Non-determinism like this is problematic.
+
+The good part about this experiment is it did start to really
 bring home that themes can often boil down to key value pairs, and seemed to lend itself to something JS object-based.
 It was also cool to be able to _very_ quickly crank out multiple themes with drastically different styling in a matter of minutes.
 
@@ -100,10 +105,13 @@ concepts that arose from this new styling approach were interesting (some even u
 - Style composition is best at the component level and made prototyping in the browser unbelievably quick
 - Design system constraints are powerful (and developers love them)
 
-One of my favorite parts is the constraint-based system and the ability to rapidly design responsive components. It removed a lot
-of the cognitive overhead when designing in the browser and everything fit a predictable pattern. No longer did I have to remember
-what the second step of my spacing scale is or how to change the padding for large viewports. No longer did I have to open up a
-CSS file and develop with two files simultaneously.
+One of my favorite parts is the constraint-based system and the ability to rapidly design responsive components. Working with
+media queries when designing in the browser is high friction (IMO) and the colocation of markup, styles, and breakpoints creates
+a workflow that's amazing.
+
+It removed a lot of the cognitive overhead when designing in the browser and everything fit a predictable pattern. No longer did
+I have to remember what the second step of my spacing scale is or how to change the padding for large viewports. No longer did I
+have to open up a CSS file and develop with two files simultaneously.
 
 Of the approaches discussed so far I think it's the first that has potential. However, class composition feels really awkward with
 components and there's a lot of duplication because making components a "bag of props" requires handwaving and indirection. Especially
@@ -193,44 +201,11 @@ I'm not going to go into defining what CSS in JS is since there are plenty of re
 implications are for theming websites and apps.
 
 In a lot of ways CSS in JS is a better fit for React's compositional model since it abstracts away the `<style>` tag and class name. This
-abstraction allows theme authors a lot of protection
-because suddenly styling concerns are no longer global, and they're colocated to the component they target.
-This is a substantial improvement in the developer experience.
+abstraction allows theme authors a lot of protection because suddenly styling concerns are no longer global, and they're colocated to
+the component they target. This is a substantial improvement in the developer experience.
 
 This does come at a cost, a significant learning cost. Though, when thinking about the different approaches for styling it seems like it'd
 be worth it.
-
-### CSS prop
-
-When you're building components for a website it's important to have an escape hatch for one-off needs. In traditional CSS this
-often results in it's "append-only" characteristics which balloon over time.
-
-```js
-<SomeComponent
-  css={css`
-    color: tomato;
-    margin-top: 3px;
-  `}
-/>
-```
-
-With CSS in JS, you can attach this bespoke styling need directly to your component. This colocation is powerful and
-[deletable](https://programmingisterrible.com/post/139222674273/write-code-that-is-easy-to-delete-not-easy-to).
-
-> Every product has a need for soup. Soup is a shorthand for the one off styles, that extra div you need to work around a platform
-issue, or glue that binds two slightly-incompatible abstractions together. Soup, perhaps more than any other level, needs to be written
-in a way that is easy to delete because there are two basic evolutionary paths for soup.
->
->  _— Chris Biscardi, [Styles and Naming](https://www.christopherbiscardi.com/post/styles-and-naming)_
-
-### Theming
-
-Even more interestingly, themes can be composed within other themes. React Context is a very powerful concept and CSS in JS is able to
-leverage that. Additionally, considering that Gatsby Themes will also be composable this paradigm lends itself well for future theme
-interoperability.
-
-Most CSS in JS libraries support JS object styling as well which is very powerful when it comes to styling. Rather than using CSS
-selectors and the cascade to apply styling one can use object destructuring and merging.
 
 **Advantages**
 
@@ -248,6 +223,92 @@ selectors and the cascade to apply styling one can use object destructuring and 
 - Performance can be an issue
 - Media queries are difficult to work with
 - Typically requires a plugin
+
+CSS in JS does come in a few flavors, so I think it's worthwhile to break down the different usages and APIs.
+
+### The `styled` tag
+
+[styled-components](https://styled-components.com) is undoubtedly the library that popularized CSS in JS, and more specifically the
+string template literal syntax. This made folks feel at home and begin adopting CSS in JS. Not to mention the colocation of styles
+is _amazing_.
+
+If you're unfamiliar with the styled component approach, it looks something like this:
+
+```js
+const Button = styled.Button`
+  appearance: button;
+  border: 0;
+  outline: 0;
+  borderRadius: 4px;
+  backgroundColor: tomato;
+  fontSize: 18px;
+  padding: 10px 20px;
+`
+```
+
+It works nicely for you primary components, and building out a component library of primitives. However, it starts to break down
+when using it in larger, composite components.
+
+What you end up having to do is name a component that will potentially only be used one time in the primary component of a file.
+So you end up with a handful of component definitions at the top of a file that are only used once in the main export. Not to mention
+you're left with an unnecessary abstraction away from the component.
+
+[Chris Biscardi explains this well in his Styles and Naming post](https://www.christopherbiscardi.com/post/styles-and-naming#when-to-name-components).
+
+**Advantages**
+
+- All the benefits of CSS in JS
+- Feels natural to folks that are used to writing CSS
+
+**Disadvantages**
+
+- Difficult to treeshake (if even possible)
+- Not very idiomatic JS
+- Requires naming things
+- Hides the HTML tag
+- Handling props as a function for styles is clunky
+
+### CSS prop
+
+When you're building components for a website it's important to have an escape hatch for one-off needs. In traditional CSS this
+often results in it's "append-only" characteristics which balloon over time. The `css` prop is a great way to achieve quick styling
+needs without having to define components or tuck away the HTML element.
+
+```js
+<h1
+  css={{
+    color: 'tomato',
+    margin: 0
+  }}
+/>
+```
+
+With CSS in JS, you can attach this bespoke styling need directly to your component. This colocation is powerful and
+[deletable](https://programmingisterrible.com/post/139222674273/write-code-that-is-easy-to-delete-not-easy-to).
+
+> Every product has a need for soup. Soup is a shorthand for the one off styles, that extra div you need to work around a platform
+issue, or glue that binds two slightly-incompatible abstractions together. Soup, perhaps more than any other level, needs to be written
+in a way that is easy to delete because there are two basic evolutionary paths for soup.
+>
+>  — Chris Biscardi in _[Styles and Naming](https://www.christopherbiscardi.com/post/styles-and-naming)_
+
+## Theming
+
+For Gatsby Themes we essentially have two layers of the same word: "Themes". Firstly there's the Gatsby Theme you `yarn add`. But, we
+also have the notion of theme context which is used in CSS in JS libraries. This is the `ThemeProvider` which most CSS in JS libraries
+expose in order to access design tokens in your CSS in JS.
+
+React Context is a very powerful concept and CSS in JS is able to leverage that. Additionally, considering that Gatsby Themes will also
+be composable this paradigm lends itself well for future theme interoperability.
+
+One thing to look out for, though, is context clashing. So themes likely want to avoid Gatsby's `wrapRootElement` so that themes aren't
+globally overriding context that other Gatsby Themes might depend on.
+
+Though, the usage of `ThemeProvider`s will be extremely important to building out a robust collection of themes that are readily configurable.
+After all, the ideal usage of a Gatsby Theme will be:
+
+- I like that blog theme, `yarn add gatsby-theme-blog-dark`
+- I want the change the primary color to tomato: `export default { ...theme, primary: 'tomato' }`
 
 ## Styled system
 
@@ -311,7 +372,21 @@ ListItem.defaultProps = {
 
 It's still early for large adoption of the styled system approach, but it's being adopted by organization
 like GitHub's Primer and Material UI has their own alpha "system" component. As Tachyons and Tailwind see
-large adoption it does seem like the wider community is warming up to these constrained, design system-based approaches.
+large adoption it does seem like the wider community is warming up to these constrained, design system-based
+approaches.
+
+The one thing to be cognizant of is that styled-system components aren't really the best for content-heavy
+sites, and when combined with the MDXProvider we end up with a lot of:
+
+```js
+<MDXProvider
+  components={{
+    h1: props => <h1 fontSize={[3, 4, 4]} {...props} />,
+    h2: props => <h1 fontSize={3} {...props} />,
+    // ...
+  }}
+/>
+```
 
 **Advantages**
 
@@ -329,7 +404,10 @@ large adoption it does seem like the wider community is warming up to these cons
 
 ## Typography.js
 
-A lot of Gatsby sites, and the web in general, is content rich. This refers to blog posts, news articles, comments,
+One popular option for theming that provides a wonderfully small API to generate most other values in a design system
+is [Typography.js](https://kyleamathews.github.io/typography.js/).
+
+A lot of Gatsby sites, and the sites in general, are content rich. This refers to blog posts, news articles, comments,
 etc. This is also where styled system begins to be a bit clunky. With styled-system you have to manually tune all the
 knobs and dials that are typically typography focused. This is where a
 [typography.js](https://kyleamathews.github.io/typography.js/) API really shines especially when
@@ -337,6 +415,17 @@ it comes to having themes that are an install away.
 
 An interesting place to explore is how these to concepts can be merged for a holistic UI paradigm that encompasses things
 like building layout and a footer while also ensuring typographic harmony for HTML output from Markdown.
+
+**Advantages**
+
+- Great for content-heaving sites
+- Theming is first class
+- Lends itself nicely for a WYSIWYG
+- Documentation can be generated
+
+**Disadvantages**
+
+- Global CSS-based
 
 ## Typography System
 
@@ -491,14 +580,11 @@ allows you to specify scales and other styling config that will help to drive 95
 
 ## Extending components and themes
 
-⚠️ Not a supported API in Gatsby Themes ⚠️
-
 We don't have any usage data yet, but it's reasonable to expect scenarios where a theme user will want to adjust the
 color of an avatar border and add more horizontal padding. If a component has a styled-system API it could be quickly
 achieved with extension and component shadowing:
 
 ```js
-// ⚠️ Not a supported API in Gatsby Themes ⚠️
 // src/gatsby-theme-awesome/avatar.js
 import { Avatar } from 'gatsby-theme-awesome'
 
@@ -508,7 +594,6 @@ export default props => <Avatar {...props} borderColor="tomato" py={4} />
 This extension model can be useful for mixing in new styling with composition:
 
 ```js
-// ⚠️ Not a supported API in Gatsby Themes ⚠️
 // src/gatsby-theme-awesome/avatar.js
 import { Avatar, Card } from 'gatsby-theme-awesome'
 
@@ -522,7 +607,6 @@ export default props => (
 It can even be used with CSS in JS "extend" APIS:
 
 ```js
-// ⚠️ Not a supported API in Gatsby Themes ⚠️
 // src/gatsby-theme-awesome/avatar.js
 import styled from 'library'
 import { Avatar } from 'gatsby-theme-awesome'
@@ -539,17 +623,30 @@ I like to think of styling as a function of props and theme that output a style 
 
 **Disadvantages**
 
-- Doesn't currently work in Gatsby
 - Could be heavy handed for building a collection of themes with different styles
 - Might be better handled as config
+
+## styled component
+
+## CSS Prop
+
+## System UI
+
+It's safe to say that no matter what approach is taken, [interoperability](https://jxnblk.com/blog/interoperability/)
+is important. This is why Brent Jackson has proposed a [Theme Specification](https://system-ui.com/theme).
+
+> Where I see differences start to arise is at the theme definition level. Even outside of React context-based theming, a lot of React applications will store global style constants in a common module. Something I'm starting to notice is that there are no standard conventions for what that module contains or how its structured, but all of them seem to be doing the same thing, in a slightly different way.
+>
+> — [Brent Jackson](https://twitter.com/jxnblk) in _[Interoperability](https://jxnblk.com/blog/interoperability/)_
+
+## Theme UI
+
+### SX prop
 
 ## Conclusion
 
 Over the next few weeks I plan on cranking out a suite of themes to test the waters with some of these
 approaches. Sometimes you just have to get building to learn whether something works well or doesn't.
-
-This will result in a learning curve for folks that adopt this approach, but hopefully it's something we can
-document and augment with Egghead 😃.
 
 The cool part, in the context of Gatsby Themes, is that the community can build themes with any tool that they'd like.
 So, if that means a whole suite of themes using Sass, that's also a possibility! For officially supported themes we

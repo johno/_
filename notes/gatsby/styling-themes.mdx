@@ -659,6 +659,20 @@ I like to think of styling as a function of props and theme that output a style 
 I'd left off this analysis here as we began working on experimenting on what the best
 combination of all this might look like.
 
+Then, as always, Brent Jackson built the thing that, in my opinion, connected all the dots.
+
+I won't go into a ton of detail now, since the [Theme UI docs](https://theme-ui.com/)
+already do a great job explaining the rationale and benefits. Though, I will briefly summarize
+them here.
+
+- **Compatible with Typography.js** This is important due to the solid API and the precedence
+  it has set in the Gatsby ecosystem.
+- **Styled System aware from theme config** This removes a point of friction when using your
+  design system components with MDX when you want to style content elements but not write JSX.
+- **SX prop** Get the benefits of the CSS prop while constraining to your design system
+- **Color modes** Modern websites and apps are taking things to the next level by allowing
+  users to customize their experience (light/darkmodes). This is built in.
+
 ### SX prop
 
 Going along with the main benefits we see from the CSS prop above, Theme UI introduces
@@ -666,10 +680,60 @@ the [`sx` prop](https://theme-ui.com/sx-prop). What's great about this approach 
 allows for a lightweight abstraction _and_ the ability to directly hook into theme values which
 helps ensure that websites and apps remain consistent and adhere to a design system.
 
+To me, it's a worthwhile bit of magic, too. Having to combine the CSS prop with some type of
+theme-aware function was a lot of boilerplate considering how frequently it'd be used.
+
+**Before**
+
+```js
+<h1
+  css={css({
+    color: 'text',
+    backgroundColor: 'background',
+    m: 0,
+    pt: 3
+  })}
+/>
+```
+
+**After**
+
+```js
+<h1
+  sx={{
+    color: 'text',
+    backgroundColor: 'background',
+    m: 0,
+    pt: 3
+  }}
+/>
+```
+
+## What's next?
+
+I'm excited about the tooling we can build to make Theme UI better integrate with building
+things with Gatsby and the greater ecosystem as a whole. WYSIWYGs for theme editing, more
+layout handling, and even full-fledged UI libraries.
+
 ## Conclusion
 
-Over the next few weeks I plan on cranking out a suite of themes to test the waters with some of these
-approaches. Sometimes you just have to get building to learn whether something works well or doesn't.
+I'm very excited about what Theme UI brings to the table. There's definitely some magic there,
+but we're working on improving documentation and the tooling to make things less of a jump.
+
+It was very apparent that CSS in JS was required, and we wanted to use Emotion/MDX/styled-system
+at the core. We wanted to avoid the `styled` tag in favor of the CSS prop.
+
+Using CSS in JS is required because the web platform simply isn't there yet. Working on top
+of the web platform, in userland like CSS in JS does, is required while it catches up. When
+things become natively supported we can remove userland implementations, often times without
+even breaking changes. By the way, this isn't a slight at the web platform. It understandably
+has to move slower to ensure backwards compatibility and vet new technology and approaches.
+After all, it's the most used platform in the world.
+
+I'm not yet holding my breath for JSX being natively supported, but I'm pretty confident on
+it happening at some point.
+
+## A quick aside
 
 The cool part, in the context of Gatsby Themes, is that the community can build themes with any tool that they'd like.
 So, if that means a whole suite of themes using Sass, that's also a possibility! For officially supported themes we
@@ -680,4 +744,5 @@ complex configuration.
 
 I'd like to thank [Brent Jackson](https://jxnblk.com), [Adam Morse](https://mrmrs.cc),
 [Chris Biscardi](https://www.christopherbiscardi.com/), [Jason Lengstorf](https://jlengstorf.com),
+[Amberley Romo](https://amberley.dev/), [Florian Kissling](https://6230.org/),
 and [Kyle Mathews](https://www.bricolage.io/) for many profound thoughts, discussions, and insights.

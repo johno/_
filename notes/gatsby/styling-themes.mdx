@@ -388,6 +388,9 @@ sites, and when combined with the MDXProvider we end up with a lot of:
 />
 ```
 
+This approach adds a lot of friction when you want to trivially change an h1. Now you're forced to write a
+funcion/component rather than editing a JS object (which would be more preferable here).
+
 **Advantages**
 
 - Theming is first class
@@ -452,7 +455,8 @@ The TypographyProvider uses the theme context and Typography.js config to
 
 ### Component provider
 
-MDX introduced a new concept that uses a component provider to specify which components should be rendered for given
+MDX introduced a new concept, [Presentational Context](https://johno.com/presentational-context),
+that uses a component provider to specify which components should be rendered for given
 elements in a string of content. I think this will be something interesting to explore as well for styling other types
 of long form content. In addition to providing the theme, the TypographyProvider could hypothetically provide the
 components to be rendered for the long form content based on typography.js.
@@ -544,6 +548,9 @@ make Gatsby Themes infinitely customizable for users. However, I'm not sure it's
 that's intended to be customized so readily. Theme authors will want to expose an API for making styling changes
 right off the bat for things like typography and brand colors.
 
+I'm a bit skeptical using component shadow as an API for things that will always be changed, like design token
+values and author names/bios/etc.
+
 An idea we're exploring is a theme plugin that can source a theme object and expose it via context. This could
 also allow themes to bring their defaults which can be overridden and merged with the user's `theme.js`. It
 could go as far as adding it to Gatsby's [data layer](https://www.gatsbyjs.org/tutorial/part-four/).
@@ -573,10 +580,31 @@ The data layer would only allow for key/value pairs, but I think this is a good 
 use cases. We can standardize the theme shape for theme authors that want to opt in. This allows the theme object to be
 predictable and interchangeable.
 
-We've been exploring a blending of typography.js and styled-system called typography-system which we can use
+We've been exploring a blending of typography.js and styled-system called typography-system (now Theme UI) which we can use
 to define that structure. Both configurations bring a lot to the table. Typography.js allows for a more
 abstract representation of typography that lends itself nicely to content heavy sites while styled-system
 allows you to specify scales and other styling config that will help to drive 95% of your UI.
+
+#### System UI
+
+It's safe to say that no matter what approach is taken, [interoperability](https://jxnblk.com/blog/interoperability/)
+is important. This is why Brent Jackson has proposed a [Theme Specification](https://system-ui.com/theme).
+
+> Where I see differences start to arise is at the theme definition level. Even outside of React context-based theming,
+> a lot of React applications will store global style constants in a common module. Something I'm starting to notice is
+> that there are no standard conventions for what that module contains or how its structured, but all of them seem to be
+> doing the same thing, in a slightly different way.
+>
+> — [Brent Jackson](https://twitter.com/jxnblk) in _[Interoperability](https://jxnblk.com/blog/interoperability/)_
+
+It's important that whatever approach we go with uses a standard format, so it makes sense that the data shape follows
+along with the System UI Theme Specification.
+
+##### Transformers
+
+Having a standard spec will also allow for building transformers to support different configuration shapes that might
+exist in the wild for things like Typography.js, Tachyons, Tailwind, Bootstrap, etc. This is important because it can
+allow for incremental adoption with direct usage in more greenfield projects.
 
 ## Extending components and themes
 
@@ -626,22 +654,17 @@ I like to think of styling as a function of props and theme that output a style 
 - Could be heavy handed for building a collection of themes with different styles
 - Might be better handled as config
 
-## styled component
-
-## CSS Prop
-
-## System UI
-
-It's safe to say that no matter what approach is taken, [interoperability](https://jxnblk.com/blog/interoperability/)
-is important. This is why Brent Jackson has proposed a [Theme Specification](https://system-ui.com/theme).
-
-> Where I see differences start to arise is at the theme definition level. Even outside of React context-based theming, a lot of React applications will store global style constants in a common module. Something I'm starting to notice is that there are no standard conventions for what that module contains or how its structured, but all of them seem to be doing the same thing, in a slightly different way.
->
-> — [Brent Jackson](https://twitter.com/jxnblk) in _[Interoperability](https://jxnblk.com/blog/interoperability/)_
-
 ## Theme UI
 
+I'd left off this analysis here as we began working on experimenting on what the best
+combination of all this might look like.
+
 ### SX prop
+
+Going along with the main benefits we see from the CSS prop above, Theme UI introduces
+the [`sx` prop](https://theme-ui.com/sx-prop). What's great about this approach is it still
+allows for a lightweight abstraction _and_ the ability to directly hook into theme values which
+helps ensure that websites and apps remain consistent and adhere to a design system.
 
 ## Conclusion
 

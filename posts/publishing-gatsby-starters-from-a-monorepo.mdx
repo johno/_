@@ -54,6 +54,60 @@ handling official starters: https://github.com/johno/actions-push-subdirectories
 > who wrote the original script I repurposed into a GitHub
 > Action
 
+## Diving into the action itself
+
+In its entirety, we can see the bash script. It's about 30 lines of code that sets
+the folder and GitHub username, and then iterates over all directories inside the
+given folder to:
+
+- Determine the location of the git repo
+- Pluck out the name of the starter in package.json
+- Deletes all the old files
+- Pulls in the new files from the source repo
+- Updates the `yarn.lock`
+- Pushes to the repo
+
+```sh
+#!/bin/bash
+FOLDER=$1
+GITHUB_USERNAME=$2
+BASE=$(pwd)
+
+git config --global user.email "johno-actions-push-subdirectories@example.org"
+git config --global user.name "$GITHUB_USERNAME"
+
+echo "Cloning folders in $FOLDER and pushing to $GITHUB_USERNAME"
+
+# sync to read-only clones
+for folder in $FOLDER/*; do
+  [ -d "$folder" ] || continue # only directories
+  cd $BASE
+
+  echo "Pushing $folder"
+
+  NAME=$(cat $folder/package.json | jq -r '.name')
+  CLONE_DIR="__${NAME}__clone__"
+
+  # clone, delete files in the clone, and copy (new) files over
+  # this handles file deletions, additions, and changes seamlessly
+  git clone --depth 1 https://$API_TOKEN_GITHUB@github.com/$GITHUB_USERNAME/$NAME.git $CLONE_DIR
+  cd $CLONE_DIR
+  find . | grep -v ".git" | grep -v "^\.*$" | xargs rm -rf # delete all files (to handle deletions in monorepo)
+  cp -r $BASE/$folder/. .
+
+  rm -rf yarn.lock
+  yarn
+
+  git add .
+  git commit --message "Update $NAME from $GITHUB_REPOSITORY"
+  git push origin master
+
+  cd $BASE
+done
+```
+
+## Using the action
+
 Using `actions-push-subdirectories` we can create a workflow
 that first checks to make sure a commit landed on master, and
 if it has, it will then push the latest in `examples/gatsby-starter-documentation`

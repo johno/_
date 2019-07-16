@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "gatsby": "2.13.25",
-    "gatsby-theme-digital-garden": "0.1.1",
-    "gatsby-theme-digital-garden-blog": "0.1.0",
+    "gatsby-theme-digital-garden": "0.1.2",
+    "gatsby-theme-digital-garden-blog": "0.1.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-three-fiber": "2.2.11",

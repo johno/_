@@ -86,6 +86,9 @@ query {
 }
 ```
 
+Another potential solution is to break up a large monorepo into multiple Gatsby builds,
+but that seems like a decent amount of overhead and contrary to The Gatsby Way.
+
 ## Conclusion
 
 Component Shadowing is a bit tricky when we have multiple usages of the same theme on a project. We lack the granularity for one-offs in content, design tokens, and variations in things like avatars. Since we use `webpack` resolution under the covers, shadowing is essentially global despite numerous "instantiations" in a `gatsby-config`.

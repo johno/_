@@ -1,0 +1,91 @@
+# Component Shadowing and composition
+
+July 16th, 2019
+
+Component Shadowing is a powerful feature when building with Gatsby Themes. We've been using it in our officially supported Gatsby Themes, `gatsby-plugin-theme-ui`, and numerous other experimental projects. Here I want to break down a few scenarios where it seems to fall a bit short.
+
+## Design tokens and theming
+
+Right now, with `gatsby-plugin-theme-ui` we have what's essentially a singleton instance which wraps an entire app (via `wrapRootElement`) with the ThemeProvider which is used to provide theme tokens and even MDX/Styled components that can be used everywhere else.
+
+For different areas of a site it's reasonable to expect a different design tokens, and even Presentational Context. Consider teams that might work on marketing pages, blog, docs, dashboards, legal pages, etc.
+
+Maybe we use something similar to Theme UI color modes to address variations in themes?
+
+## Shadowing content
+
+One pattern we've been using in some themes is exposing things like author bios and sidebars as shadowable files. Let's consider the sidebar pattern I've been using in `gatsby-theme-documentation`.
+
+> `gatsby-theme-documentation` uses a `sidebar.mdx` file to populate the navigation. In order to customize it you can shadow it by creating a file at `src/gatsby-theme-documentation/sidebar.mdx`.
+
+Firstly, using an MDX file to be able to construct your docs nav as a list is a sweet workflow. It's nice to not magically abstract away the navigation to something handled in `gatsby-node.js` internals. It's also nice that it leverages Markdown in place of JSX so it's at least _a bit_ more approachable.
+
+Example sidebar content
+
+```
+- [Introduction](/introduction/)
+- [Getting Started](/getting-started/)
+- [GitHub](https://github.com/johno/gatsby-theme-documentation)
+```
+
+This feels really nice, but it doesn't work in all scenarios.
+
+### Where it breaks down
+
+Component Shadowing doesn't work when** composing multiples of the same theme**. You might be thinking, "using the same theme more than once?!?!?". Here's a contrived example:
+
+Let's say there's an app that has multiple libraries in a monorepo and publishes a docs site for multiple packages. Each package has a separate sidebar, `contentPath` and `basePath`:
+
+```
+// gatsby-config.js
+module.exports = {
+  plugins: [
+    {
+      resolve: 'gatsby-theme-documentation',
+      options: {
+        basePath: '/docs/package-a',
+        contentPath: 'packages/package-a/docs'
+      }
+    },
+    {
+      resolve: 'gatsby-theme-documentation',
+      options: {
+        basePath: '/docs/package-b',
+        contentPath: 'packages/package-b/docs'
+      }
+    }
+  ]
+}
+```
+
+Currently, with a shadowed sidebar it's impossible to have multiple shadowed `sidebar.mdx` files. Now, let's say we want to also install `gatsby-theme-blog` which has slightly different tokens. We're missing granularity that inevitably exists on large teams and websites.
+
+### Microfrontends
+
+For "microfrontend" usages can be problematic as well. It's easy to fathom scenarios where the same theme is being used in different ways throughout a monorepo.
+
+## Fundamental lack of composition
+
+Component Shadowing uses webpack resolution to resolve a file which means that attempted workarounds for composing the usage of the same theme won't work. The last usage will always win in the "shadowing wars".
+
+## Potential solutions
+
+If one-offs are passed to the configuration object it could allow for more granular configuration or shadowing. Spitballing here we could introduce something like:
+
+```
+query {
+  allSitePlugins(filter: { name: { eq: "gatsby-theme-documentation" } }) {
+    nodes {
+      pluginOptions: {
+        themePath
+        contentPath
+        basePath
+      }
+    }
+  }
+}
+```
+
+## Conclusion
+
+Component Shadowing is a bit tricky when we have multiple usages of the same theme on a project. We lack the granularity for one-offs in content, design tokens, and variations in things like avatars. Since we use `webpack` resolution under the covers, shadowing is essentially global despite numerous "instantiations" in a `gatsby-config`.

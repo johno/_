@@ -4824,10 +4824,10 @@ gatsby-page-utils@^0.0.5:
     micromatch "^3.1.10"
     slash "^1.0.0"
 
-gatsby-plugin-compile-es6-packages@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-compile-es6-packages/-/gatsby-plugin-compile-es6-packages-1.1.0.tgz#5045c3bbf408c6d639b317ebffd8e9128073c4f9"
-  integrity sha512-YjB9LDyUBcWfVVF8mN+t4OziYghys08nb2vpYgW+sqXO4giHRLWpANFmVUXW+H2c1g8fAwPlKYcwDXyqNunibw==
+gatsby-plugin-compile-es6-packages@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-compile-es6-packages/-/gatsby-plugin-compile-es6-packages-2.0.0.tgz#152726a561178b3f02ba35a63b785eb367d334c2"
+  integrity sha512-2WYSqDt4EM2yko/srSLYoKePArIfzpEsXNpP6SLYlRvlYsnwZ7acFPT5rdsyXHjtQoHHprybYimVnu3HiGcLaQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     regex-escape "^3.4.8"
@@ -4995,17 +4995,17 @@ gatsby-theme-digital-garden-blog@0.1.0:
     is-present "^1.0.0"
     react-feather "^1.1.6"
 
-gatsby-theme-digital-garden@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.1.1.tgz#4a8e33a59e20c87a99f82c6147f3f80793e8da70"
-  integrity sha512-hCmE2sSBwYv2mu73GZUKCSDnBrXm1uk7w2zmtwRbP0x9rHEDwYfAcOT7ktDqvdQFwofpeseQryHabZzAtItREA==
+gatsby-theme-digital-garden@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden/-/gatsby-theme-digital-garden-0.1.2.tgz#678026e4f652081a80b24148cfe0d3bec5be4656"
+  integrity sha512-khWiD0aVHiF3LEHVDTmhN7X/dEBMmFF59mTIqw+4XYXeVQvSiz0+pVK+8vRvlOYi+G/7qM5+bKvaspNXUlZDkg==
   dependencies:
     "@emotion/core" "^10.0.14"
     "@emotion/styled" "^10.0.14"
     "@mdx-js/mdx" "^1.0.21"
     "@mdx-js/react" "^1.0.21"
     emotion-theming "^10.0.14"
-    gatsby-plugin-compile-es6-packages "^1.1.0"
+    gatsby-plugin-compile-es6-packages "^2.0.0"
     gatsby-plugin-emotion "^4.1.0"
     gatsby-plugin-mdx rc
     gatsby-plugin-meta-redirect "^1.1.1"
@@ -5016,7 +5016,7 @@ gatsby-theme-digital-garden@0.1.1:
     gatsby-source-filesystem "^2.1.2"
     is-present "^1.0.0"
     path "^0.12.7"
-    react-feather "^1.1.6"
+    react-feather "^2.0.0"
     react-helmet "^6.0.0-beta"
     theme-ui "^0.2.2"
 
@@ -9012,6 +9012,13 @@ react-feather@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.6.tgz#2a547e3d5cd5e383d3da0128d593cbdb3c1b32f7"
   integrity sha512-iCofWhTjX+vQwvDmg7o6vg0XrUg1c41yBDZG+l83nz1FiCsleJoUgd3O+kHpOeWMXuPrRIFfCixvcqyOLGOgIg==
+
+react-feather@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-2.0.3.tgz#1453ff5d8c242f72b8c02846118fbd2d406375ad"
+  integrity sha512-XVjtxIyMxb2RFlqC2APoB/IZvXKDW9uLN1c264XEeZNYe8jIxjQVQpeTo3nxtHiLTgMfgf0ZYxJC6HwmY8+9BA==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-helmet@^6.0.0-beta:
   version "6.0.0-beta"

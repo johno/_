@@ -12,12 +12,7 @@ const allStyles = {
       color: 'black',
       textDecoration: 'none',
       fontWeight: 500,
-      marginRight: 3,
-      borderBottom: '2px transparent',
-      '&:hover': {
-        borderBottom: '2px solid',
-        opacity: .9
-      }
+      marginRight: 3
     }
   },
   blockquote: {
@@ -30,7 +25,7 @@ const allStyles = {
   },
   p: {
     lineHeight: 1.6,
-    fontSize: 3
+    fontSize: [2, 3, 3]
   },
   ul: {
     lineHeight: 1.6

@@ -4980,10 +4980,10 @@ gatsby-telemetry@^1.1.6:
     stack-utils "1.0.2"
     uuid "3.3.2"
 
-gatsby-theme-digital-garden-blog@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden-blog/-/gatsby-theme-digital-garden-blog-0.1.0.tgz#35d641c535d2cbd42cb65910251a85d27d4a9e9c"
-  integrity sha512-MWz2jkVNBQLMBGdJJEGwXcaBIHvDjpKdTZWUOMHlgznHkoyD7FV9vYEZf63MS1XSFsiquFQFZB52k7ddfyHUuA==
+gatsby-theme-digital-garden-blog@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden-blog/-/gatsby-theme-digital-garden-blog-0.1.2.tgz#3f5008bc9719df7642454999d46bb27ebb00e34b"
+  integrity sha512-sCdMhNNpwdcDaac7Ot2qZhsr4qajFuJssenxhzdTQeeIM6zmZpBofbVwfRFtICTGxdzU6Ry7hxtXNYLLHUYnZQ==
   dependencies:
     "@mdx-js/mdx" "^1.0.21"
     "@mdx-js/react" "^1.0.21"
@@ -4993,7 +4993,7 @@ gatsby-theme-digital-garden-blog@0.1.0:
     gatsby-plugin-redirects "^1.0.0"
     gatsby-source-filesystem "^2.1.2"
     is-present "^1.0.0"
-    react-feather "^1.1.6"
+    react-feather "^2.0.0"
 
 gatsby-theme-digital-garden@0.1.1:
   version "0.1.1"
@@ -9012,6 +9012,13 @@ react-feather@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.6.tgz#2a547e3d5cd5e383d3da0128d593cbdb3c1b32f7"
   integrity sha512-iCofWhTjX+vQwvDmg7o6vg0XrUg1c41yBDZG+l83nz1FiCsleJoUgd3O+kHpOeWMXuPrRIFfCixvcqyOLGOgIg==
+
+react-feather@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-2.0.3.tgz#1453ff5d8c242f72b8c02846118fbd2d406375ad"
+  integrity sha512-XVjtxIyMxb2RFlqC2APoB/IZvXKDW9uLN1c264XEeZNYe8jIxjQVQpeTo3nxtHiLTgMfgf0ZYxJC6HwmY8+9BA==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-helmet@^6.0.0-beta:
   version "6.0.0-beta"

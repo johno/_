@@ -64,11 +64,18 @@ Currently, with a shadowed sidebar it's impossible to have multiple shadowed `si
 
 For "microfrontend" usages can be problematic as well. It's easy to fathom scenarios where the same theme is being used in different ways throughout a monorepo.
 
-## Fundamental lack of composition
+## Lack of composition
 
 Component Shadowing uses webpack resolution to resolve a file which means that attempted workarounds for composing the usage of the same theme won't work. The last usage will always win in the "shadowing wars".
 
+This is mostly a limitation in `npm` since modules are organized by name in imports, theme resolution, and shadowing.
+We'll need to implement some type of way for the same module to be recognized twice.
+
 ## Potential solutions
+
+I tried to use `yarn alias`ing but there seemed to be some wonkiness with webpack resolution.
+My aliased package (`gatsby-theme-documentation-a`) was only being recognized as a shadowable path
+even though `gatsby-theme-documentation` was also installed. Hrm.
 
 If one-offs are passed to the configuration object it could allow for more granular configuration or shadowing. Spitballing here we could introduce something like:
 

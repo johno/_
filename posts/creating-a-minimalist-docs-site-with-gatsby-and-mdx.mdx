@@ -1,0 +1,91 @@
+---
+title: Creating a minimalist docs site with Gatsby and MDX
+path: /creating-a-minimalist-docs-site-with-gatsby-and-mdx
+date: 2019-03-15
+tags:
+  - docs
+  - gatsby
+  - mdx
+  - oss
+---
+
+Good open source projects need great docs, so I've built a
+[Gatsby Theme](https://gatsbyjs.org/docs/themes) to make it
+quick to get up and running with a minimal docs site.
+
+I've given it the completely uncreative name
+[gatsby-theme-documentation](https://github.com/johno/gatsby-theme-documentation).
+
+Below will walk through turning a directory of Markdown/MDX files
+into a full-fledged docs site (that even looks nice).
+
+## Scaffolding
+
+```sh
+gatsby new new-docs johno/gatsby-starter-documentation
+cd new-docs
+```
+
+Now, copy in your directory of Markdown/MDX files:
+
+```sh
+rm -rf docs
+mv ../docs docs
+```
+
+Then, run the server to render your docs pages:
+
+```sh
+yarn start
+```
+
+## Change the sidebar
+
+You'll likely notice that the sidebar navigation isn't
+correct for your newly created docs. In order to change them
+you can write a Markdown list at
+`src/gatsby-theme-documentation/sidebar.mdx`:
+
+```mdx
+- [Introduction](/)
+- [Tutorial](/tutorial)
+- [Getting Started](/getting-started)
+- [Contributing](/contributing)
+- [FAQ](/faq)
+```
+
+## Update the heading information
+
+You can also update the header data and links by changing
+`src/gatsby-theme-documentation/header.mdx`.
+
+```mdx
+# ![Docs Logo](https://contrast.now.sh/white/black?width=80&height=40&text=NEWDOCS)
+ 
+[GitHub](https://github.com/my/repo)
+[Twitter](https://twitter.com/my-twitter)
+```
+
+## Change the theme tokens
+
+Then, if you want to change some color in your theme or even things like the font
+family or font size, open up `src/gatsby-theme-documentation/theme.js` and watch
+any changes hot reload in front of you.
+
+## Conclusion
+
+If you want to only write MDX and get a docs site running quickly without having
+to do much design, [gatsby-theme-documentation](https://github.com/johno/gatsby-theme-documentation)
+is a great way to do that.
+
+## Acknowledgements
+
+The majority of the code in this theme was originally written by
+[Brent Jackson](https://jxnblk.com). I mostly just converted it to a theme and
+added header/sidebar shadowing.
+
+## Related
+
+If you have a need for more complex features or are building a design system, it's
+recommended to check out [Docz](https://docz.site). It's a more feature-rich project
+that comes with batteries included.

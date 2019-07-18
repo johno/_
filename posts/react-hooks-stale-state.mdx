@@ -21,19 +21,19 @@ the button is clicked 3 times it should show: `1,2,3`.
 import React, { useState } from 'react'
 
 function Numbers() {
-  const [numbers, setNumbers] = useState([]);
+  const [numbers, setNumbers] = useState([])
 
   const addToNumbers = () => {
-    numbers.push(numbers.length);
-    setNumbers(numbers);
-  };
+    numbers.push(numbers.length)
+    setNumbers(numbers)
+  }
 
   return (
     <div className="App">
-      <div>{numbers.join(",")}</div>
+      <div>{numbers.join(',')}</div>
       <button onClick={addToNumbers}>Add number</button>
     </div>
-  );
+  )
 }
 ```
 
@@ -48,18 +48,18 @@ state array of numbers you will see rendering occur as you expect:
 import React, { useState } from 'react'
 
 function Numbers() {
-  const [numbers, setNumbers] = useState([]);
+  const [numbers, setNumbers] = useState([])
 
   const addToNumbers = () => {
-    setNumbers([ ...numbers, numbers.length ]);
-  };
+    setNumbers([...numbers, numbers.length])
+  }
 
   return (
     <div className="App">
-      <div>{numbers.join(",")}</div>
+      <div>{numbers.join(',')}</div>
       <button onClick={addToNumbers}>Add number</button>
     </div>
-  );
+  )
 }
 ```
 

@@ -8,7 +8,7 @@ tags:
 ---
 
 > **A set of components that aren't used until a specific theme is also installed,
-at which point they shadow that theme's components**
+> at which point they shadow that theme's components**
 
 With Gatsby Themes we've been thinking about the different layers that
 will likely exist in the ecosystem. When I try to boil it down I end up
@@ -103,10 +103,7 @@ If a user starts with the following config:
 ```js
 // gatsby-config.js
 module.exports = {
-  __experimentalThemes: [
-    'gatsby-theme-blog',
-    'gatsby-theme-tomato'
-  ]
+  __experimentalThemes: ['gatsby-theme-blog', 'gatsby-theme-tomato']
 }
 ```
 

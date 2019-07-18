@@ -8,7 +8,9 @@ module.exports = {
       options: {
         notesPath: '/txt',
         mdxLayouts: {
-          default: require.resolve('gatsby-theme-digital-garden/src/components/layout')
+          default: require.resolve(
+            'gatsby-theme-digital-garden/src/components/layout'
+          )
         },
         header: {
           home: {

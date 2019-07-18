@@ -50,13 +50,7 @@ import React from 'react'
 import ComponentPage from './ComponentPage'
 import { css, metadata, html } from '../components/definition-lists/inline.html'
 
-export default () => (
-  <ComponentPage
-    css={css}
-    metadata={metadata}
-    html={html}
-  />
-)
+export default () => <ComponentPage css={css} metadata={metadata} html={html} />
 ```
 
 This means that I'd need to turn the HTML string that the loader receives into
@@ -79,10 +73,13 @@ const path = require('path')
 const getClasses = require('get-classes-from-html')
 const getStats = require('./get-stats')
 
-module.exports = async function (content) {
+module.exports = async function(content) {
   const callback = this.async()
 
-  const srcPath = path.join(process.cwd(), 'node_modules/tachyons/src/tachyons.css')
+  const srcPath = path.join(
+    process.cwd(),
+    'node_modules/tachyons/src/tachyons.css'
+  )
   const srcCss = fs.readFileSync(srcPath, 'utf8')
 
   const classes = getClasses(content).map(c => `.${c}`)
@@ -129,7 +126,7 @@ implementation, it wraps the JSX with a functional component, imports the
 needed dependencies, and specifies it’s custom pragma.
 
 ```js
-const {getOptions} = require('loader-utils')
+const { getOptions } = require('loader-utils')
 const mdx = require('@mdx-js/mdx')
 
 module.exports = async function(content) {
@@ -159,7 +156,7 @@ This approach allows it to also be used in a Vue project by using a Vue specific
 loader as well:
 
 ```js
-const {getOptions} = require('loader-utils')
+const { getOptions } = require('loader-utils')
 const mdx = require('@mdx-js/mdx')
 
 module.exports = async function(content) {
@@ -170,7 +167,7 @@ module.exports = async function(content) {
 
   let result
   try {
-    result = await mdx(content, {...options, skipExport: true})
+    result = await mdx(content, { ...options, skipExport: true })
   } catch (err) {
     return callback(err)
   }
@@ -204,7 +201,7 @@ Here’s an example of a custom frontmatter loader with MDX:
 const matter = require('gray-matter')
 const stringifyObject = require('stringify-object')
 
-module.exports = async function (src) {
+module.exports = async function(src) {
   const callback = this.async()
   const { content, data } = matter(src)
 

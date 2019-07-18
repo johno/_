@@ -23,19 +23,19 @@ yarn add styled-system @emotion/core @emotion/styled emotion-theming
 Next, we create a basic styled button
 
 ```js
-import styled from "@emotion/styled";
+import styled from '@emotion/styled'
 
-const Button = styled("button")({});
+const Button = styled('button')({})
 ```
 
 And add some basic styles:
 
 ```js
-const Button = styled("button")({
-  appearance: "button",
+const Button = styled('button')({
+  appearance: 'button',
   border: 0,
   outline: 0
-});
+})
 ```
 
 ## Add some color
@@ -44,32 +44,35 @@ Now that we have some styling it's time to introduce some color. We can do that 
 function from Styled System. We do this by passing it as another argument after the style object:
 
 ```js
-import styled from "@emotion/styled";
-import { color } from "styled-system";
+import styled from '@emotion/styled'
+import { color } from 'styled-system'
 
-const Button = styled("button")({
-  appearance: "button",
-  border: 0,
-  outline: 0
-},
+const Button = styled('button')(
+  {
+    appearance: 'button',
+    border: 0,
+    outline: 0
+  },
   color
-);
+)
 ```
 
 This exposes to props to the Button component: `color` and `backgroundColor` so you can use the
 component like so:
 
 ```js
-<Button color="white" backgroundColor="tomato">Hello, world!</Button>
+<Button color="white" backgroundColor="tomato">
+  Hello, world!
+</Button>
 ```
 
 Then, if we want to add defaults we can use `defaultProps`:
 
 ```js
 Button.defaultProps = {
-  color: "white",
-  backgroundColor: "blue"
-};
+  color: 'white',
+  backgroundColor: 'blue'
+}
 ```
 
 ## Use a theme
@@ -80,9 +83,9 @@ then wrapping the app. Styled System will _automatically_ tie into the theme and
 if it exists.
 
 ```js
-import styled from "@emotion/styled";
-import { ThemeProvider } from "emotion-theming";
-import { color } from "styled-system";
+import styled from '@emotion/styled'
+import { ThemeProvider } from 'emotion-theming'
+import { color } from 'styled-system'
 
 const theme = {
   space: [0, 2, 4, 8, 16, 32],
@@ -98,7 +101,7 @@ function Demo() {
     <ThemeProvider theme={theme}>
       <Button>Styled System Button!</Button>
     </ThemeProvider>
-  );
+  )
 }
 ```
 
@@ -107,45 +110,45 @@ function Demo() {
 Similarly to `color`, we can add in `space` and `fontSize` to add more style props to the Button.
 
 ```js
-import styled from "@emotion/styled";
-import { ThemeProvider } from "emotion-theming";
-import { color, space, fontSize } from "styled-system";
+import styled from '@emotion/styled'
+import { ThemeProvider } from 'emotion-theming'
+import { color, space, fontSize } from 'styled-system'
 
-const Button = styled("button")(
+const Button = styled('button')(
   {
-    appearance: "button",
+    appearance: 'button',
     border: 0,
     outline: 0
   },
   color,
   space,
   fontSize
-);
+)
 
 Button.defaultProps = {
-  color: "white",
-  backgroundColor: "blue",
+  color: 'white',
+  backgroundColor: 'blue',
   px: 4,
   py: 3,
   fontSize: 2
-};
+}
 
 const theme = {
   space: [0, 2, 4, 8, 16, 32],
   fontSizes: [14, 16, 18, 24, 32],
   colors: {
-    blue: "#07c",
-    tomato: "tomato",
-    purple: "purple"
+    blue: '#07c',
+    tomato: 'tomato',
+    purple: 'purple'
   }
-};
+}
 
 function Demo() {
   return (
     <ThemeProvider theme={theme}>
       <Button>Styled System Button!</Button>
     </ThemeProvider>
-  );
+  )
 }
 ```
 
@@ -160,37 +163,37 @@ You can use a special `buttonStyle` key in your theme and then import the
 `buttonStyle` function from styled-system.
 
 ```js
-import styled from "@emotion/styled";
-import { ThemeProvider } from "emotion-theming";
-import { buttonStyle, space, fontSize } from "styled-system";
+import styled from '@emotion/styled'
+import { ThemeProvider } from 'emotion-theming'
+import { buttonStyle, space, fontSize } from 'styled-system'
 
-const Button = styled("button")(
+const Button = styled('button')(
   {
-    appearance: "button",
+    appearance: 'button',
     border: 0,
     outline: 0
   },
   buttonStyle,
   space,
   fontSize
-);
+)
 
 Button.defaultProps = {
-  variant: "primary",
+  variant: 'primary',
   px: 4,
   py: 3,
   fontSize: 2
-};
+}
 
 const baseTheme = {
   space: [0, 2, 4, 8, 16, 32],
   fontSizes: [14, 16, 18, 24, 32],
   colors: {
-    blue: "#07c",
-    tomato: "tomato",
-    purple: "purple"
+    blue: '#07c',
+    tomato: 'tomato',
+    purple: 'purple'
   }
-};
+}
 
 const theme = {
   ...baseTheme,
@@ -225,26 +228,26 @@ With it you can specify custom keys in the theme object and even a custom prop.
 Below is an example with a `size` variant for Button:
 
 ```js
-import { buttonStyle, space, fontSize, variant } from "styled-system";
+import { buttonStyle, space, fontSize, variant } from 'styled-system'
 
 const buttonSize = variant({
-  prop: "size",
-  key: "buttonSizes"
-});
+  prop: 'size',
+  key: 'buttonSizes'
+})
 
 const theme = {
   ...baseTheme,
   buttons: {
     primary: {
-      color: "white",
+      color: 'white',
       backgroundColor: baseTheme.colors.blue
     },
     secondary: {
-      color: "white",
+      color: 'white',
       backgroundColor: baseTheme.colors.purple
     },
     danger: {
-      color: "white",
+      color: 'white',
       backgroundColor: baseTheme.colors.tomato
     }
   },
@@ -258,7 +261,7 @@ const theme = {
       padding: `16px 32px`
     }
   }
-};
+}
 ```
 
 Now you can change the button sizing like so:
@@ -277,12 +280,12 @@ const baseTheme = {
   space: [0, 2, 4, 8, 16, 32],
   fontSizes: [14, 16, 18, 24, 32],
   colors: {
-    blue: "#07c",
-    tomato: "tomato",
-    purple: "purple"
+    blue: '#07c',
+    tomato: 'tomato',
+    purple: 'purple'
   },
   radii: [0, 2, 4, 8]
-};
+}
 ```
 
 Then you can add import the `borderRadius` function from Styled System and
@@ -296,13 +299,13 @@ import {
   space,
   fontSize,
   variant
-} from "styled-system";
+} from 'styled-system'
 
 // ...
 
-const Button = styled("button")(
+const Button = styled('button')(
   {
-    appearance: "button",
+    appearance: 'button',
     border: 0,
     outline: 0
   },
@@ -311,7 +314,7 @@ const Button = styled("button")(
   buttonSize,
   space,
   fontSize
-);
+)
 
 Button.defaultProps = {
   borderRadius: 2

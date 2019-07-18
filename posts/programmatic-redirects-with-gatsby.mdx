@@ -38,7 +38,9 @@ for the post.
 
 ```js
 mdxPages.edges.forEach(({ node }) => {
-  const { frontmatter: { path, redirects } } = node
+  const {
+    frontmatter: { path, redirects }
+  } = node
 
   if (redirects) {
     redirects.forEach(fromPath => {

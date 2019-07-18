@@ -100,7 +100,7 @@ and even co-authored a popular library. I had come to prefer it to other approac
 concepts that arose from this new styling approach were interesting (some even unexpected):
 
 - Performance by default is important
-- Responsive design was *fun*
+- Responsive design was _fun_
 - Many folks were very unhappy with existing approaches
 - Concepts were quick to grasp for newcomers to web development
 - Style composition is best at the component level and made prototyping in the browser unbelievably quick
@@ -120,12 +120,12 @@ when a prop or variant causes multiple style changes. For example:
 
 ```js
 import classNames from 'classnames'
-    
+
 export const ListItem = ({ variant, children }) => {
   const cx = classNames('pa3 bb b--light-silver', {
     'o-80 strike mid-gray bg-near-white': variant === 'done'
   })
-    
+
   return <li className={cx} children={children} />
 }
 ```
@@ -240,9 +240,9 @@ const Button = styled.Button`
   appearance: button;
   border: 0;
   outline: 0;
-  borderRadius: 4px;
-  backgroundColor: tomato;
-  fontSize: 18px;
+  borderradius: 4px;
+  backgroundcolor: tomato;
+  fontsize: 18px;
   padding: 10px 20px;
 `
 ```
@@ -288,10 +288,10 @@ With CSS in JS, you can attach this bespoke styling need directly to your compon
 [deletable](https://programmingisterrible.com/post/139222674273/write-code-that-is-easy-to-delete-not-easy-to).
 
 > Every product has a need for soup. Soup is a shorthand for the one off styles, that extra div you need to work around a platform
-issue, or glue that binds two slightly-incompatible abstractions together. Soup, perhaps more than any other level, needs to be written
-in a way that is easy to delete because there are two basic evolutionary paths for soup.
+> issue, or glue that binds two slightly-incompatible abstractions together. Soup, perhaps more than any other level, needs to be written
+> in a way that is easy to delete because there are two basic evolutionary paths for soup.
 >
->  — Chris Biscardi in _[Styles and Naming](https://www.christopherbiscardi.com/post/styles-and-naming)_
+> — Chris Biscardi in _[Styles and Naming](https://www.christopherbiscardi.com/post/styles-and-naming)_
 
 ## Theming
 
@@ -330,10 +330,14 @@ this means that your styling is a function of props and theme.
 ```js
 import styled from 'styled-components'
 import { space, color } from 'styled-system'
-    
-const Drawer = styled.nav(props => {
-  width: props.state === 'expanded' ? 300 : 30
-}, space, color)
+
+const Drawer = styled.nav(
+  props => {
+    width: props.state === 'expanded' ? 300 : 30
+  },
+  space,
+  color
+)
 ```
 
 Similarly to how we can think of `fontSize` as a function of props and theme in styled system, we can also
@@ -350,19 +354,20 @@ const doneStyles = {
   backgroundColor: 'gray',
   fontWeight: 'normal'
 }
-    
+
 const importantStyles = {
   backgroundColor: 'tomato'
 }
-    
+
 export const ListItem = styled.li(
   props => props.variant === 'done' && doneStyles,
-  props => props.priority === 'high' && {
-    backgroundColor: 'tomato'
-  },
+  props =>
+    props.priority === 'high' && {
+      backgroundColor: 'tomato'
+    },
   space
 )
-    
+
 ListItem.defaultProps = {
   padding: 3,
   fontWeight: 'bold',
@@ -383,7 +388,7 @@ sites, and when combined with the MDXProvider we end up with a lot of:
 <MDXProvider
   components={{
     h1: props => <h1 fontSize={[3, 4, 4]} {...props} />,
-    h2: props => <h1 fontSize={3} {...props} />,
+    h2: props => <h1 fontSize={3} {...props} />
     // ...
   }}
 />
@@ -446,9 +451,7 @@ import { TypographyProvider } from 'typography-system'
 import theme from '../theme'
 
 export default ({ children }) => (
-  <TypographyProvider theme={theme}>
-    {children}
-  </TypographyProvider>
+  <TypographyProvider theme={theme}>{children}</TypographyProvider>
 )
 ```
 
@@ -485,8 +488,8 @@ In practice, this looks like the working example
   |  |- colors.js
   |  \- index.js
   \- theme.js
-  ```
-  
+```
+
 In the tokens files, we export objects for the tokens:
 
 ```js
@@ -494,25 +497,25 @@ In the tokens files, we export objects for the tokens:
 export default {
   black: '#121212',
   primary: 'rebeccapurple',
-  white: 'white',
-};
+  white: 'white'
+}
 ```
 
 In `src/theme.js`, we default to an empty object:
 
 ```js
 // src/theme.js
-export default {};
+export default {}
 ```
 
 We use these values to extend the default tokens:
 
 ```js
 // src/tokens/index.js
-import colors from './colors';
-import theme from '../theme';
+import colors from './colors'
+import theme from '../theme'
 
-export const colors = { ...colors, ...(theme.colors || {}) };
+export const colors = { ...colors, ...(theme.colors || {}) }
 ```
 
 This is extra boilerplate on the theme side, but the ergonomics for extending the theme are really good. In the site that's using
@@ -522,9 +525,9 @@ the theme (or child theme), you only have to eject the specific values you want 
 // src/gatsby-theme-mytheme/theme.js
 export default {
   colors: {
-    primary: 'tomato',
-  },
-};
+    primary: 'tomato'
+  }
+}
 ```
 
 Each token group can be targeted with a prop matching its name, and individual values are overridden by redeclaring them in that object.

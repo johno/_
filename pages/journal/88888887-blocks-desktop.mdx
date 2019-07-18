@@ -1,0 +1,94 @@
+# Blocks desktop with Electron
+
+July 18th, 2019
+
+Today I began hacking out a proof of concept of a Blocks desktop app. So far it's turning out to work pretty nicely because the vast majority of the logic lives in `@blocks/editor` and the Electron app itself is sort of a filesystem wrapper.
+
+For example, I have the following function to get file contents:
+
+```
+export const getFile = async filename => {
+  if (!filename) return
+  const code = await readFile(filename)
+  return code
+}
+```
+
+And similar functions for directory listings which is then rendered in React.
+
+The `main` itself creates a browser window to render the React app from a static `index.html` and then handles file system writing:
+
+```
+ipcMain.on('write-file', (_, { filename, content }) => {
+  if (!filename || !content) return
+  fs.writeFile(filename, content, err => {
+    if (err) log.error(err)
+  })
+})
+```
+
+The main app then talks to the main via `ipcRenderer`
+
+```
+const write = debounce(({ value }) => {
+  const content = stringifyMDX(serializer.serialize(value))
+  ipcRenderer.send('write-file', {
+    filename: openFilePathname,
+    content
+  })
+})
+```
+
+So far I'm really digging the overall simplicity of the app and the architecture where Electron is really a glorified web view with `fs` access.
+
+## React Hooks
+
+Being a proof of concept, I've kept nearly all the logic in `src/index.js` for rendering and am using hooks. At Compositor we'd written similar logic before
+
+for Iso and it's wild how much simpler it gets when composing hooks.
+
+To handle all directory listings, navigation, and file selection I have a handful of pieces of state:
+
+```
+const [openFilePathname, setOpenFilePathname] = useState(null)
+const [openFileContents, setOpenFileContents] = useState('')
+const [dirname, setDirname] = useState(remote.app.getPath('home'))
+const [files, setFiles] = useState([])
+```
+
+And then a couple of functions that listen for changes in state to asynchronously update the file and directory selection
+
+```
+const updateFileList = async () => {
+  const filelist = await getFiles({ dirname })
+  setFiles(filelist)
+}
+const updateOpenFileContents = async () => {
+  const contents = await getFile(openFilePathname)
+  setOpenFileContents(contents)
+}
+const handleFileListSelection = async file => {
+  if (file.isDirectory) {
+    setDirname(file.pathname)
+  } else {
+    setOpenFilePathname(file.pathname)
+  }
+}
+const write = debounce(({ value }) => {
+  const content = stringifyMDX(serializer.serialize(value))
+  ipcRenderer.send('write-file', {
+    filename: openFilePathname,
+    content
+  })
+})
+useEffect(() => {
+  updateFileList()
+}, [dirname])
+useEffect(() => {
+  updateOpenFileContents()
+}, [openFilePathname])
+```
+
+It's pretty rad to have that summarize all the fs logic aside from a handful of Theme UI components to do the rendering of the data.
+
+The repo: [https://github.com/blocks/desktop](https://github.com/blocks/desktop)

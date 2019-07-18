@@ -5866,7 +5866,7 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
-husky@^3.0.1:
+husky@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/husky/-/husky-3.0.1.tgz#06152c28e129622b05fa09c494209de8cf2dfb59"
   integrity sha512-PXBv+iGKw23GHUlgELRlVX9932feFL407/wHFwtsGeArp0dDM4u+/QusSQwPKxmNgjpSL+ustbOdQ2jetgAZbA==
@@ -6883,7 +6883,7 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@^9.2.0:
+lint-staged@9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-9.2.0.tgz#155e5723dffdaa55d252c47bab05a2962c1e9781"
   integrity sha512-K/CQWcxYunc8lGMNTFvtI4+ybJcHW3K4Ghudz2OrJhIWdW/i1WWu9rGiVj4yJ0+D/xh8a08kp5slt89VZC9Eqg==
@@ -9048,7 +9048,7 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier@^1.18.2:
+prettier@1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
   integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==

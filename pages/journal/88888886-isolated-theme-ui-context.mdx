@@ -3,40 +3,34 @@
 July 17th, 2019
 
 When composing Gatsby Themes scenarios will arise where the
-design tokens will need to change between usage. Right now
+theme values, like colors and fonts, will need to change between
+two theme usages in a theme composition. Right now
 the Theme UI Gatsby plugin uses a single shadow location
 which is used that leverages `wrapRootElement`.
 
-This introduces an issue since there's not a built-in way
-to achieve this at a more granular level.
+This is the happy path for most users since wanting different
+color sets between themes is an edge case. However, when that's
+needed it can be achieved by shadowing a theme's Layout component.
 
-It might make sense to promote usage at the layout level for
-each theme where, by default, the theme is _imported_ from
-`gatsby-plugin-theme-ui` and then set. This will allow users
-to opt-in to the global theme and set global tokens in one
-place or allow users to override at the plugin level.
-
-So a theme's theme file would look like:
+For example, if you're using `gatsby-theme-notes` and
+`gatsby-theme-blog` and want to change the text color on
+notes you can extend the layout and wrap in a new provider:
 
 ```js
-// src/theme.js
-import { theme } from 'gatsby-plugin-theme-ui'
+// src/gatsby-theme-notes/components/layout.js
+import React from 'react'
+import theme from 'gatsby-plugin-theme-ui/src'
+import { ThemeProvider } from 'theme-ui'
 
-export default theme
+const newTheme = Object.assign({}, theme)
+newTheme.colors.text = 'tomato'
+
+export default props => (
+  <ThemeProvider theme={newTheme}>
+    <Layout {...props} />
+  </ThemeProvider>
+)
 ```
 
-Where it also exposes a Layout component that uses the above
-theme in its `ThemeProvider` that is explicitly used in all
-templates.
-
-Then, if a user wanted to just override the tokens in
-`gatsby-theme-tomato` they could do so with:
-
-```js
-// src/gatsby-theme-tomato/theme.js
-const myCustomTheme = {}
-
-export default myCustomTheme
-```
-
-While leaving all other Theme UI-based themes unaffected.
+It's a little bit of a dance, but it's not something folks need to
+implement very often.

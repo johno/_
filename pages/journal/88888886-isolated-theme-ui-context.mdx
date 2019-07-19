@@ -1,0 +1,42 @@
+# Isolated Theme UI context
+
+July 17th, 2019
+
+When composing Gatsby Themes scenarios will arise where the
+design tokens will need to change between usage. Right now
+the Theme UI Gatsby plugin uses a single shadow location
+which is used that leverages `wrapRootElement`.
+
+This introduces an issue since there's not a built-in way
+to achieve this at a more granular level.
+
+It might make sense to promote usage at the layout level for
+each theme where, by default, the theme is _imported_ from
+`gatsby-plugin-theme-ui` and then set. This will allow users
+to opt-in to the global theme and set global tokens in one
+place or allow users to override at the plugin level.
+
+So a theme's theme file would look like:
+
+```js
+// src/theme.js
+import { theme } from 'gatsby-plugin-theme-ui'
+
+export default theme
+```
+
+Where it also exposes a Layout component that uses the above
+theme in its `ThemeProvider` that is explicitly used in all
+templates.
+
+Then, if a user wanted to just override the tokens in
+`gatsby-theme-tomato` they could do so with:
+
+```js
+// src/gatsby-theme-tomato/theme.js
+const myCustomTheme = {}
+
+export default myCustomTheme
+```
+
+While leaving all other Theme UI-based themes unaffected.

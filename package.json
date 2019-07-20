@@ -8,7 +8,7 @@
     "now-build": "yarn build"
   },
   "dependencies": {
-    "gatsby": "2.13.31",
+    "gatsby": "2.13.32",
     "gatsby-theme-digital-garden": "0.1.3",
     "gatsby-theme-digital-garden-blog": "0.1.2",
     "husky": "3.0.1",

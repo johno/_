@@ -1,0 +1,298 @@
+# remark and Slate serialization
+
+For [Blocks](https://github.com/blocks) we need a way to deserialize [MDX](https://github.com/mdx-js/mdx) and transform it into the data shape that [Slate](https://github.com/ianstormtaylor/slate) expects. Under the hood, MDX is using [remark](https://remarkjs/remark) and `remark-mdx` . This means that we can continue using `remark-mdx` as the syntactic extension and then create a custom compiler which transpiles the MDXAST to the proper Slate data structure.
+
+For our initial parsing usage we can begin with:
+
+```
+const parser = unified()
+  .use(parse) // remark-parse
+  .use(mdx)   // remark-mdx
+```
+
+If we called `.parse(mdxString)` we'd be returned the full AST. If we wanted, we could also use `remark-stringify` and call `.processSync(mdxString)` to see the MDX input (`mdxString`) as ouput.
+
+This is because `remark-stringify` and `remark-mdx` both have compiler extensions. The former handles all Markdown syntax while the latter handles MDX syntax like JSX blocks, imports, and exports.
+
+## Extending the compiler for Slate
+
+The Slate library expects a particular data structure which is used for the WYSIWYG editor:
+
+```
+{
+  document: {
+    nodes: [
+      {
+        object: 'block',
+        type: 'heading-one',
+        nodes: [
+          {
+            object: 'text',
+            text: 'Hello, world!'
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Meanwhile, the MDX AST (which is a superset of remark's MDAST) looks like:
+
+```
+{
+  type: 'root',
+  children: [
+    {
+      type: 'heading',
+      depth: 1,
+      children: [
+        {
+          type: 'text',
+          value: 'Hello, world!',
+          position: {
+            // ...
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+There are some similarities here that we can leverage, but we'll need to write a transformer as a custom compiler in order to return the proper data shape.
+
+### Compilers, transpilers, transformers... Hrm?
+
+For those of you scratching your head, I was as well when writing the last section. First, let's break down the terminology:
+
+- **Compiler** turns higher level code (like MDX) to lower level code (like HTML).
+- **Transpiler** turns code in one language to another language at roughly the same abstraction (like turning babel turning ES2015 to ES5).
+- **Transformer** turns data from one shape to another shape (like the MDX AST to Slate)
+- **Parsing** Turning an input string into an AST through tokenization
+
+What we're really doing here is transforming the parsed MDX to Slate's data structure. The way we're achieving this is by making our own _compiler_ with remark. Since remark is so flexible, it doesn't really care what you do during your compilation. Normally it speaks in strings, Markdown comes in and Markdown or HTML comes back out. However, we're going to leverage the compiler API to return a transformed object instead!
+
+### Back to the approach
+
+Similarly to how `remark-mdx` becomes a syntactic extension for MDX as a remark plugin, we can build our transform as a plugin, too. We'd then result in the following usage:
+
+```
+const result = unified()
+  .use(parse) // remark-parse
+  .use(mdx)   // remark-mdx
+  .use(slate) // remark-slate
+  .processSync(mdxString)
+```
+
+We can then pass `result.contents` to Slate and be on our way.
+
+To start, we can scaffold out a quick custom plugin that overrides the compiler. All plugins can access the compiler to either extend it or override it entirely. In `remark-mdx` the compiler is extended because we only want to handle the new syntax. However, for transforming to Slate, we'll want to change it entirely.
+
+So, we can do so by assigning it a function that accepts the root node as the argument. Similarly to how the MDX AST contains a wrapping element, Slate's data structure does as well, so we can handle that for the `root` type.
+
+```
+const toSlate = node => {
+  return node
+}
+export default function remarkSlate () {
+  this.Compiler = compiler
+  function compiler (node) {
+    if (node.type === 'root') {
+      return {
+        object: 'value',
+        document: {
+          object: 'document',
+          data: {},
+          nodes: node.children.map(toSlate)
+        }
+      }
+    }
+  }
+}
+```
+
+You'll also notice the `node.children.map(toSlate)` in the `root`'s return value. This ensures that all the children of that outer node are transformed by the function which will use recursion to address all nodes in the AST.
+
+Then, it's time to set up a quick snapshot test so we can begin seeing the output:
+
+```
+import { deserialize } from '../src'
+const FIXTURE = '# Hello, __world
+__'
+test('serializes MDX to Slate schema', () => {
+  const result = deserialize(FIXTURE)
+  expect(result).toMatchSnapshot()
+})
+```
+
+**Note:** It's not advisable to use a lot of snapshot tests for libraries since they can be brittle. However, early on they can be a great way to check how your compiler or transformer is working since it will display a colored diff while you implement it.
+
+## Transforming nodes
+
+Now that `toSlate` is returning nodes, it's time to start transforming them. The first place to start is naively transforming all the nodes:
+
+```
+const toSlate = node => {
+  return {
+    object: 'block',
+    type: node.type,
+    nodes: node.children.map(toSlate)
+  }
+}
+```
+
+This won't quite get us there, though, since all `heading` types will look the same because `remark` adds a `depth` attribute to determing the heading type.
+
+```
+if (node.type === 'heading') {
+  return {
+    object: 'block',
+    type: 'heading-' + node.depth,
+    nodes: node.children.map(toSlate)
+  }
+}
+```
+
+Something neat about Slate, too, is it doesn't care what you use for object types. So we'll keep them as close to remark's node types to keep things more predictable.
+
+There's still one key piece missing in this implementation, and that's handling text nodes. Slate expects them to be a slightly different shape than remark and they're always the children of block objects.
+
+```
+if (node.type === 'text') {
+  return {
+    object: 'text',
+    text: node.value
+  }
+}
+```
+
+However, if we look at the snapshot at this point, the output isn't right because we're not handling italic and bold correctly:
+
+```
+Object {
+  "document": Object {
+    "data": Object {},
+    "nodes": Array [
+      Object {
+        "data": Object {},
+        "nodes": Array [
+          Object {
+            "marks": Array [],
+            "object": "text",
+            "text": "Hello, ",
+          },
+          Object {
+            "data": Object {},
+            "nodes": Array [
+              Object {
+                "marks": Array [],
+                "object": "text",
+                "text": "world!",
+              },
+            ],
+            "object": "block",
+            "type": "strong",
+          },
+        ],
+        "object": "block",
+        "type": "h1",
+      },
+// ...
+```
+
+`strong` isn't a block type, Slate uses "mark" for inline content, and the italics are missing entirely.
+
+### Phrasing content
+
+The unified ecosystem comes with a [utility](https://github.com/syntax-tree/mdast-util-phrasing) to detect phrasing content. This is what we can use to know when there are marks to handle when transforming to Slate. However, remark and Slate's data structures are a bit different so it makes this tricky.
+
+Slate's structure is essentially a flat grouping of text nodes that have a `marks` attribute whereas remark's is nested.
+
+Example Slate node
+
+```
+[
+  {
+    object: 'text',
+    text: 'Hello, ',
+    marks: []
+  },
+  {
+    object: 'text',
+    text: 'w',
+    marks: [
+      {
+        type: 'strong'
+      }
+    ]
+  },
+  {
+    object: 'text',
+    text: 'or',
+    marks: [
+      {
+        type: 'strong'
+      },
+      {
+        type: 'inlineCode'
+      }
+    ]
+  },
+  {
+    object: 'text',
+    text: 'ld',
+    marks: [
+      {
+        type: 'strong'
+      }
+    ]
+  },
+  {
+    object: 'text',
+    text: '!',
+    marks: [
+      {
+        type: 'strong'
+      },
+      {
+        type: 'emphasis'
+      }
+    ]
+  }
+]
+```
+
+Example remark node
+
+```
+[
+  {
+    type: 'text',
+    value: 'Hello, '
+  },
+  {
+    type: 'strong',
+    children: [
+      {
+        type: 'text',
+        value: 'w'
+      },
+      {
+        type: 'inlineCode',
+        value: 'or'
+      },
+      {
+        type: 'text',
+        value: 'ld'
+      },
+      {
+        type: 'emphasis',
+        value: '!'
+      }
+    ]
+  }
+]
+```
+
+**Note:** Slate's previous versions used a structure that was very similar to remark's structure called "leaves", but have opted to use a flattened representation in the latest version.

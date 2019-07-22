@@ -1,6 +1,6 @@
----
-title: remark-mdx
----
+# remark-mdx
+
+March 25th, 2019
 
 The [MDX](https://github.com/mdx-js/mdx) library is built on
 [remark](https://github.com/remarkjs/remark) and

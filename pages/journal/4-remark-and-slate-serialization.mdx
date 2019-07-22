@@ -1,5 +1,7 @@
 # remark and Slate serialization
 
+July 22, 2019
+
 For [Blocks](https://github.com/blocks) we need a way to deserialize [MDX](https://github.com/mdx-js/mdx) and transform it into the data shape that [Slate](https://github.com/ianstormtaylor/slate) expects. Under the hood, MDX is using [remark](https://remarkjs/remark) and `remark-mdx` . This means that we can continue using `remark-mdx` as the syntactic extension and then create a custom compiler which transpiles the MDXAST to the proper Slate data structure.
 
 For our initial parsing usage we can begin with:
@@ -296,3 +298,48 @@ Example remark node
 ```
 
 **Note:** Slate's previous versions used a structure that was very similar to remark's structure called "leaves", but have opted to use a flattened representation in the latest version.
+
+So, we'll now need to check whether a node is a phrasing node, and if so flatten its children and use the "mark" data format.
+
+```
+import phrasing from 'mdast-util-phrasing'
+const toSlate = node => {
+  // ...
+  if (phrasing(node)) {
+    const parentMark = {
+      object: 'mark',
+      type: node.type
+    }
+    const nodes = node.children.map(child => {
+      const childMark = child.type !== 'text && {
+        object: 'mark',
+        type: child.type
+      }
+      return {
+        object: 'text',
+        text: child.value,
+        marks: [parentMark, childMark].filter(Boolean)
+      }
+    })
+  }
+  // ...
+}
+```
+
+Above we detect the node, and then return an array of text objects. If we encounter other non-text nodes we specify their marks as well. However, this doesn't quite work yet because we're now returning an array where we used to return a single node.
+
+Now, wherever we're calling `node.children.map(toSlate)` we'll need to wrap it in `lodash.flatten`:
+
+```
+return {
+  object: 'block',
+  type: node.type,
+  nodes: flatten(node.children.map(toSlate))
+}
+```
+
+With that we can update the snapshot test and see the data shape that we expect. Woot.
+
+## Conclusion
+
+Here we have a basic setup working the deserializes Markdown into Slate's internal data structure by creating a custom remark compiler. Now, we need to handle the MDX specific syntax like imports, exports, and JSX. This will come in part 2.

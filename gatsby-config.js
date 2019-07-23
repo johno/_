@@ -39,6 +39,12 @@ module.exports = {
       options: {
         postsPath: '/writing'
       }
+    },
+    {
+      resolve: 'gatsby-plugin-fathom',
+      options: {
+        siteId: 'FFYAPMRP'
+      }
     }
   ]
 }

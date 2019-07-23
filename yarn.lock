@@ -9405,10 +9405,10 @@ react-side-effect@^1.1.0:
     exenv "^1.2.1"
     shallowequal "^1.0.1"
 
-react-three-fiber@2.2.12:
-  version "2.2.12"
-  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-2.2.12.tgz#9ad0302ebe852945f1f4dc9021b4492d13889fc8"
-  integrity sha512-OmLz958S1S2q+tzKMx+gOtt65Fbv4OeDUiTNLO8QQhOG4hEXL6gvydBp15Qm2x5LGk6soTg9TdsKu8bbYHaG9g==
+react-three-fiber@2.2.13:
+  version "2.2.13"
+  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-2.2.13.tgz#aa23737b80e45ffadfba35ae8dfb89259d9338bf"
+  integrity sha512-p9CIs2JLlwiwiBHZSEahlDfkzt/I+T96hTj9MpysXn2CDuq+8VqUPDFenexYzsYvrGXal+gq+BF+SQ2e23AcEw==
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@types/three" "^0.103.2"

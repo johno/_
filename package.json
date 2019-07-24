@@ -10,8 +10,8 @@
   "dependencies": {
     "gatsby": "2.13.38",
     "gatsby-plugin-fathom": "1.1.0",
-    "gatsby-theme-digital-garden": "0.1.5",
-    "gatsby-theme-digital-garden-blog": "0.1.2",
+    "gatsby-theme-digital-garden": "0.2.0",
+    "gatsby-theme-digital-garden-blog": "0.2.0",
     "husky": "3.0.1",
     "lint-staged": "9.2.0",
     "prettier": "1.18.2",

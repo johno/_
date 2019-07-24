@@ -5080,10 +5080,10 @@ gatsby-telemetry@^1.1.7:
     stack-utils "1.0.2"
     uuid "3.3.2"
 
-gatsby-theme-digital-garden-blog@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden-blog/-/gatsby-theme-digital-garden-blog-0.1.2.tgz#3f5008bc9719df7642454999d46bb27ebb00e34b"
-  integrity sha512-sCdMhNNpwdcDaac7Ot2qZhsr4qajFuJssenxhzdTQeeIM6zmZpBofbVwfRFtICTGxdzU6Ry7hxtXNYLLHUYnZQ==
+gatsby-theme-digital-garden-blog@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-digital-garden-blog/-/gatsby-theme-digital-garden-blog-0.2.0.tgz#c21f206219556cd583c0e72b521d270ee8560e39"
+  integrity sha512-1kJ6zBKZQB6mHRgo4MbqydtlamYpWDVR2RvGpELH/HOGbJxhNz6Z/fW1zLpz21rgcYj9GRZCbDdj1AJx1iLizw==
   dependencies:
     "@mdx-js/mdx" "^1.0.21"
     "@mdx-js/react" "^1.0.21"

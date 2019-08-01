@@ -1,0 +1,16 @@
+# Rename all files in a directory
+
+The following bash script changes all `.md` files to `.mdx`.
+
+```sh
+for file in *.md
+do
+  mv "$file" "${file%.md}.mdx"
+done
+```
+
+Or all in one line:
+
+```sh
+for file in *.md; do mv "$file" "${file%.md}.mdx"; done
+```

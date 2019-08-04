@@ -1,0 +1,94 @@
+# Gatsby Theme Blog Child Theme
+
+August 4th, 2019
+
+Today I spent some time wiring up gatsby-theme-tosh which
+is a child theme of gatsby-theme-blog.
+
+Overall the flow was pretty solid and when combined with
+the experimental theme-ui. Yesterday I wrote a quick Theme
+UI preset, and then it only took about two hours to _completely_
+customize all of gatsby-theme-blog to become something
+pretty unique (and ridiculous).
+
+It was fun!
+
+Below are a handful of things I was thinking about while
+building this theme out:
+
+## Driving more styling from Theme UI
+
+I wish I was able to more seamlessly drive UI styling from
+my Theme UI config. For example, I shouldn't need to shadow
+the blog header so I can adjust colors and padding.
+
+Though, this brings up an interesting question around how
+much _should_ Theme UI do? Layouts are often very custom
+and bespoke, so it might not make sense there since we can
+leverage shadowing. Though, I feel like we're missing the
+ability to drive some more common theme tweaking from our
+theme.js like container, header, and footer link styles.
+
+## theme-ui only seemed to work in the starter
+
+I haven't dug into why this is the case yet, but I wasn't
+able to use the CLI tool from the theme I was developing.
+It only seemed to work from the starter.
+
+My guess is right now the CLI assumes usage in a starter
+rather than theme under development. Though I think using
+the CLI for theme development will be super slick when you
+want to override a thing.
+
+As others on the Gatsby Theme team have brought up before,
+it'd be great to be able to determine the components being
+rendered and automatically shadow them. It's much more
+intuitive to look at what's being rendered for this flow
+rather than looking at the filesystem.
+
+## Sharing components between themes composed together
+
+Right now gatsby-theme-tosh only supports the blog, and
+when quickly looking at other themes, their component
+architectures are quite different. This makes it more
+cumbersome to add in support with those themes using
+Latent Component Shadowing. I wonder if it's worth
+defining an architecture for themes to opt into in
+order to more seamlessly interop with official themes.
+
+That way you can add in support for a handful of other
+themes by crafting a couple exports using Shadowing.
+
+This could also potentially be solved by being able
+to drive a bit more from Theme UI or maybe some other
+context built around layout.
+
+## More granular components
+
+Something I noticed was that I was often wanting to customize
+the layout and container more granularly. For gatsby-theme-tosh
+I wanted the layout for the posts list to be quite a bit different
+than the post layout, but there was no way to easily achieve that
+without shadowing the entirety of the two pages.
+
+It seems like it will make more sense for themes that are expected
+to be used as child themes frequently to have a lot more tiny
+components rather than a handful of large components. This runs
+contrary to the way I'd normally build a site using React, I tend
+to prefer fewer, larger components for things doing presentation with
+next to no logic.
+
+However, with shadowing, the filesystem becomes the API so smaller
+components that are composed together _into_ each page will allow
+folks the ability to hook into different parts of the component
+tree in order to customize and extend.
+
+## Other random thoughts
+
+- We need to be able to install starters from subdirectories. A
+  GitHub Action workflow for a single, small theme is so cumbersome.
+- Right now too much customization is done at the component level,
+  it'd be dope to drive more from theme.js so we could have a Gatsby
+  Theme Zen Garden type thing for theme/theme-ui.
+- Having to restart the server for newly shadowed components is
+  quite the papercut.

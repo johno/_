@@ -17,7 +17,7 @@
     "prettier": "1.18.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-three-fiber": "2.2.14",
+    "react-three-fiber": "2.2.15",
     "three": "0.107.0"
   },
   "husky": {

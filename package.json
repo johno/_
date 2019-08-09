@@ -30,5 +30,9 @@
       "prettier --write --no-semi --single-quote",
       "git add"
     ]
+  },
+  "resolutions": {
+    "react": "16.9.0",
+    "react-dom": "16.9.0"
   }
 }

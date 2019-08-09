@@ -15,8 +15,8 @@
     "husky": "3.0.3",
     "lint-staged": "9.2.1",
     "prettier": "1.18.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
     "react-three-fiber": "2.2.15",
     "three": "0.107.0"
   },

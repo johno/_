@@ -37,7 +37,7 @@ module.exports = {
     {
       resolve: 'gatsby-theme-digital-garden-blog',
       options: {
-        postsPath: '/writing'
+        postsPath: '/writing/archives'
       }
     },
     {

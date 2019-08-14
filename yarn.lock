@@ -7212,10 +7212,10 @@ lockfile@^1.0.4:
   dependencies:
     signal-exit "^3.0.2"
 
-lodash-es@^4.17.11:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.11.tgz#145ab4a7ac5c5e52a3531fb4f310255a152b4be0"
-  integrity sha512-DHb1ub+rMjjrxqlB3H56/6MXtm1lSksDp2rA2cNWjG8mlDUYFhUj3Di2Zn5IwSU87xLv8tNIQ7sSwE/YOX/D/Q==
+lodash-es@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
 
 lodash.assignin@^4.0.9:
   version "4.2.0"
@@ -9600,7 +9600,7 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-reconciler@^0.20.0, react-reconciler@^0.20.4:
+react-reconciler@0.20.4, react-reconciler@^0.20.0:
   version "0.20.4"
   resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.20.4.tgz#3da6a95841592f849cb4edd3d38676c86fd920b2"
   integrity sha512-kxERc4H32zV2lXMg/iMiwQHOtyqf15qojvkcZ5Ja2CPkjVohHw9k70pdDBwrnQhLVetUJBSYyqU3yqrlVTOajA==
@@ -9618,16 +9618,16 @@ react-side-effect@^1.1.0:
     exenv "^1.2.1"
     shallowequal "^1.0.1"
 
-react-three-fiber@2.2.17:
-  version "2.2.17"
-  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-2.2.17.tgz#79e40c815cf2f3731e86869b6fd55836a5dee7fd"
-  integrity sha512-TCDbC5tmylrxOFP4o8dvryis8rkdFZImG4JAI7b1v7vbd/DbIcUXWni+6/y4tk36uY2EJZatfUW4pAeXYEBYPA==
+react-three-fiber@2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-2.3.3.tgz#682264f4bb02bb383ceabba288c11903836f85b9"
+  integrity sha512-q4ZI9c5I70nIl+ffqmU7u5Am1UxwgU76Wovn+w3othf5UsladNPYSWn6ROXy64BdaaXFouQsmf4aM2zC0maduA==
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@types/three" "^0.103.2"
-    lodash-es "^4.17.11"
+    lodash-es "^4.17.15"
     pointer-events-polyfill "^0.4.4-pre"
-    react-reconciler "^0.20.4"
+    react-reconciler "0.20.4"
     resize-observer-polyfill "^1.5.1"
     scheduler "0.13.3"
 

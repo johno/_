@@ -18,7 +18,10 @@ the following query:
 
 ```graphql
 {
-  sections: allFile(filter: { sourceInstanceName: { eq: "glossary" } }) {
+  sections: allFile(
+    filter: { sourceInstanceName: { eq: "glossary" } }
+    sort: { fields: absolutePath }
+  ) {
     nodes {
       name
       childMdx {

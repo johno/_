@@ -1,0 +1,111 @@
+---
+title: Turn CSV data into a modern GraphQL API
+path: /turn-csv-data-into-graphql
+date: 2019-09-16
+draft: true
+tags:
+  - graphql
+  - oss
+---
+
+The internet is full of amazing data, but sometimes it can be structured
+in ways that are non-trivial to access. Government data is no exception.
+
+With GraphQL, data is inherently discoverable and provides a standardized
+way to access it. Here we'll turn a web 1.0 government "form" into a robust
+GraphQL API which we can later use in a Gatsby-based web application.
+
+## Motivation
+
+I'm an avid skier and have been extremely unhappy with the existing apps
+for snow tracking. There's also a rich trove of SNOTEL data throughout
+the Northwest (of the United States) that I could leverage to turn into
+a personal app for showing me how much the local stations have received.
+
+Surprisingly, it even has _hourly_ reporting with a SNOTEL station at my
+local ski hill 16 miles away.
+
+So, it was time to build an app.
+
+## The data
+
+The primary method for accessing this SNOTEL data is on the NRCS website.
+It allows you to fill out a form, or click into relevant states/stations
+where it will show you an HTML table with the snowfall data based on your
+date selection and granularity you wanted.
+
+After poking around and reverse engineering the app I was able to find the
+URL that returned the data (as a raw CSV file).
+
+```
+https://wcc.sc.egov.usda.gov/reportGenerator/view_csv/customSingleStationReport/daily/992:UT:SNTL%7cid=%22%22%7cname/-9999,0/WTEQ::value,WTEQ::delta,SNWD::value,SNWD::delta
+```
+
+Five years ago, when I found this URL, I even went so far as building a
+Rails app with scheduled workers for scraping and storing this data in
+a Postgres db which I used for a personal app for a while.
+
+Though, naturally I let it bitrot, and realized that I wanted to revive
+this project using a modern, JAMStack approach with GraphQl/React/Gatsby.
+
+## Fetching the data
+
+Firstly, I needed to figure out how to coerce the CSV retrieval URLs
+into something I could programmatically access and then turn into a
+structured JS object which could be used by a GraphQL resolver.
+
+There were three dynamic parts to what was otherwise a completely
+incomprehensible URL so I turned that into a URL building function:
+
+```js
+const buildUrl = ({ triplet, readings, granularity }) => {
+  return [
+    'http://www.wcc.nrcs.usda.gov/reportGenerator/view_csv/customSingleStationReport/',
+    granularity,
+    '/',
+    triplet,
+    '%7Cid%3D%22%22%7Cname/-',
+    readings,
+    '%2C0/WTEQ%3A%3Avalue%2CWTEQ%3A%3Adelta%2CSNWD%3A%3Avalue%2CSNWD%3A%3Adelta'
+  ].join('')
+}
+```
+
+With some `isomorphic-fetch` and `csv-parse` logic I was
+possible to turn it into something usable:
+
+```js
+module.exports = async ({ triplet, readings, granularity }) => {
+  const url = buildUrl({ triplet, readings, granularity })
+  const result = await fetch(url)
+  const text = await result.text()
+
+  const csvData = await parseCsv(text, {
+    comment: '#',
+    skip_lines_with_error: true
+  })
+
+  csvData.shift()
+  return csvData
+    .map(reading => {
+      const [date, swe, sweChange, snowDepth, snowDepthChange] = reading
+
+      return {
+        date,
+        snowDepth: parseInt(snowDepth) || 0,
+        snowDepthChange: parseInt(snowDepthChange) || 0,
+        snowWaterEquivalent: parseFloat(swe) || 0.0,
+        snowWaterEquivalentChange: parseFloat(sweChange) || 0.0
+      }
+    })
+    .reverse()
+}
+```
+
+Then, I did some dev console HTML scraping to create a list of
+[all snotel stations](https://github.com/snotel/snotel/blob/a00fdc571cb1492ff38ac0ac9a8d4d608b720046/packages/snotel/nrcs-stations.json).
+For now, this won't change very often so I didn't want to bother with
+making it dynamic. That will come later. The more interesting part
+for the MVP is returning the SNOTEL readings themselves.
+
+## Building the API

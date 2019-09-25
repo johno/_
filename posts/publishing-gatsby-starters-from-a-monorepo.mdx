@@ -113,19 +113,24 @@ that first checks to make sure a commit landed on master, and
 if it has, it will then push the latest in `examples/gatsby-starter-documentation`
 to `johno/gatsby-starter-documentation`.
 
-The workflow we will build looks like:
-
-![image](https://user-images.githubusercontent.com/1424573/61172705-90ab9080-a545-11e9-8de3-c8433c6f50ba.png)
-
 First, we can use the built-in git filter to only run
 the rest of the workflow when a commit hits the
-master branch.
+master branch. Then, we'll set up a basic node
+environment.
 
-```
-action "master" {
-  uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
-  args = "branch master"
-}
+```yml
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
 ```
 
 Then we need to use `johno/actions-push-subdirectories`. Note
@@ -133,58 +138,41 @@ that you'll need to specify args for both the directory of examples
 and the GitHub username. And of course, set an `API_TOKEN_GITHUB`
 key that has permissions to write to your repos.
 
-![image](https://user-images.githubusercontent.com/1424573/61172771-ad949380-a546-11e9-8ed8-b6cfdde99f25.png)
-
 ```
-action "push-subdirectories" {
-  uses = "johno/actions-push-subdirectories@master"
-  needs = ["master"]
-  args = "examples johno"
-  secrets = [
-    "GITHUB_TOKEN",
-    "API_TOKEN_GITHUB",
-  ]
-}
+- name: publish:starters
+  uses: johno/actions-push-subdirectories@master
+  env:
+      API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    args: examples johno
 ```
 
-Then, we need to set the workflow to resolve our last
-step.
+All together:
 
 ```
-workflow "Publish starter" {
-  on = "push"
-  resolves = ["push-subdirectories"]
-}
+name: Publish Starters
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: publish:starters
+        uses: johno/actions-push-subdirectories@master
+        env:
+            API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: examples johno
 ```
-
-And all together:
-
-```
-workflow "Publish starter" {
-  on = "push"
-  resolves = ["push-subdirectories"]
-}
-
-action "master" {
-  uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
-  args = "branch master"
-}
-
-action "push-subdirectories" {
-  uses = "johno/actions-push-subdirectories@master"
-  needs = ["master"]
-  args = "examples johno"
-  secrets = [
-    "GITHUB_TOKEN",
-    "API_TOKEN_GITHUB",
-  ]
-}
-```
-
-You'll notice that it almost seems backwards. We set which
-action we want to resolve, and then work backwards using
-`needs`. Luckily there's the nice workflow editor to make
-it easier.
 
 ## Conclusion
 

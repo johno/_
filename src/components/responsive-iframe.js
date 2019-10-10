@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
 
-export default ({ src, ...props }) => (
+export default ({ src, title = '', ...props }) => (
   <div
     {...props}
     css={{
@@ -22,6 +22,6 @@ export default ({ src, ...props }) => (
       }
     }}
   >
-    <iframe src={src} />
+    <iframe title={title} src={src} />
   </div>
 )

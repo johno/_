@@ -6134,7 +6134,7 @@ gatsby-telemetry@^1.1.30:
     stack-utils "1.0.2"
     uuid "3.3.3"
 
-gatsby-theme-austere@^0.0.9:
+gatsby-theme-austere@0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/gatsby-theme-austere/-/gatsby-theme-austere-0.0.9.tgz#e3276aa81772cb417f4a57a1e787f7198f7ea843"
   integrity sha512-OQoQ3ZO8HvfEnlcUot/EzZj37/yqOehKTa1G+lMiksJsNVBpUfkOZZ2uPhFuYyAdRMgvwjM/hRH9evE6Bp/0XA==
@@ -6163,7 +6163,7 @@ gatsby-theme-blog-core@^1.1.0:
     gatsby-transformer-sharp "^2.2.6"
     remark-slug "^5.1.2"
 
-gatsby-theme-blog-tags@^0.0.9:
+gatsby-theme-blog-tags@0.0.9, gatsby-theme-blog-tags@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/gatsby-theme-blog-tags/-/gatsby-theme-blog-tags-0.0.9.tgz#9d97a9c0404d87984d02fe84d32a64ecabf30401"
   integrity sha512-JP406cc1eLY9N8gdHnDB367WyVKuHvzNjiwho3/6zaMjXGXAr8dAP9FX9cSCdassW29hRGfCTr+sBHgiq8310Q==

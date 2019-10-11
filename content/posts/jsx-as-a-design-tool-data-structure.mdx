@@ -1,0 +1,49 @@
+---
+title: JSX as a design tool data structure
+slug: /jsx-as-a-design-tool-data-structure
+date: 2019-10-11
+tags:
+  - gatsby
+  - themes
+  - theme-ui
+  - technology
+  - design
+---
+
+Right now importing and exporting from design tools is full of friction. Formats are always drastically different and require transformation (if that’s even possible). Additionally, some of the leading tools closing in on the gap between design tooling and code only work in one direction, typically writing out to code as an export. This isn’t realistic in the long term.
+
+A design system is always evolving and being piped through numerous tools. Even in medium-sized companies, workflows can differ drastically between teams. Some teams might use Photoshop while other teams use Sketch. One team might be using Webflow to publish to a property directly while other teams work in a codebase. This requires multiple "sources of truth" and leaves developers to adapt these high fidelity images to production code.
+
+Now, let's talk about that production code.
+
+Since all roads lead to "the code" it seems logical to use that production code as the format for design tooling. Production code has the ability to handle state, it has business logic that transforms input, it even talks to real data. Components are the building blocks and render to the web so design tools can spend less time reinventing wheels for functionality like layout.
+
+To me, the best component model for the web is React and JSX is the best way to write React. It has a rich ecosystem and JSX has the ability to embed metadata that design tools can use and manipulate. You can represent JSX as a tree structure which can be used to manipulate it in a visual editor. This isn't new, other ecosystems like gaming and even educational tools have had this forever.
+
+I don't understand why this isn't part of web design and development yet. We're behind.
+
+## Putting money where my mouth is
+
+I've been thinking about this for quite a while now, and believe it's now the time to begin putting together a prototype. With Theme UI's `sx` prop, there's a standard way to inline styles to a component that's tied to a global theme. Now, we just need a way to visually manipulate that code, reorder elements, and even insert new ones.
+
+### An informal specification
+
+For a prototype I plan on supporting a subset of React/JSX based on Theme UI’s sx prop. It’ll be a full-fledge block/page builder that receives JSX as an input and outputs transformed JSX based on the changes made.
+
+It will use Babel to search for, apply, and modify the sx prop and potentially allow for drag and drop modifications amongst different parts of a component. It'll be tricky to add the drag and drop inline, but at the very least we can provide an ordering panel to make these changes.
+
+Generally speaking, being truly agnostic of all possible data and JSX permutations isn’t a worthwhile short term goal. However we can focus on a standardized subset for building common components which would fit nicely with Gatsby theme development.
+
+## Why this matters
+
+With modern continuous deployment stacks this will allow folks to make changes and see them deployed, in real time, to development/staging environments. This drastically cuts down on deployment overhead and keeps feedback loops quick and more meaningful.
+
+Eventually this could be combined with communication/commenting software that allows suggestions and requests for changes that can be tracked similarly to a GitHub PR-based workflow.
+
+**Most importantly, designers and developers no longer have a silo and translation barrier between tooling.**
+
+It’s important to note that this doesn’t get rid of existing design tools, either. Transformations and exports can be made to target tools like Figma and Sketch. With Theme UI, Framer would essentially work out of the box.
+
+## Conclusion
+
+I'm pretty bullish on this concept, so it's time to start iterating a bit and see how an implementation plays out. A while back we experimented with this at Compositor but never really stress tested the idea.

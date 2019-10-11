@@ -1,0 +1,116 @@
+---
+title: Extending Gatsby plugins
+slug: /extending-gatsby-plugins
+date: 2019-03-18
+tags:
+  - gatsby
+---
+
+For most low-level use cases you might have in Gatsby, there will already be a
+plugin, but sometimes you want to extend it with a specific need.
+Since Gatsby plugins are node modules, you can extend existing packages
+in a straightforward way.
+
+## Why would you do this?
+
+Extending an existing plugin that performs a non-trivial task is useful
+because you can avoid duplicating the library's code and opt in to bug
+fixes down the road. Many plugins often only expose a lifecycle function
+or two so you can proxy them along and layer in new functionality.
+
+## Real world use case
+
+Most of my site's built with Gatsby have a need to be able to set redirects.
+This is a bit tricky if you're not using a static host (like Netlify) which
+handles them for you. For example, if you're using GitHub Pages you will
+have to write an HTML file that performs the redirect:
+
+```html
+<meta http-equiv="refresh" content="0; URL='/new-url/'" />
+```
+
+Naturally, there's a plugin, [gatsby-plugin-meta-redirect](https://github.com/getchalk/gatsby-plugin-meta-redirect)
+that does this. Though for my use case I want to add a bit more functionality.
+I want to be able to also declare a `redirects.json` file where I can specify
+all the redirects I want to have created in the root directory. To achieve
+this I began building a plugin, [gatsby-plugin-redirects](https://github.com/johno/gatsby-plugin-redirects),
+to do this.
+
+### New functionality
+
+For my desired functionality I can expose a [`createPages`](https://www.gatsbyjs.org/docs/node-apis/#createPages)
+lifecycle method, check for the existence of the file, and then call
+[`createRedirect`](https://www.gatsbyjs.org/docs/actions/#createRedirect) for
+each entry:
+
+```js
+// gatsby-node.js
+const fs = require('fs')
+
+const FILE_NAME = './redirects.json'
+
+const fileExists = filePath => {
+  try {
+    if (fs.existsSync(filePath)) {
+      return true
+    }
+  } catch (_) {
+    return false
+  }
+}
+
+exports.createPages = ({ actions }) => {
+  const { createRedirect } = actions
+
+  if (fileExists(FILE_NAME)) {
+    const redirects = JSON.parse(fs.readFileSync(FILE_NAME, 'utf8'))
+
+    redirects.map(redirect => {
+      createRedirect({
+        fromPath: redirect.from,
+        toPath: redirect.to,
+        isPermanent: true
+      })
+    })
+  }
+}
+```
+
+This is nice, however, it still doesn't handle the creation of the HTML
+pages that `gatsby-plugin-meta-redirect` does. I also don't want to have
+to install both plugins and add to my gatsby-config. So this is where we
+can proxy the meta redirect plugin functionality.
+
+### Extending a plugin
+
+To do this I add the plugin as a dependency:
+
+```sh
+yarn add gatsby-plugin-meta-redirect
+```
+
+Then import the lifecycle method that it uses and export it directly:
+
+```js
+const { onPostBuild } = require('gatsby-plugin-meta-redirect/gatsby-node')
+
+// ...
+
+export.onPostBuild
+```
+
+Now, `redirects.json` is read in and static, HTML redirects are created
+for each entry.
+
+## Conclusion
+
+Now I have a simple library I can share amongst my projects that requires
+a quick workflow to get up and running:
+
+- `yarn add gatsby-plugin-redirects`
+- Add plugin to `gatsby-config.js`
+- Create a `redirects.json` file
+
+---
+
+See the repo: https://github.com/johno/gatsby-plugin-redirects

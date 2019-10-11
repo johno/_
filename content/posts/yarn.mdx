@@ -1,0 +1,87 @@
+---
+title: Why I use yarn instead of npm
+slug: /why-i-use-yarn-instead-of-npm
+date: 2019-09-07
+tags:
+  - tooling
+---
+
+When the yarn package manager was released, I was one
+of the holdouts that stuck with npm for a long time.
+Originally, I thought the npm team felt like the perfect
+underdog story with a solid, diverse team. I didn't see
+the reason to switch to "yet another Facebook project".
+
+I did _really_ appreciate the fire it lit under npm's
+bottom though. The npm CLI shipping definitely got much
+quicker for a while after yarn's release.
+
+## Why I was a hold out
+
+In addition to being yet another Facebook project, I was
+reluctant to change because there were certain things that
+I wasn't keen on.
+
+- I didn't like that the commands subtly changed
+- I'm very critical of changing important parts of my workflow
+
+## When my opinion began to change
+
+However, after many years building packages in the node
+ecosystem, I began to find it tiresome to manage many
+packages amongst many repos. There's often an obvious
+boundary for packages though their development is
+interrelated.
+
+This was around the time the monorepo began to gain a
+lot of popularity in open source.
+
+After some experimentation, that's when I fell in love
+with the workspace. yarn nailed this.
+
+As soon as the yarn workspace became an integral part
+of my workflow I couldn't look back. Not to mention,
+having to remember two different CLIs based on whether
+I was working with a workspace or not was too much
+overhead.
+
+## Why did I fall in love with yarn workspaces?
+
+This really boils down to two reasons. First, when I
+needed to debug two libraries together, I began using
+the yarn workspace workflow. I'd often clone both
+projects into a single project and then create a
+"consuming" package which I interlinked as a yarn
+workspace.
+
+This was super powerful.
+
+The other reason that really solidified yarn for me was
+working with Gatsby Themes. It ultimately made the most
+sense for the theme author workflow to use yarn workspaces
+since they'd have to manage one or more packages _in
+addition to_ a consuming starter.
+
+## There was another thing, too
+
+One other motivation was the fact that yarn-based projects
+simply worked better with yarn. A handful of large frameworks
+and libraries would work with `yarn install` but wouldn't
+with `npm install`. This was a frustration with my workflow
+and it helped me gradually gain trust in yarn.
+
+So, I caved. Over time some key features became to powerful
+of a gravitational pull:
+
+- workspaces
+- reproducible installs
+- solid caching
+- fast
+- resilient to network issues
+- resolutions
+
+## Conclusion
+
+I'm all in on yarn these days. What won me over was the
+yarn workspace. I stuck around for speed, caching, and
+the yarn.lock.

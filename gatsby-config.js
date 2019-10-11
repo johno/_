@@ -4,40 +4,15 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: 'gatsby-theme-digital-garden',
+      resolve: 'gatsby-theme-austere',
       options: {
-        notesPath: '/txt',
-        mdxLayouts: {
-          default: require.resolve(
-            'gatsby-theme-digital-garden/src/components/layout'
-          )
-        },
-        header: {
-          home: {
-            href: '/',
-            label: 'johno'
-          },
-          links: [
-            {
-              href: '/writing',
-              label: 'Writing'
-            },
-            {
-              href: '/txt',
-              label: 'Notes'
-            },
-            {
-              href: '/contact',
-              label: 'Contact'
-            }
-          ]
-        }
+        basePath: '/writing/archives'
       }
     },
     {
-      resolve: 'gatsby-theme-digital-garden-blog',
+      resolve: 'gatsby-theme-blog-tags',
       options: {
-        postsPath: '/writing/archives'
+        basePath: '/writing/tags'
       }
     },
     {

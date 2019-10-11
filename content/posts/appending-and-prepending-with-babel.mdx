@@ -1,0 +1,284 @@
+---
+title: Appending and prepending to JavaScript files with Babel
+slug: /appending-and-prepending-with-babel
+date: 2019-10-08
+tags:
+  - babel
+  - jsx
+  - mdx
+  - ast
+---
+
+In order to append to the end of a JavaScript file from a Babel plugin
+you can add to the Program node's body:
+
+```js
+import template from '@babel/template'
+
+class BabelPluginAppendFoo {
+  constructor() {
+    this.plugin = declare(api => {
+      api.assertVersion(7)
+
+      return {
+        visitor: {
+          Program(path) {
+            path.node.body.push(template.ast('const foo = null'))
+          }
+        }
+      }
+    })
+  }
+}
+```
+
+You can use the same technique to prepend code as well:
+
+```js
+import template from '@babel/template'
+
+class BabelPluginAppendFoo {
+  constructor() {
+    this.plugin = declare(api => {
+      api.assertVersion(7)
+
+      return {
+        visitor: {
+          Program(path) {
+            path.node.body.unshift(template.ast('const foo = null'))
+          }
+        }
+      }
+    })
+  }
+}
+```
+
+This technique is something that we use in [MDX](https://mdxjs.com)
+core in tandem with metadata from a file. It's how we implement
+shortcodes.
+
+In the MDX internal babel plugin we find all import names and all
+used components to determine which components might be shortcodes.
+When we find components that are used, and not imported, we know
+these are shortcodes that the MDX pragma knows about.
+
+However, babel doesn't know about MDX's custom pragma. We also
+can't know what components _are_ in context at compile time so
+we stub out
+
+## Setting up state variables
+
+Firstly, we create variable in the constructor for storing imports
+and components used in the document. We store it in state in case
+consumers of the plugin want access as well (this is especially
+useful in runtime contexts).
+
+```js
+class BabelPluginMdxInterals {
+  constructor() {
+    const componentNames = []
+    const importNames = []
+
+    this.state = { componentNames, importNames }
+    // ...
+  }
+}
+```
+
+## Walking all imports
+
+Then we visit all import declarations and push the names to
+`importNames`:
+
+```js
+ImportDeclaration(path) {
+  path.traverse({
+    Identifier(path) {
+      if (path.key === 'local') {
+        importNames.push(path.node.name)
+      }
+    }
+  })
+},
+```
+
+## Walking all components
+
+Next we find all opening JSX elements and store those in
+component names.
+
+```js
+JSXOpeningElement(path) {
+  const jsxName = path.node.name.name
+
+  if (startsWithCapitalLetter(jsxName)) {
+    componentNames.push(jsxName)
+  }
+}
+```
+
+## Adding shortcode stubs
+
+In order to append code to the program in babel we first
+create a few helper functions. One to build the shortcode
+stubbing function and then a template which handles calling
+the function to stub each shortcode used in the file.
+
+```js
+const buildShortcodeFunction = () =>
+  template.ast(
+    `
+  const mdxMakeShortcode = name => props => {
+    console.warn("Component " + name + " was not imported, exported, or provided by MDXProvider as global scope")
+    return <div {...props}/>
+  }
+`,
+    {
+      plugins: ['jsx']
+    }
+  )
+
+const shortcodeTemplate = template(`
+  const IDENTIFIER = mdxMakeShortcode(STRING)
+`)
+```
+
+### Using program exit
+
+It's important the program exit is used to ensure that all nodes
+have been visited. Otherwise, with a traditional visitor for
+babel, it'd be called when the node is initially visited which
+would result in an empty collection of shortcodes every time
+since we hadn't visited the child nodes yet (import and JSX
+elements).
+
+Inside the program exit we determine what shortcodes were
+used. If there weren't any we short circuit. If shortcodes
+were found we then append the shortcode function and then
+append the shortcode template for each shortcode that's
+encountered.
+
+```js
+Program: {
+  exit(path) {
+    const { node: { body } } = path
+
+    const shortcodes = componentNames
+      .filter(s => !IGNORED_COMPONENTS.includes(s))
+      .filter(s => !importNames.includes(s))
+
+    if (!shortcodes.length) {
+      return
+    }
+
+    body.push(buildShortcodeFunction())
+
+    shortcodes.map(shortcode => {
+      body.push(shortcodeTemplate({
+        IDENTIFIER: t.identifier(shortcode),
+        STRING: t.stringLiteral(shortcode)
+      }))
+    })
+  }
+}
+```
+
+## All together
+
+```js
+const template = require('@babel/template').default
+const { declare } = require('@babel/helper-plugin-utils')
+const { startsWithCapitalLetter } = require('@mdx-js/util')
+
+const IGNORED_COMPONENTS = ['MDXLayout']
+
+const buildShortcodeFunction = () =>
+  template.ast(
+    `
+  const mdxMakeShortcode = name => props => {
+    console.warn("Component " + name + " was not imported, exported, or provided by MDXProvider as global scope")
+    return <div {...props}/>
+  }
+`,
+    {
+      plugins: ['jsx']
+    }
+  )
+
+const shortcodeTemplate = template(`
+  const IDENTIFIER = mdxMakeShortcode(STRING)
+`)
+
+class BabelPluginMdxInterals {
+  constructor() {
+    const componentNames = []
+    const importNames = []
+
+    this.state = { componentNames, importNames }
+
+    this.plugin = declare(api => {
+      api.assertVersion(7)
+      const { types: t } = api
+
+      return {
+        visitor: {
+          Program: {
+            exit(path) {
+              const {
+                node: { body }
+              } = path
+
+              const shortcodes = componentNames
+                .filter(s => !IGNORED_COMPONENTS.includes(s))
+                .filter(s => !importNames.includes(s))
+
+              if (!shortcodes.length) {
+                return
+              }
+
+              body.push(buildShortcodeFunction())
+
+              shortcodes.map(shortcode => {
+                body.push(
+                  shortcodeTemplate({
+                    IDENTIFIER: t.identifier(shortcode),
+                    STRING: t.stringLiteral(shortcode)
+                  })
+                )
+              })
+            }
+          },
+
+          ImportDeclaration(path) {
+            path.traverse({
+              Identifier(path) {
+                if (path.key === 'local') {
+                  importNames.push(path.node.name)
+                }
+              }
+            })
+          },
+
+          JSXOpeningElement(path) {
+            const jsxName = path.node.name.name
+
+            if (startsWithCapitalLetter(jsxName)) {
+              componentNames.push(jsxName)
+            }
+          }
+        }
+      }
+    })
+  }
+}
+
+module.exports = BabelPluginMdxInternals
+```
+
+## Conclusion
+
+Using the program node is a great way to append or prepend
+code to a JavaScript file. You can combine it with the
+`exit` call to append/prepend code based on any metadata
+you process in the AST.

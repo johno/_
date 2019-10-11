@@ -1,0 +1,86 @@
+---
+title: Composing multiple MDX documents with Gatsby
+slug: /composing-multiple-mdx-documents-with-gatsby
+date: 2019-08-19
+tags:
+  - mdx
+  - gatsby
+---
+
+For a long, content-heavy page you might want to source multiple
+MDX documents to populate the content and render it to a Gatsby
+page entrypoint. You can do this by using a `pageQuery` and the
+MDXRenderer.
+
+Consider a glossary where you want to group each letter as its
+own file (`glossary/a.mdx`, `glossary/b.mdx`, etc.) you can run
+the following query:
+
+```graphql
+{
+  sections: allFile(
+    filter: { sourceInstanceName: { eq: "glossary" } }
+    sort: { fields: absolutePath }
+  ) {
+    nodes {
+      name
+      childMdx {
+        body
+        headings(depth: h1) {
+          value
+        }
+      }
+    }
+  }
+}
+```
+
+And then render the data individually:
+
+```js
+import React from 'react'
+import MDXRenderer from 'gatsby-plugin-mdx/renderer'
+
+export default ({ data: { sections: { nodes: letters } } }) => (
+  <>
+    {letters.map(letter => (
+      <>
+        <h3>{letter.childMdx.headings[0].value]}</h3>
+        <MDXRenderer>{letters.childMdx.body}</MDXRenderer>
+      </>
+    )}
+  </>
+)
+```
+
+This same approach can be used to render different parts of a page:
+
+```js
+import React from 'react'
+import MDXRenderer from 'gatsby-plugin-mdx/renderer'
+import { Hero, Features, Faq, Other, Components } from '../components/ui'
+
+export default ({ data: { hero, features, faq } } }) => (
+  <>
+    <Hero>
+      <MDXRenderer>{hero.body}</MDXRenderer>
+    </Hero>
+    <Other />
+    <Features>
+      <MDXRenderer>{features.body}</MDXRenderer>
+    </Features>
+    <Components />
+    <Faq>
+      <MDXRenderer>{faq.body}</MDXRenderer>
+    </Faq>
+  </>
+)
+```
+
+You can use [transclusion](https://mdxjs.com/getting-started#documents)
+in MDX files already, however, in some cases it might make more sense to
+create standalone documents that serve as content partials or are used
+to provide content to a more complex page.
+
+This allows you to keep content files simpler (as MDX) and source those
+documents from somewhere else, even a CMS.

@@ -1,0 +1,67 @@
+---
+title: Component organization with Gatsby themes
+slug: /component-organization-with-gatsby-themes
+date: 2019-10-10
+tags:
+  - gatsby
+  - themes
+---
+
+Normally when I build React apps I lean towards a flat file structure with colocated components. This approach optimizes for "code deletion" and lets you worry about component architecture and overall organization down the road, when it's actually needed.
+
+However, it's interesting to consider component organization in the context of Gatsby themes since we have the shadowing API.
+
+With shadowing your filesystem becomes part of a theme's API surface area. Moving a file becomes a breaking change.
+
+Additionally, a theme is easier to work with if components have business logic and presentation separated. This ensures that folks can easily change the presentation of a theme without needing to be exposed to other concerns. After all, it's probably safe to assume that most theme customization will be for modifying the aesthetics rather than the underlying data.
+
+This also means that templates and queries should live inside source to ensure that your theme is as flexible as possible. There may be cases where a user wants to change the underlying query in order to retrieve additional data. If only one query needs to be changed, it's preferable to shadow the query rather than completely ejecting from the theme.
+
+## How granular do you go?
+
+Breaking out components to smaller, single purpose files _could_ make the user experience cleaner for small customizations. Though, this runs contrary to the colocation of components I often preach. If I were building a Gatsby site without theming in mind I'd colocate a PostListItem component with the PostList like so:
+
+```js
+/** @jsx jsx */
+// src/components/post-list.js
+import {Styled, jsx} from 'theme-ui'
+import {Link} from 'gatsby'
+
+const PostListItem = ({ slug, title }) => (
+  <Styled.li
+    sx={{
+      variant: 'styles.postListItem'
+    }}
+  >
+    <Styled.a
+      as={Link}
+      to={slug}
+      sx={{
+        variant: 'styles.postLink'
+      }}
+    >
+      {title}
+    </Styled.a>
+  </Styled.li>
+
+export default ({ posts }) => (
+  <Styled.ul
+    sx={{
+      variant: 'styles.postList'
+    }}
+  >
+    {posts.map(({ node: post }) => (
+      <PostListItem
+        key={post.slug}
+        {...post}
+      />
+    ))}
+  </Styled.ul>
+)
+```
+
+This is pretty straightforward, and how I'd build it for 90% of projects. However, if someone wants to trivially tweak PostListItem to add an icon they will need to eject the entire component that includes list handling and mapping over the items.
+
+For a better user experience it seems like breaking out PostListItem to `src/components/post-list-item.js` would be preferable. This would let a user shadow the item by itself and change its presentation. It allows a user to more progressively peel back the layers of complexity.
+
+Approaching component organization this way is most important for more entry-level themes like a blog that will have a user base of varying degrees of technical ability. This makes the learning process more gradual.

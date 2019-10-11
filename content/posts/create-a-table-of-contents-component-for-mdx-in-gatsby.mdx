@@ -1,0 +1,219 @@
+---
+title: Create a table of contents component for MDX in Gatsby
+slug: /mdx-table-of-contents-components-in-gatsby
+date: 2019-09-26
+tags:
+  - mdx
+  - gatsby
+  - egghead
+---
+
+<ResponsiveIframe src="https://egghead.io/lessons/react-create-a-table-of-contents-component-for-mdx-documents-in-gatsby/embed" />
+
+With MDX it's preferable to use composition over plugins whenever possible. When you're using MDX with a Gatsby site it's pretty straightforward to use a component. `gatsby-plugin-mdx` will automatically add a headings field when it processes a document so you can query it and pass that along to a component.
+
+## Fetching the headings data
+
+You can open up GraphiQL when Gatsby is in development mode to try out a query that fetches the headings values. You'll be able to pass this as a prop to a TableOfContents component.
+
+```gql
+query {
+  allMdx {
+    nodes {
+      headings {
+        depth
+        value
+      }
+    }
+  }
+}
+```
+
+## Modifying the page query
+
+In this example we have an existing page that we want to add the table of contents to. It fetches an MDX document and passes the body to MDXRenderer.
+
+```js
+import React from 'react'
+import { graphql } from 'gatsby'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
+
+export default ({
+  data: {
+    file: { childMdx }
+  }
+}) => (
+  <>
+    <MDXRenderer>{childMdx.body}</MDXRenderer>
+  </>
+)
+
+export const pageQuery = graphql`
+  {
+    file(sourceInstanceName: { eq: "content" }, name: { eq: "index" }) {
+      childMdx {
+        body
+      }
+    }
+  }
+`
+```
+
+We'll need to modify the page query to also fetch the headings:
+
+```js
+export const pageQuery = graphql`
+  {
+    file(sourceInstanceName: { eq: "content" }, name: { eq: "index" }) {
+      childMdx {
+        body
+      }
+    }
+  }
+`
+```
+
+And then update the component to pass along the headings to MDXRenderer.
+
+```js
+export default ({
+  data: {
+    file: { childMdx }
+  }
+}) => (
+  <>
+    <MDXRenderer headings={childMdx.headings}>{childMdx.body}</MDXRenderer>
+  </>
+)
+```
+
+With the headings passed as a prop, they'll be available to access in the document.
+
+## Creating the table of contents component
+
+First, we can scaffold out a TableOfContents component that logs the props passed to it at `src/components/table-of-contents.js`.
+
+```js
+import React from 'react'
+
+export default props => <pre>{JSON.stringify(props, null, 2)}</pre>
+```
+
+Then we can import the component and use it in our document.
+
+```md
+import TableOfContents from '../src/components/table-of-contents'
+
+# Hello, world!
+
+<TableOfContents headings={props.headings} />
+```
+
+Note that we're passing `props.headings`. This is automatically in scope because we've passed it to MDXRenderer. When the document is rendered you should now see the raw data that we saw in GraphiQL.
+
+Now, we can use Gatsby's Link component and `github-slugger` to create our table of contents:
+
+```js
+import React from 'react'
+import Slugger from 'github-slugger'
+import { Link } from 'gatsby'
+
+const slugger = new Slugger()
+
+export default ({ headings }) => (
+  <ul>
+    {headings
+      .filter(heading => heading.depth !== 1)
+      .map(heading => (
+        <li key={heading.value}>
+          <Link to={'#' + slugger.slug(heading.value)}>{heading.value}</Link>
+        </li>
+      ))}
+  </ul>
+)
+```
+
+## Adding slugs to markdown heading
+
+We now have the links being displayed, but you might notice that they don't work. This is because slugs aren't being added to our markdown headings. We can achieve this by installing `remark-slug` and passing it to `gatsby-plugin-mdx`.
+
+```js
+module.exports = {
+  plugins: [
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        remarkPlugins: [require('remark-slug')]
+      }
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: 'content',
+        name: 'content'
+      }
+    }
+  ]
+}
+```
+
+After restarting Gatsby's development server the links should now work!
+
+## Composition
+
+This approach is powerful because it allows you to use composition. Imagine if you wanted to wrap a specific page's table of contents in another component, you can do so on the fly.
+
+```md
+import TableOfContents from '../src/components/table-of-contents'
+import TomatoBox from '../src/components/tomat-box'
+
+# Hello, world!
+
+<TomatoBox>
+  <TableOfContents headings={props.headings} />
+</TomatoBox>
+```
+
+You can also add props in order to customize the rendering or change the location of where you're rendering the table of contents in your document. If you wanted, you can render the table of contents _outside_ of your document as well. This is something you might want if you wanted the table of contents to be along the right hand side.
+
+```js
+import React from 'react'
+import { graphql } from 'gatsby'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { Flex, Box } from '../components/ui'
+import TableOfContents from '../components/table-of-contents'
+
+export default ({
+  data: {
+    file: { childMdx }
+  }
+}) => (
+  <Flex>
+    <MDXRenderer>{childMdx.body}</MDXRenderer>
+    <Box width="20%">
+      <TableOfContents headings={props.headings} />
+    </Box>
+  </Flex>
+)
+
+export const pageQuery = graphql`
+  {
+    file(sourceInstanceName: { eq: "content" }, name: { eq: "index" }) {
+      childMdx {
+        body
+        headings {
+          depth
+          value
+        }
+      }
+    }
+  }
+`
+```
+
+## Conclusion
+
+By combining MDX, components, and the Gatsby GraphQL data layer you can create a flexible table of contents that can be used in a multitude of ways.
+
+- [See the source code &rarr;](https://github.com/johno/egghead-lessons/tree/master/gatsby-toc)
+- [Watch the egghead lesson &rarr;](https://egghead.io/lessons/react-create-a-table-of-contents-component-for-mdx-documents-in-gatsby)

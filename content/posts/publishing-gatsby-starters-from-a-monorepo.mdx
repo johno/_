@@ -1,0 +1,184 @@
+---
+title: Publishing Gatsby starters from a monorepo
+date: 2019-07-12
+slug: /publishing-gatsby-starters-from-monorepo
+tags:
+  - tooling
+  - github-actions
+  - gatsby
+---
+
+When building Gatsby Themes it's becoming common to use a yarn
+workspace that contains themes and their related starters. This
+workflow is great because you can build your theme as a package
+while configuring it as the end user.
+
+This lets you do something like:
+
+```sh
+yarn workspace gastby-starter-documentation develop
+```
+
+In this scenario we have a the following folder structure:
+
+```
+├── examples
+│   └── gatsby-starter-documentation
+│       ├── gatsby-config.js
+│       ├── package.json
+│       └── readme.md
+├── package.json
+├── packages
+│   └── gatsby-theme-documentation
+│       ├── gatsby-config.js
+│       ├── gatsby-node.js
+│       ├── index.js
+│       ├── package.json
+│       └── readme.md
+└── readme.md
+```
+
+`packages/gatsby-theme-documentation` contains the theme
+library and `examples/gatsby-starter-documentation` contains
+the starter.
+
+However, `gatsby new` only scaffolds out projects from a
+single repo, monorepos aren't currently supported. This means
+that you'll have to clone each example and push it to a
+standalone repo. Luckily, you can automate that with a
+GitHub Action!
+
+I've created an action based on Gatsby's own tooling for
+handling official starters: https://github.com/johno/actions-push-subdirectories
+
+> Shoutout to [Dustin Schau](https://mobile.twitter.com/schaudustin)
+> who wrote the original script I repurposed into a GitHub
+> Action
+
+## Diving into the action itself
+
+In its entirety, we can see the bash script. It's about 30 lines of code that sets
+the folder and GitHub username, and then iterates over all directories inside the
+given folder to:
+
+- Determine the location of the git repo
+- Pluck out the name of the starter in package.json
+- Deletes all the old files
+- Pulls in the new files from the source repo
+- Updates the `yarn.lock`
+- Pushes to the repo
+
+```sh
+#!/bin/bash
+FOLDER=$1
+GITHUB_USERNAME=$2
+BASE=$(pwd)
+
+git config --global user.email "johno-actions-push-subdirectories@example.org"
+git config --global user.name "$GITHUB_USERNAME"
+
+echo "Cloning folders in $FOLDER and pushing to $GITHUB_USERNAME"
+
+# sync to read-only clones
+for folder in $FOLDER/*; do
+  [ -d "$folder" ] || continue # only directories
+  cd $BASE
+
+  echo "Pushing $folder"
+
+  NAME=$(cat $folder/package.json | jq -r '.name')
+  CLONE_DIR="__${NAME}__clone__"
+
+  # clone, delete files in the clone, and copy (new) files over
+  # this handles file deletions, additions, and changes seamlessly
+  git clone --depth 1 https://$API_TOKEN_GITHUB@github.com/$GITHUB_USERNAME/$NAME.git $CLONE_DIR
+  cd $CLONE_DIR
+  find . | grep -v ".git" | grep -v "^\.*$" | xargs rm -rf # delete all files (to handle deletions in monorepo)
+  cp -r $BASE/$folder/. .
+
+  rm -rf yarn.lock
+  yarn
+
+  git add .
+  git commit --message "Update $NAME from $GITHUB_REPOSITORY"
+  git push origin master
+
+  cd $BASE
+done
+```
+
+## Using the action
+
+Using `actions-push-subdirectories` we can create a workflow
+that first checks to make sure a commit landed on master, and
+if it has, it will then push the latest in `examples/gatsby-starter-documentation`
+to `johno/gatsby-starter-documentation`.
+
+First, we can use the built-in git filter to only run
+the rest of the workflow when a commit hits the
+master branch. Then, we'll set up a basic node
+environment.
+
+```yml
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+```
+
+Then we need to use `johno/actions-push-subdirectories`. Note
+that you'll need to specify args for both the directory of examples
+and the GitHub username. And of course, set an `API_TOKEN_GITHUB`
+key that has permissions to write to your repos.
+
+```
+- name: publish:starters
+  uses: johno/actions-push-subdirectories@master
+  env:
+      API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    args: examples johno
+```
+
+All together:
+
+```
+name: Publish Starters
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: publish:starters
+        uses: johno/actions-push-subdirectories@master
+        env:
+            API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: examples johno
+```
+
+## Conclusion
+
+Using a GitHub Action to publish read only starters from a
+monorepo is a rad way to automate working with the existing
+Gatsby project scaffold tooling.
+
+[See a project using this workflow](https://github.com/johno/gatsby-theme-documentation)

@@ -6134,17 +6134,17 @@ gatsby-telemetry@^1.1.30:
     stack-utils "1.0.2"
     uuid "3.3.3"
 
-gatsby-theme-austere@0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-austere/-/gatsby-theme-austere-0.0.10.tgz#c698129915bc3ec80d5246fbcf65335f96542e19"
-  integrity sha512-m2gNDfaNCYKRpkjZn2y3OG9//RZbYrTqtdwpa0IXf9C/vw3wM8O2+LKQ7YBvgt+1IPGA4Y2HLyjOFFIdKdOG5w==
+gatsby-theme-austere@0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-austere/-/gatsby-theme-austere-0.0.11.tgz#aab8aa8075c22810ad3d245a0d34ffc3eaeeed72"
+  integrity sha512-oOYSas+IKHPyjzTTReH7duGwZsRJ0hG+E62hFrDaXPTnU5Lc9tayY08p61iUscrOWbGoGNBMzeS0E6VnUnBzcg==
   dependencies:
     "@emotion/core" "^10.0.17"
     "@mdx-js/react" "^1.5.0"
     gatsby-plugin-react-helmet "^3.1.10"
     gatsby-plugin-theme-ui "^0.2.43"
     gatsby-theme-blog-core "^1.1.0"
-    gatsby-theme-blog-tags "^0.0.10"
+    gatsby-theme-blog-tags "^0.0.11"
     react-helmet "^5.2.1"
     theme-ui "^0.2.43"
 
@@ -6163,10 +6163,17 @@ gatsby-theme-blog-core@^1.1.0:
     gatsby-transformer-sharp "^2.2.6"
     remark-slug "^5.1.2"
 
-gatsby-theme-blog-tags@0.0.10, gatsby-theme-blog-tags@^0.0.10:
+gatsby-theme-blog-tags@0.0.10:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/gatsby-theme-blog-tags/-/gatsby-theme-blog-tags-0.0.10.tgz#cdbe29fa692366d0ad71c51f788d73b9177ae15a"
   integrity sha512-gcaNpbKvxwis9DGdgiJRrXpVFmfF9J4LVfRCXri7pi53Vp1X2/EFVYaIN+rLmRaCwYfHaOq+oV6osE2lOgk2SQ==
+  dependencies:
+    lodash.kebabcase "^4.1.1"
+
+gatsby-theme-blog-tags@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-blog-tags/-/gatsby-theme-blog-tags-0.0.11.tgz#459838a6879b737ce8a49c014374e7f4ec10912c"
+  integrity sha512-1eeZb4iCmrTpjZybbSi7JdgtYl49+z9Ouhy3QYb6XbPnEvZcUjOdsbf3XUpjnWAcRlY+eRr7/19m6jIOZt7hAg==
   dependencies:
     lodash.kebabcase "^4.1.1"
 

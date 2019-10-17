@@ -11,7 +11,7 @@
     "gatsby": "2.15.36",
     "gatsby-plugin-fathom": "1.1.0",
     "gatsby-theme-austere": "0.0.10",
-    "gatsby-theme-blog-tags": "0.0.10",
+    "gatsby-theme-blog-tags": "0.0.11",
     "husky": "3.0.9",
     "lint-staged": "9.4.2",
     "prettier": "1.18.2",

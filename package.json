@@ -13,7 +13,7 @@
     "gatsby-theme-austere": "0.0.11",
     "gatsby-theme-blog-tags": "0.0.11",
     "husky": "3.1.0",
-    "lint-staged": "9.4.2",
+    "lint-staged": "9.4.3",
     "prettier": "1.18.2",
     "react": "16.10.2",
     "react-dom": "16.10.2",

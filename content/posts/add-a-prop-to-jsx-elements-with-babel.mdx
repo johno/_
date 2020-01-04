@@ -23,7 +23,8 @@ In order to add a property, we first need to visit all
 JSX elements. We can directly visit the JSX opening element
 since it will contain all prop information.
 
-It's a more specific visitor than JSX Elements.
+It's a more specific visitor than JSXElement. JSXOpeningElement
+is a child, or descendent, of JSXElement.
 
 ```js
 export default api => {

@@ -1,0 +1,101 @@
+---
+title: Markdown graph
+slug: /markdown-graph
+date: 2020-01-04
+tags:
+  - mdx
+  - graph
+  - digital-garden
+---
+
+After hearing folks talk a lot about "knowledge graphs"
+it finally clicked for me when playing around with
+[Roam Research](https://roamresearch.com). Being able
+to seamlessly interlink other pages, and automatically
+create new ones from your current context, is really
+powerful.
+
+> Roam is about the "what" not the "where".
+>
+> &mdash; [Kyle Mathews](https://twitter.com/kylemathews)
+
+This really resonated with me. I'd recently finished up
+a Notion setup that I thought was the the way for me to
+finally implement my digital garden.
+
+But something felt broken. In order to start writing I
+found myself wondering:
+
+- Where should I put this?
+- Is it notes? Is it a journal? Is it a blog post?
+
+It was a surprising amount of cognitive overhead. Sure,
+I could just start writing somewhere and move it later.
+That's what I was doing.
+
+But I realized my personal CMS of content and thoughts wasn't
+exactly "relational" or "hierarchical".
+[It's a graph](https://twitter.com/4lpine/status/1208594869653925889).
+
+Roam got me writing down thoughts way more quickly, again.
+
+But, there were small things that I wanted to be different.
+The editor itself was pretty clunky. Using custom syntax
+for the graph linking was weird. It wasn't open source.
+
+There isn't a baked in API and publish workflow.
+
+And there was one large, fundamental issue. I want something
+MDX-based.
+
+This is where I think our work on [Sector](https://sector.tools)
+will be interesting because I think MDX will open up lots
+of doors while still allowing us to avoid custom syntax.
+
+Graph linking will be a Markdown link. Something like:
+
+```md
+[My doc](https://sector.tools/g/123-456-abc-def)
+```
+
+When "publishing" this can be automatically transformed
+to a local slug with a [remark plugin](https://github.com/remarkjs).
+
+We can also avoid rigid content modeling by querying
+information from within a document. Markdown/MDX has a
+lot of structural information in it. We can also potentially
+assign user-defined labels or identifiers to individual
+blocks of a document.
+
+This would allow queries that might look like:
+
+```gql
+{
+  document(id: 'johno/posts/hello-world') {
+    title: block(element: 'h1') {
+      text,
+      md,
+      mdx,
+      html
+    },
+    tagline: block(id: 'tagline') {
+      text
+    }
+  }
+}
+```
+
+I've also been doing something thinking about how to build
+a ["local first"](https://www.inkandswitch.com/local-first.html)
+version of Markdown graphs. Hypothetically a UUID could
+be added to the frontmatter. This would be able to be connected
+locally (allowing slugs to change over time) and have a
+transform step that changes UUID links to the slug of a document.
+
+I'm absolutely sold on this idea of graphs for digital
+gardens. It's an important aspect because it's so common
+to reference prior writing.
+
+Yet, right now, I'm not referencing prior blog posts I've
+written that are relevant. Because, it's too manual and
+I'm lazy.

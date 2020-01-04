@@ -1,0 +1,165 @@
+---
+title: Add a prop to JSX elements with Babel
+slug: /add-a-prop-to-jsx-elements-with-babel
+date: 2020-01-04
+tags:
+  - babel
+  - jsx
+  - mdx
+  - ast
+---
+
+When you're processing a JSX AST you might want to
+add an additional property.
+
+We do this in [MDX](https://github.com/mdx-js/mdx/blob/334125d94148d46110a799811e52b6d44ee3a79c/packages/babel-plugin-apply-mdx-type-props/index.js#L21-L26)
+so that our [custom pragma](/jsx-pragma) knows the originating
+element type when rendering. We do this in
+[Blocks](https://github.com/blocks/blocks/blob/9438282b7a4d648322493c94573522bbbfe5f3dd/packages/blocks-ui/src/babel-plugins/add-tuid-prop.js#L9-L32)
+in order to add a unique identifier property so we can later
+transform, remove, and reorder elements in a visual editor.
+
+In order to add a property, we first need to visit all
+JSX elements. We can directly visit the JSX opening element
+since it will contain all prop information.
+
+It's a more specific visitor than JSX Elements.
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        console.log(path)
+      }
+    }
+  }
+}
+```
+
+We'll now be logging out the full path of the node.
+This means that it has additional information than just
+the AST node itself. This means we have access to ancestral
+information, its children, and convenient helper methods
+for working with the AST.
+
+We won't need to use any of this for now, but it's
+useful if you're creating more complex transformations.
+
+Now, let's say we want to add `favoriteColor='tomato'` as
+a prop to all JSX elements, we can now add that to our
+visitor.
+
+First we have to construct the AST representation of the
+prop:
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const newProp = t.jSXAttribute(
+          t.jSXIdentifier('favoriteColor'),
+          t.stringLiteral('tomato')
+        )
+      }
+    }
+  }
+}
+```
+
+Then we need to add it to the element itself:
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const newProp = t.jSXAttribute(
+          t.jSXIdentifier('favoriteColor'),
+          t.stringLiteral('tomato')
+        )
+
+        path.node.attributes.push(newProp)
+      }
+    }
+  }
+}
+```
+
+Now the following input:
+
+```js
+<Hello />
+```
+
+Will result in:
+
+```js
+<Hello favoriteColor="tomato" />
+```
+
+Though, what happens if there's already a `favoriteColor` prop?
+
+```js
+<Hello favoriteColor="purple" />
+```
+
+Would result in:
+
+```js
+<Hello favoriteColor="purple" favoriteColor="tomato" />
+```
+
+Ultimately, with JSX this will still result in the desired
+outcome because our new prop will override the existing.
+But, it doesn't look as nice as what we'd actually write.
+
+So, we can check for the existence of the prop and override
+it if it exists:
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const existingProp = path.node.attributes.find(
+          node => node.name && node.name.name === 'favoriteColor'
+        )
+
+        if (existingProp) {
+          existingProp.node.value.value === 'tomato'
+          return
+        }
+
+        const newProp = t.jSXAttribute(
+          t.jSXIdentifier('favoriteColor'),
+          t.stringLiteral('tomato')
+        )
+
+        path.node.attributes.push(newProp)
+      }
+    }
+  }
+}
+```
+
+And now the following input:
+
+```js
+<Hello favoriteColor="purple" />
+```
+
+Would result in:
+
+```js
+<Hello favoriteColor="tomato" />
+```

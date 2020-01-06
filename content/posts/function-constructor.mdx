@@ -1,0 +1,175 @@
+---
+title: The JavaScript Function constructor
+slug: /function-constructor
+date: 2020-01-06
+tags:
+  - js
+  - node
+---
+
+_**Please note** that using the `Function` constructor is
+the equivalent to `eval`. Use it with caution because
+it allows for XSS when used with user input._
+
+When building things with JavaScript, sometimes you
+might want to evaluate a string of JavaScript and
+display it on the page somehow.
+
+This is how playgrounds like [`react-live`](https://github.com/FormidableLabs/react-live)
+run. In order to do this we need to break down
+how the `Function` constructor in JavaScript
+works.
+
+## Arguments
+
+When we initialize a function we can pass it any
+number of argument names and then the function
+body itself.
+
+Those argument names will then be added to the
+scope. So, if you need two arguments, "a" and "b",
+you can initialize your function like so:
+
+```js
+const multiply = new Function('a', 'b', 'return a * b')
+```
+
+This looks pretty similar to how you might normally
+write it:
+
+```js
+const multiply = (a, b) => {
+  return a * b
+}
+```
+
+This function can then be called in the same fashion
+as any other function:
+
+```js
+multiply(2, 4) // => 8
+```
+
+## Rendering React components
+
+Now that we've successfully inline evaluated a JavaScript
+string we can do more interesting things like render
+React components.
+
+In order to achieve this we need to create some scope which
+will be available to the component string (for now we'll use
+`React.createElement` to avoid transpiling). In order to do
+this we can pass everything as function arguments:
+
+```js
+import React from 'react'
+
+const Hello = () => <h1>World</h1>
+
+const InlineRender ({ code }) => {
+  const scope = { React, Hello }
+  const scopeKeys = Object.keys(scope)
+  const scopeValues = Object.values(scope)
+
+  const fn = new Function(
+    ...scopeKeys,
+    `const ___Component = () => (${code});
+    return React.createElement(___Component)`
+  )
+
+  return fn(...scopeValues)
+}
+```
+
+We can then use the `InlineRender` component like so:
+
+```js
+<InlineRender code="React.createElement(Hello)" />
+```
+
+This is pretty powerful, but we can already anticipate folks
+wanting to be able to write pure JSX. So, we'll need to use
+a Babel transform.
+
+```js
+import { transform } from '@babel/standalone'
+import babelPluginTransformJsx from '@babel/plugin-transform-react-jsx'
+
+const transformSrc = code => {
+  const result = transform(code, {
+    plugins: [babelPluginTransformJsx]
+  })
+
+  return result.code
+}
+```
+
+All together:
+
+```js
+import React from 'react'
+import { transform } from '@babel/standalone'
+import babelPluginTransformJsx from '@babel/plugin-transform-react-jsx'
+
+const Hello = () => <h1>World</h1>
+
+const InlineRender ({ code }) => {
+  const scope = { React, Hello }
+  const scopeKeys = Object.keys(scope)
+  const scopeValues = Object.values(scope)
+
+  let transformedCode = null
+  try {
+    transformedCode = transformSrc(code)
+  } catch (e) {
+    console.log(e)
+  }
+
+  if (!transformedCode) {
+    return null
+  }
+
+  const fn = new Function(
+    ...scopeKeys,
+    `const ___Component = () => (${transformedCode});
+    return React.createElement(___Component)`
+  )
+
+  return fn(...scopeValues)
+}
+
+const transformSrc = code => {
+  const result = transform(code, {
+    plugins: [babelPluginTransformJsx]
+  })
+
+  return result.code
+}
+```
+
+You'll notice that we need to error handle the babel
+transform. This handles scenarios where a user might
+be writing code into a textarea. While it's being typed
+there will be invalid states.
+
+In the perfect world you can memoize the last valid state
+of the code, so rendering doesn't flash, but this gets
+you most of the way.
+
+Now, you can use JSX code:
+
+```js
+<InlineRender code="<Hello />" />
+```
+
+## Conclusion
+
+Using the `Function` constructor with a babel transform is
+a powerful way to build your own in-browser playground.
+At its core, this is a strategy we us in
+[Blocks](https://github.com/blocks/blocks/blob/9438282b7a4d648322493c94573522bbbfe5f3dd/packages/blocks-ui/src/inline-render.js)
+as well.
+
+## Resources
+
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)

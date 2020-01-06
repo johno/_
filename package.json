@@ -14,10 +14,13 @@
     "gatsby-theme-blog-tags": "0.0.11",
     "husky": "3.1.0",
     "lint-staged": "9.5.0",
+    "parse-english": "^4.1.2",
     "prettier": "1.19.1",
     "react": "16.12.0",
     "react-dom": "16.12.0",
-    "three": "0.112.1"
+    "retext-pos": "^2.0.2",
+    "three": "0.112.1",
+    "unist-util-inspect": "^5.0.0"
   },
   "husky": {
     "hooks": {

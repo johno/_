@@ -8024,6 +8024,11 @@ is-docker@2.0.0:
   resolved "https://registry.yarnpkg.com/is-docker/-/is-docker-2.0.0.tgz#2cb0df0e75e2d064fe1864c37cdeacb7b2dcf25b"
   integrity sha512-pJEdRugimx4fBMra5z2/5iRdZ63OhYV0vr0Dwm5+xtW4D1FvRkB8hamMIhnWfyJeDdyr/aa7BDyNbtG38VxgoQ==
 
+is-empty@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/is-empty/-/is-empty-1.2.0.tgz#de9bb5b278738a05a0b09a57e1fb4d4a341a9f6b"
+  integrity sha1-3pu1snhzigWgsJpX4ftNSjQan2s=
+
 is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
@@ -10365,7 +10370,7 @@ parse-bmfont-xml@^1.1.4:
     xml-parse-from-string "^1.0.0"
     xml2js "^0.4.5"
 
-parse-english@^4.0.0:
+parse-english@^4.0.0, parse-english@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/parse-english/-/parse-english-4.1.2.tgz#6710d426caa76db327ef7066991cd1b9f602db9f"
   integrity sha512-+PBf+1ifxqJlOpisODiKX4A8wBEgWm4goMvDB5O9zx/cQI58vzHTZeWFbAgCF9fUXRl8/YdINv1cfmfIRR1acg==
@@ -10723,6 +10728,11 @@ portfinder@^1.0.25:
     async "^2.6.2"
     debug "^3.1.1"
     mkdirp "^0.5.1"
+
+pos@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/pos/-/pos-0.4.2.tgz#20e9c77fbeedcc356823cea63c7585cace93be2a"
+  integrity sha1-IOnHf77tzDVoI86mPHWFys6Tvio=
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -12072,6 +12082,15 @@ retext-latin@^2.0.0:
   dependencies:
     parse-latin "^4.0.0"
     unherit "^1.0.4"
+
+retext-pos@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/retext-pos/-/retext-pos-2.0.2.tgz#a552e5af3d61fa5cb2903e09b1d6dc1814d284ca"
+  integrity sha512-ranVA3ucvW8yKohNA+TTBHGza+/+kWb+yqKFfvGJDD5FlukmG36tcDKJcUklY3O7QZnTm5vAArFPWRQibWNcmA==
+  dependencies:
+    nlcst-to-string "^2.0.0"
+    pos "^0.4.2"
+    unist-util-visit "^1.0.0"
 
 retext-smartypants@^3.0.3:
   version "3.0.3"
@@ -13813,6 +13832,13 @@ unist-util-generated@^1.1.0:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/unist-util-generated/-/unist-util-generated-1.1.4.tgz#2261c033d9fc23fae41872cdb7663746e972c1a7"
   integrity sha512-SA7Sys3h3X4AlVnxHdvN/qYdr4R38HzihoEVY2Q2BZu8NHWDnw5OGcC/tXWjQfd4iG+M6qRFNIRGqJmp2ez4Ww==
+
+unist-util-inspect@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/unist-util-inspect/-/unist-util-inspect-5.0.0.tgz#a39f95e9bfbf1573829cc000653396d65ca1b932"
+  integrity sha512-gsw+mcgsyfV5DjSXARb9lPziDUZGhB2OE6Z8hfmJ3HIL+fUdBhYS8r8ByD8NN6/7aZyCEDa4M+n0Rn5SPPu9Gw==
+  dependencies:
+    is-empty "^1.0.0"
 
 unist-util-is@^2.1.2:
   version "2.1.3"

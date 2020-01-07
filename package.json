@@ -8,11 +8,12 @@
     "now-build": "yarn build"
   },
   "dependencies": {
+    "@theme-ui/components": "^0.2.50",
     "gatsby": "2.18.18",
-    "gatsby-plugin-fathom": "1.1.1",
+    "gatsby-plugin-fathom": "1.2.0",
     "gatsby-theme-austere": "0.0.11",
     "gatsby-theme-blog-tags": "0.0.11",
-    "husky": "3.1.0",
+    "husky": "4.0.0",
     "lint-staged": "9.5.0",
     "prettier": "1.19.1",
     "react": "16.12.0",
@@ -33,6 +34,7 @@
   "resolutions": {
     "react": "16.12.0",
     "react-dom": "16.12.0",
-    "@babel/helpers": "^7.6.0"
+    "@babel/helpers": "7.6.0",
+    "@emotion/core": "10.0.27"
   }
 }

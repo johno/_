@@ -13,8 +13,7 @@ const Subscribe = ({ formId = '1167756', skipDescription, ...props }) => (
         sx={{
           m: 0,
           lineHeight: 1,
-          pb: skipDescription ? 4 : null,
-          textAlign: ['center', 'inherit']
+          pb: skipDescription ? 4 : null
         }}
       >
         {props.children}

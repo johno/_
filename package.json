@@ -12,7 +12,7 @@
     "gatsby-plugin-fathom": "1.1.1",
     "gatsby-theme-austere": "0.0.11",
     "gatsby-theme-blog-tags": "0.0.11",
-    "husky": "3.1.0",
+    "husky": "4.0.0",
     "lint-staged": "9.5.0",
     "prettier": "1.19.1",
     "react": "16.12.0",

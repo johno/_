@@ -36,5 +36,8 @@
     "react-dom": "16.12.0",
     "@babel/helpers": "7.6.0",
     "@emotion/core": "10.0.27"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }

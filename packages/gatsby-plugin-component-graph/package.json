@@ -2,7 +2,7 @@
   "name": "gatsby-plugin-component-graph",
   "version": "0.0.1",
   "dependencies": {
-    "gatsby-source-filesystem": "^2.1.46",
-    "gatsby-transformer-json": "^2.2.25"
+    "gatsby-source-filesystem": "2.1.46",
+    "gatsby-transformer-json": "2.2.25"
   }
 }

@@ -3,6 +3,7 @@ module.exports = {
     title: 'johno'
   },
   plugins: [
+    'gatsby-plugin-component-graph',
     {
       resolve: 'gatsby-theme-austere',
       options: {

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@theme-ui/components": "0.2.50",
-    "gatsby": "2.19.0",
+    "gatsby": "2.19.1",
     "gatsby-plugin-fathom": "1.2.0",
     "gatsby-theme-austere": "0.0.11",
     "gatsby-theme-blog-tags": "0.0.11",

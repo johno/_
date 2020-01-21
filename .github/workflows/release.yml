@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@master
+
+      - name: Set up node
+        uses: actions/setup-node@master
+        with:
+          node-version: 12.x
+
+      - name: Install
+        run: yarn
+
+      - name: Create release pull request
+        uses: changesets/action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

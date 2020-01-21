@@ -4,16 +4,22 @@
   "scripts": {
     "start": "gatsby develop",
     "build": "gatsby build",
-    "deploy": "now switch johno && now && now alias $(pbpaste) johno.com && now alias $(pbpaste) www.johno.com",
-    "now-build": "yarn build"
+    "changeset": "changeset",
+    "deploy": "now switch johno && now --prod",
+    "postinstall": "manypkg check",
+    "release": "changeset publish",
+    "test": "jest"
   },
   "dependencies": {
+    "@changesets/cli": "^2.4.1",
+    "@manypkg/cli": "^0.9.0",
     "@theme-ui/components": "0.2.50",
     "gatsby": "2.19.1",
     "gatsby-plugin-fathom": "1.2.0",
     "gatsby-theme-austere": "0.0.11",
     "gatsby-theme-blog-tags": "0.0.11",
     "husky": "4.0.10",
+    "jest": "^24.9.0",
     "lint-staged": "10.0.1",
     "prettier": "1.19.1",
     "react": "16.12.0",
@@ -21,6 +27,12 @@
     "theme-ui": "0.2.52",
     "three": "0.112.1"
   },
+  "engines": {
+    "node": "12.x"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -28,9 +40,15 @@
   },
   "lint-staged": {
     "*.{js,md,mdx,json}": [
-      "prettier --write --no-semi --single-quote",
+      "prettier --write",
       "git add"
     ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/.cache/"
+    ],
+    "testEnvironment": "node"
   },
   "resolutions": {
     "react": "16.12.0",
@@ -39,11 +57,5 @@
     "@emotion/core": "10.0.27",
     "theme-ui": "0.2.52",
     "@theme-ui/components": "0.2.50"
-  },
-  "engines": {
-    "node": "12.x"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+  }
 }

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
+  "repository": "johno/_/packages/remark-pluck-tags",
   "scripts": {
     "test": "jest"
   },
@@ -12,6 +13,6 @@
     "unist-util-visit": "^2.0.1"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.8.3"
+    "@babel/preset-react": "^7.7.4"
   }
 }

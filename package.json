@@ -11,15 +11,15 @@
     "test": "jest"
   },
   "dependencies": {
-    "@changesets/cli": "^2.4.1",
-    "@manypkg/cli": "^0.9.0",
+    "@changesets/cli": "2.4.1",
+    "@manypkg/cli": "0.9.0",
     "@theme-ui/components": "0.2.50",
     "gatsby": "2.19.1",
     "gatsby-plugin-fathom": "1.2.0",
     "gatsby-theme-austere": "0.0.11",
     "gatsby-theme-blog-tags": "0.0.11",
     "husky": "4.0.10",
-    "jest": "^24.9.0",
+    "jest": "24.9.0",
     "lint-staged": "10.0.1",
     "prettier": "1.19.1",
     "react": "16.12.0",

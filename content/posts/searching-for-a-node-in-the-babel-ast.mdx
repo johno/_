@@ -1,0 +1,152 @@
+---
+title: Searching for a node in the Babel AST
+slug: /searching-for-a-node-in-the-babel-ast
+date: 2020-01-24
+tags:
+  - babel
+  - jsx
+  - ast
+---
+
+In some cases you might want to search for a specific node
+in the JSX AST, like if you wanted to change a property.
+
+This is an operation we use in [Blocks](https://blocks-ui.com)
+to find a particular element to make a change to when it's edited.
+
+In this case we want to find a JSX element where the `id` is set
+to `hello`. So, some code that looks like:
+`<h1 id="hello">Hello, world!</h1>`
+
+We can begin by visiting all `JSXOpeningElement`s, and pulling out
+the attributes (props).
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const attrs = path.node.attributes
+        console.log(attrs)
+      }
+    }
+  }
+}
+```
+
+Now that we're visiting the elements we need to search for the specific
+prop name, `id`.
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const attrs = path.node.attributes
+        const attr = attrs.find(attr => attr.name.name === 'id')
+
+        console.log(attr)
+      }
+    }
+  }
+}
+```
+
+Then, we can see if the attribute exists, with the proper value.
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const attrs = path.node.attributes
+        const attr = attrs.find(attr => attr.name.name === 'id')
+
+        if (!attr) {
+          return
+        }
+
+        const value = attr.value.value
+        if (value !== 'hello') {
+          return
+        }
+
+        console.log(attr)
+      }
+    }
+  }
+}
+```
+
+When we make it to the `console.log` we've successfully found the node.
+This is where we can change it if we want.
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const attrs = path.node.attributes
+        const attr = attrs.find(attr => attr.name.name === 'id')
+
+        if (!attr) {
+          return
+        }
+
+        const value = attr.value.value
+        if (value !== 'hello') {
+          return
+        }
+
+        attr.value.value = t.stringLiteral('hello-world')
+      }
+    }
+  }
+}
+```
+
+We'll now result in `<h1 id="hello-world">Hello, world!</h1>`.
+
+However, there's one more thing to address. What happens if we know
+that the prop will only exist once? We want to stop tree traversal
+to ensure we don't continue walking the entire AST.
+
+So, we can do that with `path.stop()`. This will tell Babel to
+stop looking at other nodes.
+
+## All together
+
+```js
+export default api => {
+  const { types: t } = api
+
+  return {
+    visitor: {
+      JSXOpeningElement(path) {
+        const attrs = path.node.attributes
+        const attr = attrs.find(attr => attr.name.name === 'id')
+
+        if (!attr) {
+          return
+        }
+
+        const value = attr.value.value
+        if (value !== 'hello') {
+          return
+        }
+
+        attr.value.value = t.stringLiteral('hello-world')
+        path.stop()
+      }
+    }
+  }
+}
+```

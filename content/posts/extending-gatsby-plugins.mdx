@@ -96,7 +96,7 @@ const { onPostBuild } = require('gatsby-plugin-meta-redirect/gatsby-node')
 
 // ...
 
-export.onPostBuild
+export.onPostBuild = onPostBuild
 ```
 
 Now, `redirects.json` is read in and static, HTML redirects are created
@@ -111,6 +111,7 @@ a quick workflow to get up and running:
 - Add plugin to `gatsby-config.js`
 - Create a `redirects.json` file
 
----
+<br />
+<br />
 
 See the repo: https://github.com/johno/gatsby-plugin-redirects

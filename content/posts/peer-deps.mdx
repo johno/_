@@ -1,0 +1,99 @@
+---
+title: Why use peer dependencies?
+slug: /using-peer-dependencies
+date: 2020-02-20
+tags:
+  - tooling
+---
+
+This is a question I get with a lot of the projects I work on, so I
+thought I'd elaborate a bit.
+
+## What is a peer dependency?
+
+First, let's break down what a peer dependency is. A peer dependency is
+a dependency of a library that **isn't automatically installed**. A library
+will often specify a peer dependency when it wants a dependency to be installed
+along with it.
+
+For example, using `gatsby-plugin-mdx`, you're told to [run the following
+install command](https://www.gatsbyjs.org/docs/mdx/getting-started/):
+
+```sh
+yarn add gatsby-plugin-mdx @mdx-js/mdx @mdx-js/react
+```
+
+MDX core and its React implementation (`@mdx-js/mdx` and `@mdx-js/react`) are
+_peer dependencies_ of `gatsby-plugin-mdx`.
+
+## Why use a peer dependency?
+
+I've been an advocate for using peer dependencies in consuming libraries
+because it provides a few key advantages for folks.
+
+Firstly, it allows for users to upgrade the core library. So, you don't
+have to wait for `gatsby-plugin-mdx` to upgrade its MDX dependencies every
+time a new version is published. The user is in control.
+
+Though, more importantly, a peer dependency is more resilient to issues
+in runtimes. This is particularly important for libraries that use React
+context like MDX and even [Emotion](https://emotion.sh).
+
+If a library specifies its own version of React/MDX/Emotion/etc. it can
+end up with multiple versions on the client. This will cause conflicts
+with React, where context will disappear.
+
+Have you ever had weird issues with MDX or Theme UI where styling and/or
+components seemingly disappear? This is typically what happens when
+there are conflicting versions of React context. Things break down
+in weird ways.
+
+Ultimately, this is a shortcoming in package management. But, it's tough
+to solve so library authors are often forced to work around it.
+
+## How does it happen?
+
+When there are conflicting versions of a package you end up with nested
+`node_modules` which webpack will bundle together rather than explicitly
+resolving to the "same module".
+
+```txt
+node_modules/
+  react/
+  some-dependency/
+    node_modules/
+      react/
+```
+
+The above will typically result in two Reacts on the page if you don't
+explicitly set a [yarn resolution](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/).
+
+## Making the happy path for newcomers simpler
+
+You'll likely notice a few shortcomings of the peer dependency approach.
+Firstly, peer dependency handling in yarn/npm is
+[substandard at best](https://twitter.com/4lpine/status/1218582668771639296).
+
+New users becoming that are new to the terminal and CLI commands will worry
+about the numerous peer dependency warnings that are incorrectly shown. This
+isn't a great DX for new users.
+
+This is a problem.
+
+Seasoned users know to ignore them, and typically won't even read the output.
+Meanwhile, newer folks are presented with a poor experience leaving them feel
+confused. As library authors we should be doing our best to make newer folks
+feel taken care of.
+
+There's also the long install command. When a newcomer sees a long CLI command
+they could be unsurprisingly deterred.
+
+```sh
+yarn add gatsby-plugin-mdx @mdx-js/mdx @mdx-js/react
+```
+
+What if we simplified it (I plan on doing exactly this in MDX v2)?:
+
+```sh
+yarn add mdx gatsby-plugin-mdx
+```

@@ -97,3 +97,11 @@ What if we simplified it (I plan on doing exactly this in MDX v2)?:
 ```sh
 yarn add mdx gatsby-plugin-mdx
 ```
+
+## Conclusion
+
+Peer dependencies are a useful pattern to avoid duplicated libraries ending
+up on the client, but it's likely not worth it for most usecases.
+
+I'll be trying to document known resolution errors (like missing styles) and
+instructing folks to use yarn resolutions when needed.

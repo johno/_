@@ -1,0 +1,175 @@
+---
+title: Notes on Magic Ink
+slug: /notes/magic-ink
+date: 2020-02-21
+tags:
+  - design
+  - development
+  - tooling
+  - paper
+  - ide
+---
+
+**Notes from [Magic Ink: Information Software and the
+Graphical Interface](http://worrydream.com/MagicInk) by
+Bret Victor.**
+
+People typically turn to software for three reasons:
+
+- to learn
+- to create
+- to communicate
+
+With these goals, Bret says that we can classify software into
+three categories:
+
+- **information software**: helps the user learn by constructing a mental representation of
+  information that a user can use to ask/answer questions, make connections, and draw their own
+  conclusions.
+- **manipulation software**: aids humans in the creation process. Some sort of virtual object is
+  provided with a collection of _tools_ that a user can use to draw, write, or build with.
+- **communication software**: helps humans communicate. It's a synchronization mechanism to help
+  folks share their own internal, mental models with others. Sometimes that means simple chat
+  software like Slack/IRC/iMessages, other times that means a message board or real time collaboration
+  in a manipulation tool.
+
+## Manipulation software design is hard
+
+> Manipulation software generally displays a representation of an object—the model—which
+> the user directly manipulates with pseudo-mechanical affordances. Because manipulation
+> is the domain of industrial design, manipulation software emphasizes industrial design
+> aspects.
+
+For manipulation software to be effective, feedback loops have to be tight, context needs
+to be provided with the ability to zoom in and out. The fact that manipulation software
+needs to be boiled down to something two-dimensional makes it exceptionally challenging.
+Though, this constraint enables us to be more creative.
+
+## Most software is information software
+
+The vast majority of what we do with software is some form of learning, whether it's learning
+about a new way to build something or about a new apartment to rent. It's information seeking.
+
+Bret brings up some interesting concepts that coincide with my thoughts around the shortcomings
+in software. We have many tasks that _feel_ like manipulation, but really it's information. Tasks
+like adding an appointment for the dentist to your calendar or adding expenses into a spreadsheet
+are for information purposes.
+
+We want to glean information from them, it's just that our software is lacking. It isn't able
+to track my credit card statements or automatically turn an appointment confirmation email into
+the calendar event.
+
+## Information software design is graphic design
+
+Software doesn't typically do a very good job communicating information. It very rarely considers
+context, like the task a user wants to complete or how they're role might affect what information
+they should see.
+
+Software has a magical power over ink and paper, it can be dynamic. It can be changed.
+
+## Context-sensitive information graphics
+
+- use context to determine what data is needed
+- exclude unneeded data
+- generate a graphic that directly addresses current needs
+
+> Liberating us from the permanence of publication is the undersung crux of the computer—the
+> dynamic display screen. Its pixels are magic ink—capable of absorbing their context and
+> reflecting a unique story for every reader. And the components surrounding the display—CPU,
+> storage, network, input devices—are its peripherals for inferring context.
+
+### How can you infer context?
+
+- **Environment** involves sensing the current state of the world
+- **History** involves remembering the past
+- **Interaction** involves soliciting input from the user
+
+### Inferring context from the environment
+
+There are a handful of great ways to infer context.
+
+- Date/time
+- Location
+- Physical environment
+- Other software (APIs)
+- Documents from the user
+- Email
+
+### Inferring context from history
+
+**Last-value predictors** are relatively simple, and have a reasonably high likelihood of being
+correct. This draws on using the last context to resemble the current one. If you were last looking
+for large sized t-shirts, it's resonable to assume they'd want size L again when looking up t-shirts
+the following month.
+
+**Learning predictors** construct a model based on past contexts that can predict the current
+context. This can be a genetic algorithm, a neural net, or even some set of imperative heuristics.
+
+## Interactivity considered harmful
+
+If you can avoid a user needing to interact with your software by automating tasks or better understanding
+there needs, that's a good thing.
+
+> **For information software, all interaction is essentially navigation around a data space**
+
+Not being able to understand a user's needs, where they're forced to start from square one every time
+and navigate to the information they want is a penalty. It's unneeded cognitive overhead/load for the user.
+It's an **excise**.
+
+> …the most important thing to realize about navigation is that, in almost all cases, it represents pure
+> excise, or something close to it. Except in games where the goal is to navigate successfully through a
+> maze of obstacles, navigation through software does not meet user goals, needs, or desires. Unnecessary
+> or difficult navigation thus becomes a major frustration to users. In fact, it is the authors’ opinion
+> that poorly designed navigation presents the number-one problem in the design of any software application
+> or system…
+>
+> Alan Cooper and Robert Reimann, [About Face](https://www.amazon.com/gp/product/0764526413)
+
+This is challenging though, because a user doesn't always know what they're looking for. Thus, they can't
+exactly ask software directly. Not to mention they need to know _how_ to ask. The search box is a decent
+low-cost way to help a user figure out what they want to ask, particularly when it's as feature-rich like
+Google's search box.
+
+## Reducing interaction
+
+A designer should construct a context model that allows a user to **interact less**.
+
+- **Graphical manipulation** present the context model in a proper, informative setting
+- **Relative nagiagtion** let the user correct the model rather than construct it
+- **Tight feedback loops** let the user stop manipulation when close enough
+
+## How did we get here?
+
+Software is interaction-heavy and information-weak.
+
+Bret brings up an interesting rationale here where we've slowly evolved from UI paradigms like the
+original Macintosh. The environment was substantially different. There was no network nor was there much
+storage room. Interaction was the key way to communicate between the user and the machine.
+
+## Designing the information software revolution
+
+Steps towards improving information software:
+
+- recognize the need for design, information software is a medium for visual communication
+- find folks with a talent for visual communication
+- complement the designer's talent with skill (education and practice)
+- supplement the designer's talent with tools and platforms
+- create an environment where experimentation, evolution, and interplay are encouraged
+
+## Designing a design tool
+
+The current age of design hinges on drawing static graphics and composing static animations. If
+a designer wants to create something more dynamic, there are really two undesirable actions:
+
+- learn a programming language (intimidating)
+- create mockups and have an engineer implement (inefficient)
+
+Now we have some tools that start to address this like Webflow, Framer, Blocks, etc., but we haven't
+solved it all yet.
+
+We currently run with the mockup approach. Bret brings up an interesting discipline,
+**programming by demonstration**, where you teach a computer what to do by exemplifying what
+you want rather than giving it explicit instructions. This is pretty mind-melting. It is seemingly
+a great fit for turning mockups into something of higher fidelity.
+
+Though, it feels like we're still trying to shoehorn the wrong medium into a development workflow.

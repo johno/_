@@ -1,0 +1,122 @@
+---
+title: Introduction to natural language ASTs
+slug: /introduction-to-natural-language-asts
+date: 2020-02-25
+tags:
+  - ast
+  - unified
+  - compilers
+---
+
+Languages have a pre-defined structure or set of rules that's called a _grammar_. You might remember grammar from
+those long workbooks you had to complete in elementary school. In languages, including English, there are rules
+for how a sentence is formed. For native speakers we take this for granted, but we'll typically notice right
+away if something is malformed:
+
+- Mary loves cats.
+- Mary cats loves.
+
+The second sentence isn't grammatically correct because it doesn't follow "Subject-Verb-Object". Native speakers
+intuitively know this, even if they can’t express why.
+
+Languages have a lot of implied information packed into a grammar. English has paragraphs, sentences, verbs, tenses,
+subjects, and much more. Yet, when you read “Mary loves cats” none of that information is explicitly provided.
+It's a shared understanding.
+
+In fact, if we had to explicitly provide contextual grammar information, we'd never get anywhere. It'd take forever
+to have a conversation.
+
+As a speaker or writer you never have to articulate the grammar, but it’s what conveys the semantic meaning of your
+communication. A seemingly simple rule like Subject-Verb-Object lets us know who the sentence is about, and where
+the action is directed.
+
+When we read "Mary loves cats" we know that Mary is the subject doing the loving, the verb. The thing that she
+loves is cats. The object.
+
+Teaching this to computers is hard, though. And what happens if we want to transform the sentence to replace the
+subject, "cat", with "dog"?
+
+The first approach we might take is to replace cats with a regex. This works, to an extent.
+`"Mary loves cats".replace(/cat/, 'dog')`. We'll get the desired output: "Mary loves dogs".
+
+However, what happens when "cat" is elsewhere in the sentence but not the subject? With a compiler we don't typically
+have much control over the input. So, let's say someone writes a different sentence that contains the word "cat".
+
+Mary is the cat's pajamas.
+
+With the same string processing being applied, we'd end up with "Mary is the dog's pajamas" which doesn't make sense.
+
+For our desired transformation we need to only target the object in a sentence. So, we need to unpack the different
+parts into something we can work with, something machines can understand.
+
+The grammar rules of a language can be used to break up a statement into discrete parts. This is called _tokenization_,
+which we’ll dive into later. Once a language is broken up into its parts, we can represent it as a tree structure.
+
+![Mary: subject, loves: verb, cats: object](https://user-images.githubusercontent.com/1424573/75286763-4a562980-57d6-11ea-8d6d-5e000ca479b5.png)
+
+The Computer Science-y term for this representation of language is Abstract Syntax Tree, or AST. This tree representation
+is a key piece of a compiler and is the result of the parsing phase. It gives us something easier to work with when
+we want to transform "cat" to "dog".
+
+If this tree was a JavaScript object we could visit every sentence and look for nodes of type "object" and then
+check their value. This "search" that happens in an AST is called _visiting_ and is conducted by a _visitor_
+which we'll get into later.
+
+For now, we can summarize visitors as a way to walk through the nodes in our tree.
+
+The code for our cats to dogs transform would look something like the following:
+
+```js
+visit(ourSentenceAST, 'sentence.object', node => {
+  if (node.value === 'cats') {
+    node.value = 'dogs'
+  }
+  if (node.value === 'cat') {
+    node.value = 'dog'
+  }
+})
+```
+
+The AST is a powerful way to work with language. It's a more abstract representation of our original sentence
+that lets us be more intentional, and explicit, with our transforms.
+
+We can now rapidly use this same approach to change "loves" to "adores".
+
+```js
+visit(ourSentenceAST, 'sentence.verb', node => {
+  if (node.value === 'loves') {
+    node.value = adores'
+  }
+})
+```
+
+The transforms we've now performed on our AST are pretty neat, but they're also relatively straightforward. If
+you were very good with regex you could probably avoid using an AST. Though, your code would be brittle and
+difficult to change and debug.
+
+The regex approach begins to break down when we imagine a more complex scenario. What if we wanted to remove
+all negative sentences in a paragraph?
+
+```js
+visit(ourSentenceAST, 'sentence', node => {
+  const sentiment = sentiment.analyze(node.toString())
+  if (sentiment === 'negative') {
+    node.remove()
+  }
+})
+```
+
+ASTs can work for all languages, not just English.
+
+Programming languages are no different. In fact, the grammar and syntax rules of programming languages are usually
+simpler than natural language. There's less ambiguity.
+
+This is why a compiler parses code and creates a tree structure based on the rules of a grammar. The AST allows for
+compilers to transform your source language to a target language, which could mean machine code or ES5 JavaScript.
+
+As we continue diving into the different parts of a compiler you'll get intimately familiar with the Abstract Syntax
+Tree. It's the internal representation of a compiler's input, and is a key data structure for plugin-based web compilers
+like [unified](https://unifiedjs.com), [Babel](https://babeljs.io), and [PostCSS](https://postcss.org/).
+
+If you're interested in learning more about compilers and ASTs, checkout out the course I'm working on,
+[Compilers for Humans &rarr;](https://compilersforhumans.com)

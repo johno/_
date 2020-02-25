@@ -1,5 +1,5 @@
 ---
-title: Documenting components with Cartesian products
+title: Components, props, and Cartesian products
 slug: /cartesian-product
 date: 2020-02-25
 tags:
@@ -15,15 +15,15 @@ tags:
   - revisual
 ---
 
-Components are the building blocks of a design system, and their public API is a series of props.
-Let's consider a button component and what its props API might look like.
+Components are the building blocks of a design system, and their public API is expressed
+as props. Consider a Button component and what its props API might look like.
 
 It will likely have variants like primary, secondary, and link, and states like loading, disabled,
 and error. In addition to those props APIs there could be other props exposed including size.
 
-## Documenting a component
+## Consulting the documentation
 
-The best kind of component is a documented component, so we'll often start off with some
+The best kind of component is a documented component, so a Button's docs will often start off with some
 type of example usage for a component.
 
 ```jsx
@@ -32,7 +32,7 @@ type of example usage for a component.
 </Button>
 ```
 
-In addition we'll typically see a table of the possible values for the props:
+Example usage is typically accompanies by a table which contains the possible values for the props:
 
 | Prop      | Values                         |
 | --------- | ------------------------------ |
@@ -40,13 +40,14 @@ In addition we'll typically see a table of the possible values for the props:
 | `state`   | `loading`, `error`, `disabled` |
 | `size`    | `sm`, `md`, `lg`               |
 
-However, this isn't very visual. How do these props affect the button's rendering?
+This is super useful for developers. However, this isn't very visual. How do these props affect
+the button's rendering?
 
 ## Rendering prop combinations
 
-In order to visualize all possible props combinations, we'll often see each component copied over with
+In order to visualize all possible props combinations, one can copy a component usage with
 the new props applied. This is a great way to survey all possible outcomes of the button's appearance.
-If we wanted to look at all sizes we might copy the JSX code (or manually apply design tool symbols
+If you wanted to look at all sizes we might copy the JSX code (or manually apply design tool symbols
 to side by side buttons):
 
 ```jsx
@@ -56,10 +57,10 @@ to side by side buttons):
 <Button size="l">Hello, world!</Button>
 ```
 
-Not bad. We can quickly see the different sizes available and we get the benefit of seeing them in relation
-to each other. However, **we're manually doing the computer is good at. Computation.**
+Not bad. Users can quickly see the different sizes available and you get the benefit of seeing them in relation
+to each other. However, this is **manually doing tasks that the computer is good at. Computation.**
 
-If we surface all props and their values (like above in our props table), we can compute all possible
+If you surface all props and their values (like above in our props table), you can compute all possible
 button variations. This also ensures that all button specimens are displayed when props and their
 possible values are added and removed.
 
@@ -103,7 +104,7 @@ resulting set, the Cartesian product.
 | **`secondary`**  | `secondary`, `sm` | `secondary`, `md` | `secondary`, `lg` |
 | **`link`**       |     `link`, `sm`, |      `link`, `md` |      `link`, `lg` |
 
-Which can then be represented as JSX code using our Button component:
+Which can then be represented as JSX code with the Button component:
 
 - `<Button variant="primary" size="sm" />`
 - `<Button variant="primary" size="md" />`
@@ -117,9 +118,9 @@ Which can then be represented as JSX code using our Button component:
 
 ## Building a Cartesian component
 
-First, let's consider what an ergonomic API might look like
-for a Cartesian component. It'd need to accept the component,
-and then a collection of props with their possible values.
+First, consider what an ergonomic API might look like for a Cartesian component.
+It'd need to accept the component, and then a collection of props with their
+possible values.
 
 ```js
 import React from 'react'
@@ -136,7 +137,8 @@ export default () => (
 )
 ```
 
-An implementation would look something similar to:
+An implementation would look something similar to (Cartesian product implementation is left
+out for brevity):
 
 ```js
 import React, { Fragment } from 'react'
@@ -159,7 +161,7 @@ export default ({ component, container = Fragment, ...props }) => {
 }
 ```
 
-Then, we'll result all possible component prop combinations that are rendered:
+This would render the component for every prop combination produced by `cartesianProduct`.
 
 ![Usage of Cartesian component](https://user-images.githubusercontent.com/1424573/75268745-233b3000-57b5-11ea-96b3-60d79a582b25.png)
 
@@ -171,6 +173,9 @@ as part of some docs generation step.
 // ...
 export default props => <Cartesian component={Button} {...props.propTypes} />
 ```
+
+When the prop types in the Button's source code change, the resulting Cartesian product
+documentation would be automatically updated as well.
 
 ## Conclusion
 

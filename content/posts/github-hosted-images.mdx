@@ -1,0 +1,30 @@
+---
+title: GitHub hosted images
+slug: /github-hosted-images
+date: 2020-02-25
+tags:
+  - digital-garden
+---
+
+I use images pretty sparingly on my site, so I don't use
+Gatsby's image handling to keep my site develop/build as
+minimal as possible.
+
+So, I have a bit of a hack that I use to host my images,
+by taking advantage of (abusing) GitHub's issue image hosting.
+
+When there's an image I want to add to a blog post, I
+open up a new GitHub issue for any arbitrary repo and then
+drag and drop it into the editor. Then, I copy paste the
+URL into Markdown image syntax.
+
+I haven't noticed any outages or images being taken offline.
+Generally speaking, I am hosting maybe a handful of (optimized) images
+over more than a hundred pages so I can't imagine I trip
+any alerts.
+
+Some day I should create my own image service that let's me
+drag and drop images onto a page and then automatically uploads
+them to a self-hosted S3 bucket. Some. Day.
+
+In the meantime, thanks GitHub. Love you.

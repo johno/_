@@ -1,0 +1,98 @@
+---
+title: DesignQL
+slug: /designql
+date: 2020-02-25
+tags:
+  - design
+  - development
+  - designql
+---
+
+A while ago I open-sourced an exploration of mine I've been calling
+[DesignQL](https://github.com/system-ui/designql). It's the result of a
+lot of thinking I'd been doing regarding design tools, component
+libraries, and theming, particularly within the lense of design systems.
+
+It focuses on a few patterns that I noticed emerge during my research
+and work building projects like Tachyons, Compositor, Gatsby,
+and other experiments.
+
+- programmatic access to design systems
+- automating documentation generation
+- design tokens are interrelated and self-referencing via scales and composition
+
+## Programmatic access to design systems
+
+Design systems are living organisms, which means that there needs to be
+ways for the system to evolve. This means reading and writing from the
+many systems and render targets that might exist within a company that
+uses or implements a design system.
+
+This means bidirectional updating. This means integration with the many
+different tools used within an organization.
+
+I see something like DesignQL being the "nucleus" that handles the
+multiplexing and demultiplexing of design system data. Input can come
+from many sources, and be synthesized into a single representation based
+on some sort of schema.
+
+That same schema can then have any arbitrary number of "outputs" or "render
+targets".
+
+## Automating documentation
+
+Documentation is an important aspect of a design system, since it's an
+integral part of the living organism that is your design system. Similarly to
+how Gatsby's data layer works, tools can plug into the theme and component
+data to automate the documentation process by generating props tables, playgrounds,
+and other information.
+
+## Design Graphs and Theme UI
+
+When conceptualizing DesignQL, a key pattern I noticed was the interrelation between
+the primitives of a theme and components. A theme will often consist of a collection
+of values and scales like typography, space, and color which will be composed into
+other styles and variants within a system.
+
+I never elaborated too much here, so I was delighted to see Brent Jackson's work on
+defining the Design Graph. It more succinctly and elegantly describes similar concepts.
+
+> The [Design Graph](https://jxnblk.com/blog/design-graph/) is a constraint-based system
+> for organizing styles in UI design
+>
+> &mdash; Brent Jackson
+
+In essence, with the advent of the Design Graph, DesignQL is an implementation of the
+Design Graph. The Design Graph represents the theme itself, and its connections to variants
+and other components in a design system.
+
+Theme UI is an _output_ of DesignQL and another implementation of the Design Graph.
+
+## Leveraging existing technology
+
+By leveraging the [System UI Theme Specification](https://system-ui.com/theme) and
+DesignQL, we allow for the most potential for interoperability. Not to mention, GraphQL's
+penchant for discoverability via tools like GraphiQL makes it exceptionally compelling.
+
+## Opening up new doors
+
+In addition to allowing for more fluid evolution of a design system and automating
+documentation, this allows us to operate at a new level of abstraction. Hypothetically,
+it'd allow folks to experiment with tweaks to a design system and see how it plays out
+on staging environments for production websites, apps, and even design tools.
+
+Another interesting possibility is being able to see the greater dependency graph for
+a component or collection of components. Tooling can "zoom in" and "zoom out" for more or
+less information. Where is a component used? What prop variations are used? Which props
+are most common?
+
+This allows for designers and developers to visualize the context with the aid of
+computers rather than having to maintain all that context in their heads (which
+is what we do right now).
+
+## Related
+
+- [Design Graph by Brent Jackson](https://jxnblk.com/blog/design-graph/)
+- [Theme UI](https://theme-ui.com)
+- [System UI](https://system-ui.com)
+- [Diez](https://diez.org)

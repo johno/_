@@ -177,6 +177,17 @@ export default props => <Cartesian component={Button} {...props.propTypes} />
 When the prop types in the Button's source code change, the resulting Cartesian product
 documentation would be automatically updated as well.
 
+## Revealing other UI states
+
+Computing a Cartesian product doesn't need to be limited to props, either. Other
+states, like hover and focus styles, can be computed to provide an all in one
+overview of a component and its interactive aspects.
+
+![](https://user-images.githubusercontent.com/1424573/75293782-2863a380-57e4-11ea-9367-4a2a48dc61c8.png)
+
+Shout out to [Derrick Marcey](https://twitter.com/dmarcey/status/1232392586972844035)
+for pointing this out on Twitter.
+
 ## Conclusion
 
 There are a lot of interesting things we can do when we start thinking about computational design

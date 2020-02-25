@@ -5,6 +5,7 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "changeset": "changeset",
+    "clean": "gatsby clean",
     "deploy": "now switch johno && now --prod",
     "postinstall": "manypkg check",
     "release": "changeset publish",

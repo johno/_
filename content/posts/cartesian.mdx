@@ -1,0 +1,191 @@
+---
+title: Documenting components with Cartesian products
+slug: /cartesian-product
+date: 2020-02-25
+tags:
+  - design
+  - development
+  - tooling
+  - ide
+  - gatsby
+  - themes
+  - theme-ui
+  - design
+  - design-tools
+  - revisual
+---
+
+Components are the building blocks of a design system, and their public API is a series of props.
+Let's consider a button component and what its props API might look like.
+
+It will likely have variants like primary, secondary, and link, and states like loading, disabled,
+and error. In addition to those props APIs there could be other props exposed including size.
+
+## Documenting a component
+
+The best kind of component is a documented component, so we'll often start off with some
+type of example usage for a component.
+
+```jsx
+<Button variant="primary" size="lg">
+  Hello, world!
+</Button>
+```
+
+In addition we'll typically see a table of the possible values for the props:
+
+| Prop      | Values                         |
+| --------- | ------------------------------ |
+| `variant` | `primary`, `secondary`, `link` |
+| `state`   | `loading`, `error`, `disabled` |
+| `size`    | `sm`, `md`, `lg`               |
+
+However, this isn't very visual. How do these props affect the button's rendering?
+
+## Rendering prop combinations
+
+In order to visualize all possible props combinations, we'll often see each component copied over with
+the new props applied. This is a great way to survey all possible outcomes of the button's appearance.
+If we wanted to look at all sizes we might copy the JSX code (or manually apply design tool symbols
+to side by side buttons):
+
+```jsx
+<h2>Button size</h2>
+<Button size="s">Hello, world!</Button>
+<Button size="m">Hello, world!</Button>
+<Button size="l">Hello, world!</Button>
+```
+
+Not bad. We can quickly see the different sizes available and we get the benefit of seeing them in relation
+to each other. However, **we're manually doing the computer is good at. Computation.**
+
+If we surface all props and their values (like above in our props table), we can compute all possible
+button variations. This also ensures that all button specimens are displayed when props and their
+possible values are added and removed.
+
+Otherwise, If you add another size, you need to manually update the documentation. You'll also notice, that
+with only three props with three possible values each, there are a lot of possible values.
+
+There are **27 variations** to be exact.
+
+## The Cartesian product
+
+In mathematics, there is the _Cartesian product_, which lends itself nicely to displaying all possible
+props combinations. The Cartesian product of two or more sets, is the resulting set of all _ordered pairs_.
+
+### Ordered pairs
+
+The ordered pair is an important distinction because we want the _permutation_ of all possible props.
+
+With combinations, order doesn't matter, so _1234_ and _4321_ represent the same value. With permutations, the
+order matters just like it would in a keypad. If your phone's unlock code is _1234_, typing in _4321_
+wouldn't work because order is significant.
+
+This order property in Cartesian products is advantageous because we don't want the same prop combinations
+with different ordering. Consider JSX, the following two code snippets will render the same thing:
+
+- `<Button size="lg" variant="primary" />`
+- `<Button variant="primary" size="lg" />`
+
+### Calculating the Cartesian product
+
+The Cartesian product between sets _A_ and _B_ looks like the following in mathematical notation:
+
+_A × B = { (a, b) | a ∈ A and b ∈ B }_
+
+It looks a bit intimidating, but it essentially means that if _A_ is represented as rows in
+a table, while _B_ is columns, you can combine them. All new table cells are part of the
+resulting set, the Cartesian product.
+
+| `variant × size` |              `sm` |              `md` |              `lg` |
+| ---------------- | ----------------: | ----------------: | ----------------: |
+| **`primary`**    |   `primary`, `sm` |   `primary`, `md` |   `primary`, `lg` |
+| **`secondary`**  | `secondary`, `sm` | `secondary`, `md` | `secondary`, `lg` |
+| **`link`**       |     `link`, `sm`, |      `link`, `md` |      `link`, `lg` |
+
+Which can then be represented as JSX code using our Button component:
+
+- `<Button variant="primary" size="sm" />`
+- `<Button variant="primary" size="md" />`
+- `<Button variant="primary" size="lg" />`
+- `<Button variant="secondary" size="sm" />`
+- `<Button variant="secondary" size="md" />`
+- `<Button variant="secondary" size="lg" />`
+- `<Button variant="link" size="sm" />`
+- `<Button variant="link" size="md" />`
+- `<Button variant="link" size="lg" />`
+
+## Building a Cartesian component
+
+First, let's consider what an ergonomic API might look like
+for a Cartesian component. It'd need to accept the component,
+and then a collection of props with their possible values.
+
+```js
+import React from 'react'
+import Cartesian from '../src/design-system/cartesian'
+import Button from '../src/button'
+
+export default () => (
+  <Cartesian
+    component={Button}
+    variant={['primary', 'secondary', 'link']}
+    state={['loading', 'error', 'disabled']}
+    size={['sm', 'md', 'lg']}
+  />
+)
+```
+
+An implementation would look something similar to:
+
+```js
+import React, { Fragment } from 'react'
+import { cartesianProduct } from './util'
+
+export default ({ component, container = Fragment, ...props }) => {
+  const combinations = cartesianProduct(props)
+  const Component = component
+  const Container = container
+
+  return (
+    <Fragment>
+      {combinations.map((props, i) => (
+        <Container key={i}>
+          <Component {...props} />
+        </Container>
+      ))}
+    </Fragment>
+  )
+}
+```
+
+Then, we'll result all possible component prop combinations that are rendered:
+
+![Usage of Cartesian component](https://user-images.githubusercontent.com/1424573/75268745-233b3000-57b5-11ea-96b3-60d79a582b25.png)
+
+Lastly, imagine if in your documentation the possible props were statically extracted
+from the component's source code. You can then forward it along to the Cartesian component
+as part of some docs generation step.
+
+```js
+// ...
+export default props => <Cartesian component={Button} {...props.propTypes} />
+```
+
+## Conclusion
+
+There are a lot of interesting things we can do when we start thinking about computational design
+and generative documentation. The Cartesian component is a pretty simple, yet powerful, usage of
+this new way of thinking.
+
+In fact, we can automate displaying component variations so we can better diagnose what combinations
+cause issues and better documenting aspects of a component's implementation.
+
+Another interesting usage of the Cartesian product is being able to quickly select a component
+variation from all possibilities when working inside a design or development tool.
+
+## Related
+
+- [Cartesian component this writeup is based on](https://github.com/c8r/kit#cartesian)
+- [Component Styling API by Adam Morse](http://mrmrs.cc/writing/component-styling-api/)
+- [Wikipedia](https://en.wikipedia.org/wiki/Cartesian_product)

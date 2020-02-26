@@ -1,0 +1,62 @@
+---
+title: Notes on Shaders
+slug: /notes/shaders
+date: 2020-02-26
+tags:
+  - design
+  - design-tools
+  - revisual
+  - notes
+  - shaders
+---
+
+In [The Book of Shaders](https://thebookofshaders.com) they describe a
+_fragment shader_ as a Gutenberg press for graphics. This analogy is pretty
+apt, since each pixel on the screen is a character on the printing press.
+Though, of course, shaders can compute billions of pixels a second whereas
+the printing press is entirely manual.
+
+A _shader_, at its simplest, is a function that returns four values:
+_r_, _g_, _b_, and _a_. The value that is described maps to a _vertex_
+or _pixel_ which affects the overall appearance of the screen by
+updating/computing all pixels on the screen individually.
+
+It gets powerful because a shader can be used
+to return the computed color for every pixel on a screen very rapidly.
+This is very useful for video games, complex modeling software, and
+any other 3D or graphics-heavy applications.
+
+Shaders are processed in a parallel fashion, which allows for them to
+perform well. GPUs are very good at computing large sets of simple calculations
+which is exactly what shaders do.
+
+On the other hand, CPUs are best for a small collection of hard tasks.
+This makes the CPU a terrible fit for rapidly computing pixels for a
+screen.
+
+## With power comes responsibility
+
+Shaders are notoriously difficult to deal with because they are threaded
+and each thread is _blind_ to the other. This means that they must operate
+independently which is a difficult programming model for humans. We typically
+visualize things in a connected fashion.
+
+## Stages of the rendering pipeline
+
+There are multiple stages of the
+[rendering pipeline](https://www.khronos.org/opengl/wiki/Shader#Stages)
+that a shader might run on.
+
+- Vertex
+- Evaluation
+- Geometry
+- Fragment
+- Compute
+
+## Related
+
+- https://en.wikipedia.org/wiki/Shader
+- https://thebookofshaders.com
+- https://www.shadertoy.com
+- https://www.shadertoy.com/view/3lsSzf
+- https://gamedevelopment.tutsplus.com/tutorials/a-beginners-guide-to-coding-graphics-shaders--cms-23313

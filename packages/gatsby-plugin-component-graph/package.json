@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "repository": "johno/_/packages/gatsby-plugin-component-graph",
   "dependencies": {
-    "gatsby-source-filesystem": "2.1.46",
-    "gatsby-transformer-json": "2.2.25"
+    "gatsby-source-filesystem": "2.1.48",
+    "gatsby-transformer-json": "2.2.26"
   }
 }

@@ -1,0 +1,75 @@
+---
+title: The Bezold Effect
+slug: /bezold-effect
+date: 2020-03-02
+tags:
+  - design
+  - design-tools
+  - revisual
+  - computational-design
+  - color
+---
+
+The Bezold Effect was named after Wilhelm von Bezold (1837–1907) who
+discovered it when experimenting with ways to **modify rug design
+by only changing one color**.
+
+> He recognized this effect when searching for a method through which he could change
+> the color combinations of his rug designs entirely by adding or changing 1 color only.
+> Apparently, there is so far no clear recognition of the optical-perceptual conditions
+> involved.
+>
+> Interaction of Color by Josef Albers
+
+It's pretty powerful and shows how color perception can be manipulated in
+interesting ways.
+
+We might not know exactly _why_ it happens optically, but we know that the substitution of
+a single color affects the relationship of an entire color series/palette which causes a
+substantial shift in designs.
+
+The [wiki page on the Bezold Effect](https://en.wikipedia.org/wiki/Bezold_effect) shows
+red bars on top of a black column and a white column. When we add a way to adjust the darkness
+of one of the columns we can see the effect in action.
+
+The red looks darker on dark colors, and becomes brighter as it lightens, despite the red bars
+never changing.
+
+export const BezoldExample = () => {
+  const [darkness, setDarkness] = React.useState(0)
+  const backgroundColor = `rgb(${darkness}, ${darkness}, ${darkness})`
+  return (
+    <div>
+      <div style={{ height: 328, position: 'relative', display: 'flex', overflow: 'hidden' }}>
+        <div style={{ width: '50%', height: '100%', backgroundColor, paddingTop: 4 }}>
+        </div>
+        <div style={{ width: '50%', height: '100%' }}>
+        </div>
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 8px, hsl(351.1, 75.8%, 52.9%) 8px, hsl(351.1, 75.8%, 52.9%) 16px)'
+        }}
+        />
+      </div>
+      <input
+        type="range"
+        max="255"
+        min="0"
+        step="1"
+        value={darkness}
+        onChange={e => setDarkness(e.target.value)}
+      />
+    </div>
+  )
+}
+
+<BezoldExample />
+
+## Related
+
+- https://en.wikipedia.org/wiki/Bezold_effect
+- https://alvalyn.com/what-is-the-bezold-effect/

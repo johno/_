@@ -1,0 +1,75 @@
+---
+title: 2020, the year of the interactive blog post
+slug: /year-of-the-interactive-blog-post
+date: 2020-03-03
+tags:
+  - mdx
+  - digital-garden
+---
+
+Component frameworks like React and Vue have become the norm in frontend
+development. We're also seeing the pendulum swing to self-hosted platforms
+as folks grow frustrated with walled gardens like Medium. I think this is
+a great thing because it gives folks more flexibility with their tooling
+which means more freedom for creative expression.
+
+Also, I'm biased, but I think formats like MDX help to [promote a different
+of thinking about long form content](https://twitter.com/4lpine/status/1232749214083346432)
+in a more approachable way.
+
+Originally, MDX was mostly built for interactive documentation. It wasn't
+until shortly after that we saw it start to see adoption on blogs in order
+to embed components.
+
+This was surprising because it's easy to develop tunnel vision when working
+on a particular application of a project. However, the thin contract MDX
+exposes between Markdown and JSX has a _ton_ of potential for interactive
+and immersive content.
+
+MDX has some positive implications when it comes to long form
+content because you can show _and_ tell.
+
+export const Slider = () => {
+  const [position, setPosition] = React.useState('1')
+  let text = null
+  if (position === '0') {
+    text = '👈'
+  } else if (position === '1') {
+    text = '👍'
+  } else if (position === '2') {
+    text = '👉'
+  }
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h4 style={{ margin: 0, fontSize: 100 }}>{text}</h4>
+      <input
+        type="range"
+        step="1"
+        max="2"
+        min="0"
+        value={position}
+        onChange={e => setPosition(e.target.value)}
+      />
+    </div>
+  )
+}
+
+<Slider />
+
+In 2019 we saw some interactive posts get buzz on tech Twitter, and I'm hoping
+for even more during 2020.
+
+As we realize how effective interaction and scrollytelling can be, and how authoring
+technology is catching up, we will probably see a lot more content in this category. I'm
+excited.
+
+## Some amazing interactive and scrollytelling posts:
+
+- https://wattenberger.com/blog/react-hooks
+- https://pomb.us/build-your-own-react/
+- https://joshwcomeau.com/react/rainbow-button
+- https://kyleshevlin.com/graphs-are-everywhere
+
+### Did you write an interactive post or encounter one?
+
+[Let me know on Twitter!](https://twitter.com/mdx_js/status/1232755784154378240)

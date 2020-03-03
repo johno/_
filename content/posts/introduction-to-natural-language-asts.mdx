@@ -42,9 +42,9 @@ The first approach we might take is to replace cats with a regex. This works, to
 However, what happens when "cat" is elsewhere in the sentence but not the subject? With a compiler we don't typically
 have much control over the input. So, let's say someone writes a different sentence that contains the word "cat".
 
-Mary is the cat's pajamas.
+It's raining cats and dogs.
 
-With the same string processing being applied, we'd end up with "Mary is the dog's pajamas" which doesn't make sense.
+With the same string processing being applied, we'd end up with "It's raining dogs and dogs" which doesn't make sense.
 
 For our desired transformation we need to only target the object in a sentence. So, we need to unpack the different
 parts into something we can work with, something machines can understand.

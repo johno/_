@@ -1,7 +1,7 @@
 ---
 title: Randomness and color
 slug: /randomness-and-color
-date: 2020-02-28
+date: 2020-03-04
 tags:
   - design
   - design-tools
@@ -14,14 +14,16 @@ import chroma from 'chroma-js'
 import sample from 'lodash.sample'
 import { ArrowRight, Lock, Unlock } from 'react-feather'
 
-As part of my work, particularly [Components AI](https://components.ai), I find myself thinking about
-computational design, randomness, and color. A lot.
+As part of my work I find myself thinking about computational design,
+randomness, and color. A lot.
 
-With Components AI, we want to let you explore _all_ of generative space in one way or another, so we need to
-be able to compute _all_ possible values. Though, in practice, it can be difficult.
+With [Components AI](https://components.ai), we want to let you explore _all_ of
+generative space in one way or another, so we need to be able to compute _all_
+possible values. Though, in practice, it can be difficult.
 
-It's important to make randomly generated values feel less drastic and instead more gradual. We want randomness
-to be on a slider. We also want to apply common design knowledge to constrain outputs when desired.
+It's important to make randomly generated values feel less drastic and instead more
+gradual. We want randomness to be on a slider. We also want to apply common design
+knowledge to constrain outputs when desired.
 
 So, in this post, I want to explore random color generation and answer a few key questions:
 
@@ -1150,3 +1152,9 @@ export const RandomColorRegeneratorPin = () => {
 <RandomColorRegeneratorPin />
 
 ## What's up with all the browns?
+
+---
+
+Thanks to Adam Morse, Chris Biscardi, Cole Bemis, Taylor Bell, Florian Kissling,
+Prince Wilson, Rose Wiegley, Nick Bender, and my wife for reading drafts of this
+post and providing feedback.

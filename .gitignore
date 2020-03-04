@@ -1,5 +1,5 @@
 .cache
 public
 node_modules
-og-image
 *.swp
+.now

@@ -1,14 +1,4 @@
 {
   "version": 2,
-  "name": "johno",
-  "alias": ["johno.com"],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/static-build",
-      "config": {
-        "distDir": "public"
-      }
-    }
-  ]
+  "alias": ["johno.com"]
 }

@@ -1,7 +1,7 @@
 ---
 title: Randomness and color
 slug: /randomness-and-color
-date: 2020-03-04
+date: 2020-03-05
 tags:
   - design
   - design-tools
@@ -17,15 +17,16 @@ import { ArrowRight, Lock, Unlock } from 'react-feather'
 As part of my work I find myself thinking about computational design,
 randomness, and color. A lot.
 
-With [Components AI](https://components.ai), we want to let you explore _all_ of
+With [Components AI](https://components.ai), we want to let you explore
 generative space in one way or another, so we need to be able to compute _all_
 possible values. Though, in practice, it can be difficult.
 
-It's important to make randomly generated values feel less drastic and instead more
-gradual. We want randomness to be on a slider. We also want to apply common design
-knowledge to constrain outputs when desired.
+For a better user experience it makes sense to make randomly generated values
+feel less drastic and instead more gradual. We want randomness to be on a slider.
+We also want to apply common design knowledge to constrain outputs when desired.
 
-So, in this post, I want to explore random color generation and answer a few key questions:
+So, in this post, we'll constrain ourselves to random colors and explore color generation
+to answer a few key questions:
 
 - **how do random numbers and color relate?**
 - **can we create a color generation algorithm that has some sort of memory?**
@@ -43,22 +44,12 @@ generators in Components AI, this is exactly what we do.
 Each character in a CSS [hex string](https://en.wikipedia.org/wiki/Hexadecimal), like `#123abc`,
 represents a number, or digit, 0-16.
 
-Value | Number
------ | ------
-0-9 | 0-9
-a | 10
-b | 12
-c | 13
-d | 14
-e | 15
-f | 16
-
 Since a CSS hex color can have up to six characters, we can compute the entire hex color
 space which has nearly 17 million colors:
 
 _16 x 16 x 16 x 16 x 16 x 16 = 16,777,216_
 
-We can use this number to create a one-liner function that will randomly generate a
+We can use this number to create a function that will randomly generate a
 number between _0_ and _16,777,215_ (at least as randomly as `Math.random` can be) and then
 convert it to hex:
 
@@ -70,7 +61,7 @@ function randomHexColor() {
 
 This [algorithm for computing color](https://www.paulirish.com/2009/random-hex-color-code-snippets/)
 ensures that all possible hex values can be output, but one might quickly notice that a lot
-of colors are all over the place and some aren't exactly aesthetically pleasing.
+of colors are all over the place and some aren't aesthetically pleasing.
 
 ### Rendering generated hex colors
 
@@ -90,8 +81,9 @@ a [Pseudorandom Number Generator](https://en.wikipedia.org/wiki/Pseudorandom_num
 (PRNG) which uses a [seed](https://en.wikipedia.org/wiki/Random_seed) to distribute results
 across a number space (0-1 for `Math.random`).
 
-Hardware random number generators (HRNG) are closer to true random because
-they will tap into a physical process like thermal noise. The physical world is where we can
+[Hardware random number generators](https://en.wikipedia.org/wiki/Hardware_random_number_generator)
+(HRNG) are closer to true random because they will tap into a physical process like thermal noise or even
+[nuclear decay measurements](http://www.fourmilab.ch/hotbits/how3.html). The physical world is where we can
 find true randomness for seeding purposes, all other algorithms are an approximation.
 
 Randomness has implications for software systems because it's used for cryptography and
@@ -407,9 +399,9 @@ as the first approach.
 
 ### Mixing colors
 
-The chroma JavaScript library has a `mix` function which accepts two colors and
-a mix ratio. I combined the previous color, with a random color, and then also
-generated a random mix ratio.
+The [chroma](https://gka.github.io/chroma.js/) JavaScript library has a `mix`
+function which accepts two colors and a mix ratio. I combined the previous color,
+with a random color, and then also generated a random mix ratio.
 
 ```js
 color = chroma.mix(color, randomHexColor(), Math.random())
@@ -798,39 +790,231 @@ to me.
 
 ### Sporadic sampling of multiple algorithms
 
-COMBINE THEM ALL!!!!
+Each of the above algorithms affected the gradual change in color generation in
+different ways. What happens if we randomly sample each of the algorithms to
+create a single color generator with memory?
 
-TODO: Elaborate here, and maybe even make interactive by allowing the toggling
-of algorithms.
+The results aren't too bad.
 
-export const RandomEvolvingColors = ({ count = 100 }) => {
+export const regenColorWithMemory = color => {
   const randomHexColor = () => {
     return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
   }
-  let color = randomHexColor()
-  const els = []
-  for (let i = 0; i < count; i++) {
-    els.push(<div style={{ height: 16, width: 16, backgroundColor: color }} />)
-    //const [h, s, l] = chroma(color).hsl()
-    const fns = [
-      () => chroma(color).saturate(),
-      () => chroma(color).desaturate(),
-      () => chroma.blend(color, randomHexColor(), 'overlay'),
-      () => chroma(color).brighten(),
-      () => chroma(color).darken(),
-      () => chroma(color).set('hsl.h', '*.5')
-    ]
-    const fn = sample(fns)
-    color = fn()
+  color = color || randomHexColor()
+  const mix = () => chroma.mix(color, randomHexColor(), Math.random())
+  const blendAlgorithms = [
+    'overlay',
+    'multiply',
+    'darken',
+    'lighten',
+    'screen',
+    'burn',
+    'dodge'
+  ]
+  const blend = () => chroma.blend(color, randomHexColor(), sample(blendAlgorithms))
+  const adjustments = [
+    '*1.5',
+    '*1.25',
+    '*1.1',
+    '*.75',
+    '*.1',
+    '/1.5',
+    '/1.25',
+    '/1.1',
+    '/.75',
+    '/.1',
+  ]
+  const hueAdjust = () => chroma(color).set('hsl.h', sample(adjustments))
+  const saturate = () => chroma(color).saturate()
+  const desaturate = () => chroma(color).desaturate()
+  const darken = () => chroma(color).darken()
+  const brighten = () => chroma(color).brighten()
+  const fns = [
+    mix,
+    blend,
+    blend,
+    blend,
+    blend,
+    hueAdjust,
+    hueAdjust,
+    saturate,
+    saturate,
+    desaturate,
+    darken,
+    brighten
+  ]
+  const fn = sample(fns)
+  return fn()
+}
+
+export const RandomEvolvingColors = ({ count = 50 }) => {
+  const [colors, setColors] = React.useState([])
+  React.useEffect(() => regenColors(), [])
+  let color = regenColorWithMemory()
+  const regenColors = () => {
+    const newColors = []
+    for (let i = 0; i < count; i++) {
+      color = regenColorWithMemory(color)
+      newColors.push(color)
+      setColors(newColors)
+    }
   }
+  const els = colors.map((color, i) => <div key={i} style={{ height: 16, width: '2%', backgroundColor: color }} />)
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div onClick={regenColors} style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}>
       {els}
     </div>
   )
 }
 
 <RandomEvolvingColors />
+
+Though, what's the average color distance in comparison to pure
+random?
+
+export const RandomEvolvingColorsComparison = ({ count = 50, width= '2%', height = 16 }) => {
+  const [colors, setColors] = React.useState([])
+  const [randColors, setRandColors] = React.useState([])
+  React.useEffect(() => regenColors(), [])
+  let color = regenColorWithMemory()
+  const regenColors = () => {
+    const newColors = []
+    const newRandColors = []
+    for (let i = 0; i < count; i++) {
+      color = regenColorWithMemory(color)
+      newColors.push(color)
+      newRandColors.push(regenColorWithMemory())
+      setColors(newColors)
+      setRandColors(newRandColors)
+    }
+  }
+  const avgDistance = colors => {
+    const sumOfDistance = colors.map((color, i) => {
+      if (!colors[i+1]) {
+        return null
+      }
+      return chroma.distance(color, colors[i+1])
+    })
+      .filter(Boolean)
+      .reduce((acc, curr) => acc + curr, 0)
+    return Math.round(sumOfDistance / colors.length)
+  }
+  const els = colors.map((color, i) => <div key={i} style={{ height, width, backgroundColor: color }} />)
+  const randEls = randColors.map((color, i) => <div key={i} style={{ height, width, backgroundColor: color }} />)
+  return (
+    <div onClick={regenColors} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: -20 }}>
+      <div style={{ width: '45%' }}>
+        <h3>Memory-based</h3>
+        <div style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}>
+          {els}
+        </div>
+        <h5 style={{ marginTop: 10 }}>Average color distance: {avgDistance(colors)}</h5>
+      </div>
+      <div style={{ width: '45%' }}>
+        <h3>Pure random</h3>
+        <div style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}>
+          {randEls}
+        </div>
+        <h5 style={{ marginTop: 10 }}>Average color distance: {avgDistance(randColors)}</h5>
+      </div>
+    </div>
+  )
+}
+
+<RandomEvolvingColorsComparison />
+
+This seems pretty compelling because the average color distance is substantially
+less than pure random. When comparing the color schemes, too, pure random has
+much more entropy.
+
+Though, 50 colors is a relatively small data set. What happens with 1,500 colors
+being generated?
+
+<RandomEvolvingColorsComparison count={1500} width={8} height={8} />
+
+## Entropy on a slider
+
+Now that we've addressed most of the questions we set out to answer, we still
+need to make the entropy configurable.
+
+Sometimes users might want to see pure random, sometimes they might something
+more gradual. Sometimes they might want something in between.
+
+export const RandomEvolvingColorsSlider = () => {
+  const [color, setColor] = React.useState(regenColorWithMemory())
+  const [entropy, setEntropy] = React.useState(50)
+  const randomBool = (percentile = 1 / 2) => Math.random() >= percentile
+  const regenColor = () => {
+    const newColor = randomBool(entropy / 100) ? regenColorWithMemory(color) : regenColorWithMemory()
+    setColor(newColor)
+  }
+  return (
+    <div>
+      <div
+        onClick={regenColor}
+        style={{ height: 240, width: 240, cursor: 'pointer', display: 'flex', flexWrap: 'wrap', backgroundColor: color }}
+      />
+      <label style={{ fontWeight: 'bold', userSelect: 'none', marginTop: 16 }}>
+        Entropy {entropy}% <br />
+        <input
+          type="range"
+          max="100"
+          min="0"
+          step="10"
+          value={entropy}
+          onChange={e => setEntropy(e.target.value)}
+          style={{
+            marginRight: 16
+          }}
+        />
+      </label>
+    </div>
+  )
+}
+
+<RandomEvolvingColorsSlider />
+
+Above, entropy is placed on a slider. It's reflected as a percentage
+that's used to determine whether the pure random color generator function
+is called or if our memory-based generator is called.
+
+At its most basic, the code looks something like:
+
+```js
+const [color, setColor] = useState(randomHexColor())
+const [entropy, setEntropy] = useState(50)
+
+const randomBool = percentile => Math.random() >= percentile
+
+const regenColor = () => {
+  const newColor = randomBool(entropy / 100)
+    ? regenColorWithMemory(color)
+    : randomHexColor()
+  setColor(newColor)
+}
+```
+
+With that, the user can configure the probability of the generator
+function. Pretty neat!
+
+## Conclusion
+
+Over time this memory-based color generator will surely evolve, but
+I think it's ready to start pushing to production for some generators
+on Components AI.
+
+For next steps, this concept can be used as one of the many generators
+for more complex components as well. Consider the button, generating
+colors that are of high entropy.
+
+I also want to explore multiple color generation and handling relationship
+between colors in a palette.
+
+Thanks for reading <3.
+
+<!--
+
+## Generating colors in a range
 
 ## Randomizing multiple colors
 
@@ -1151,10 +1335,10 @@ export const RandomColorRegeneratorPin = () => {
 
 <RandomColorRegeneratorPin />
 
-## What's up with all the browns?
+-->
 
 ---
 
-Thanks to Adam Morse, Chris Biscardi, Cole Bemis, Taylor Bell, Florian Kissling,
-Prince Wilson, Rose Wiegley, Nick Bender, and my wife for reading drafts of this
-post and providing feedback.
+Thanks to Adam Morse, Chris Biscardi, Brent Jackson, Cole Bemis, Taylor Bell,
+Florian Kissling, Prince Wilson, Rose Wiegley, Nick Bender, and my wife for
+reading drafts of this post and providing feedback.

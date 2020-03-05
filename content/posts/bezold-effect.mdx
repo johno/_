@@ -40,19 +40,33 @@ export const BezoldExample = () => {
   const backgroundColor = `rgb(${darkness}, ${darkness}, ${darkness})`
   return (
     <div>
-      <div style={{ height: 328, position: 'relative', display: 'flex', overflow: 'hidden' }}>
-        <div style={{ width: '50%', height: '100%', backgroundColor, paddingTop: 4 }}>
-        </div>
-        <div style={{ width: '50%', height: '100%' }}>
-        </div>
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 8px, hsl(351.1, 75.8%, 52.9%) 8px, hsl(351.1, 75.8%, 52.9%) 16px)'
+      <div
+        style={{
+          height: 328,
+          position: 'relative',
+          display: 'flex',
+          overflow: 'hidden'
         }}
+      >
+        <div
+          style={{
+            width: '50%',
+            height: '100%',
+            backgroundColor,
+            paddingTop: 4
+          }}
+        ></div>
+        <div style={{ width: '50%', height: '100%' }}></div>
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background:
+              'repeating-linear-gradient(0deg, transparent, transparent 8px, hsl(351.1, 75.8%, 52.9%) 8px, hsl(351.1, 75.8%, 52.9%) 16px)'
+          }}
         />
       </div>
       <input

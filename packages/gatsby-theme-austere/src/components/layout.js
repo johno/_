@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {Styled, jsx} from 'theme-ui'
+import { Styled, jsx } from 'theme-ui'
 
 import Header from './header'
 

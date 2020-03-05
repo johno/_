@@ -160,6 +160,13 @@ export default {
     },
     img: {
       maxWidth: '100%'
+    },
+    blockquote: {
+      borderLeft: '4px solid',
+      borderColor: '#c0bfc0',
+      ml: [2, 3, 4],
+      pl: [2, 3, 4],
+      py: [2, 3, 3]
     }
   }
 }

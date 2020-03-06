@@ -25,8 +25,16 @@ For a better user experience it makes sense to make randomly generated values
 feel less drastic and instead more gradual. We want randomness to be on a slider.
 We also want to apply common design knowledge to constrain outputs when desired.
 
-So, in this post, we'll constrain ourselves to random colors and explore color generation
-to answer a few key questions:
+So, in this post, we'll constrain ourselves to random colors and explore color
+generation.
+
+Here I seek to answer some questions that [Adam Morse](https://twitter.com/mrmrs_)
+asked me:
+
+- **can we make color transitions less drastic?**
+- **how can randomness be configurable?**
+
+Which resulted in a few other questions:
 
 - **how do random numbers and color relate?**
 - **can we create a color generation algorithm that has some sort of memory?**
@@ -1339,6 +1347,11 @@ export const RandomColorRegeneratorPin = () => {
 
 ---
 
-Thanks to Adam Morse, Chris Biscardi, Brent Jackson, Cole Bemis, Taylor Bell,
+Thanks to Adam Morse on asking the tough questions that inspired me to
+try and experiment with a few solutions.
+
+---
+
+Thanks to Chris Biscardi, Brent Jackson, Cole Bemis, Taylor Bell,
 Florian Kissling, Prince Wilson, Rose Wiegley, Nick Bender, and my wife for
 reading drafts of this post and providing feedback.

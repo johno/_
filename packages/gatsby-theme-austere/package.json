@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": "johno/_/packages/gatsby-theme-austere",
   "dependencies": {
-    "@emotion/core": "10.0.27",
+    "@emotion/core": "10.0.28",
     "@mdx-js/react": "1.5.7",
     "gatsby-plugin-react-helmet": "3.1.23",
     "gatsby-plugin-theme-ui": "0.3.0",

@@ -29,7 +29,7 @@
     "react-dom": "16.13.0",
     "react-feather": "2.0.3",
     "theme-ui": "0.3.1",
-    "three": "0.112.1"
+    "three": "0.114.0"
   },
   "engines": {
     "node": "12.x"

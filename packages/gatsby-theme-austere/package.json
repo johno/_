@@ -11,6 +11,7 @@
     "gatsby-plugin-sitemap": "2.2.28",
     "gatsby-plugin-theme-ui": "0.3.0",
     "gatsby-theme-blog-core": "1.2.15",
+    "prism-react-renderer": "^1.0.2",
     "react-helmet": "5.2.1",
     "theme-ui": "0.3.1"
   },

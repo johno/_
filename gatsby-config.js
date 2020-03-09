@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: 'johno'
+    title: 'johno',
+    siteUrl: 'https://johno.com'
   },
   plugins: [
     // 'gatsby-plugin-component-graph',

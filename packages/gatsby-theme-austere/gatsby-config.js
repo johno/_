@@ -6,7 +6,16 @@ module.exports = options => {
         options
       },
       'gatsby-plugin-theme-ui',
-      'gatsby-plugin-react-helmet'
+      'gatsby-plugin-react-helmet',
+      {
+        resolve: 'gatsby-plugin-sitemap',
+        options: {
+          exclude: [
+            '/confirm',
+            '/confirmed'
+          ]
+        }
+      }
     ]
   }
 }

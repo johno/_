@@ -9,7 +9,13 @@ export default {
     muted: '#f6f6f6',
     highlight: '#efeffe',
     gray: '#777',
-    accent: '#609'
+    accent: '#609',
+    modes: {
+      dark: {
+        text: '#fff',
+        background: '#000',
+      }
+    }
   },
   fonts: {
     body: 'system-ui, sans-serif',

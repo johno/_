@@ -8,7 +8,8 @@ module.exports = {
     {
       resolve: 'gatsby-theme-austere',
       options: {
-        basePath: '/writing/archives'
+        basePath: '/writing/archives',
+        withDarkMode: true
       }
     },
     {

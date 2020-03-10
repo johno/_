@@ -1,14 +1,21 @@
 import React from 'react'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { MDXProvider } from '@mdx-js/react'
+import Prism from "@theme-ui/prism"
 import { Helmet } from 'react-helmet'
 
 import Layout from './layout'
 import PostTitle from './title'
-import CodeBlock from '../code-block'
+
+const CodeBlock = props => {
+  const { children: codeString, ...restProps } = props
+  return (
+    <Prism {...restProps}>{codeString}</Prism>
+  )
+}
 
 const components = {
-  pre: props => <div {...props} />,
+  pre: props => props.children,
   code: CodeBlock
 }
 

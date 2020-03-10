@@ -1,3 +1,5 @@
+import github from '@theme-ui/prism/presets/github.json'
+
 export default {
   useCustomProperties: true,
   initialColorMode: 'system',
@@ -124,7 +126,8 @@ export default {
       }
     },
     code: {
-      fontFamily: 'monospace'
+      fontFamily: 'monospace',
+      ...github
     },
     inlineCode: {
       fontFamily: 'monospace',

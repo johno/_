@@ -12,13 +12,13 @@
     "test": "jest"
   },
   "dependencies": {
-    "@changesets/cli": "2.5.2",
+    "@changesets/cli": "2.6.1",
     "@manypkg/cli": "0.11.0",
     "@theme-ui/components": "0.3.1",
     "chroma-js": "2.1.0",
-    "gatsby": "2.19.32",
+    "gatsby": "2.19.39",
     "gatsby-plugin-fathom": "1.2.0",
-    "gatsby-theme-austere": "0.1.0",
+    "gatsby-theme-austere": "0.1.1",
     "gatsby-theme-blog-tags": "0.0.11",
     "husky": "4.2.3",
     "jest": "25.1.0",

@@ -7,9 +7,11 @@
     "changeset": "changeset",
     "clean": "gatsby clean",
     "deploy": "now switch johno && now --prod",
+    "fix": "manypkg fix",
     "postinstall": "manypkg check",
     "release": "changeset publish",
-    "test": "jest"
+    "test": "jest",
+    "todo": "yarn workspace todo start"
   },
   "dependencies": {
     "@changesets/cli": "2.6.1",

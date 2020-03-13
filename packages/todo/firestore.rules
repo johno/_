@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function belongsToUser() {
+	    return request.auth.uid != null && request.auth.uid == resource.data.userId;
+    }
+
+    function userIsLoggedIn() {
+    	return request.auth.uid != null;
+    }
+
+    match /{document=**} {
+    	allow create: if userIsLoggedIn();
+      allow write: if belongsToUser();
+      allow read: if belongsToUser();
+    }
+  }
+}

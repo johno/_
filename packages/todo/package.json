@@ -6,7 +6,7 @@
     "start": "gatsby develop",
     "build": "gatsby build",
     "clean": "gatsby clean",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy && now switch johno && now --prod"
   },
   "dependencies": {
     "@emotion/core": "10.0.28",

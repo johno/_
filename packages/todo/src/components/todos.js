@@ -151,7 +151,9 @@ export default () => {
 
   const getAllTodos = async () => {
     const records = await getTodos(currentUser)
-    setTodos(records)
+    const completeTodos = records.filter(r => r.isComplete)
+    const incompleteTodos = records.filter(r => !r.isComplete)
+    setTodos([...incompleteTodos, ...completeTodos])
   }
 
   useEffect(() => {

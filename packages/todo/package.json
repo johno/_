@@ -13,7 +13,7 @@
     "@mdx-js/mdx": "1.5.7",
     "@mdx-js/react": "1.5.7",
     "firebase": "7.11.0",
-    "gatsby": "2.19.44",
+    "gatsby": "2.19.45",
     "gatsby-plugin-mdx": "1.0.83",
     "gatsby-plugin-react-helmet": "3.1.24",
     "gatsby-plugin-theme-ui": "0.3.0",

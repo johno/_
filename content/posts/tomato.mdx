@@ -38,10 +38,11 @@ When combined with `black`, `tomato` is accessible. It results in a
 
 <Flex>
 
-<div style={{ height: 200, width: 200, minWidth: 200, flexGrow: 1, color: 'tomato', border: '2px solid black', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}>F</div>
+<div style={{ height: 200, width: 200, minWidth: 200, flexGrow: 1, color: 'tomato', border: '2px solid tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}>F</div>
 
 When combined with `white`, `tomato` isn't accessible. It results in an
-**F** score and the contrast ratio is **2.9**.
+**F** score and the contrast ratio is **2.9**. At first this might seem
+like a bummer, but we can still use it for accents like borders.
 
 </Flex>
 
@@ -83,7 +84,7 @@ There's an emoji for tomato.
 
 <div>
 
-You can create a CSS class to make things `tomato`.
+You can create a CSS class for `tomato`.
 
 ```css
 .tomato {
@@ -104,7 +105,26 @@ This makes it twice as healthy for you.
 
 </Flex>
 
-<div style={{ backgroundColor: 'tomato', height: '100vh', width: '120vw', marginLeft: '-10vw', marginBottom: 80 }} />
+<Flex>
+
+<div style={{ height: 200, width: 200, minWidth: 200, maxWidth: 200, flexGrow: 1, color: 'white', backgroundColor: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}><code>!</code></div>
+
+<div>
+
+You can make everything `tomato` if you want.
+
+```css
+* {
+  color: tomato !important;
+  background-color: tomato !important;
+}
+```
+
+</div>
+
+</Flex>
+
+<div style={{ backgroundColor: 'tomato', height: '100vh', width: '120vw', marginLeft: '-10vw', marginBottom: 80, marginTop: 80 }} />
 
 ## What's your favorite named color?
 

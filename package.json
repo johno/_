@@ -27,8 +27,8 @@
     "lint-staged": "10.0.8",
     "lodash.sample": "4.2.1",
     "prettier": "1.19.1",
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
     "react-feather": "2.0.3",
     "theme-ui": "0.3.1",
     "three": "0.114.0"
@@ -60,8 +60,8 @@
     "@emotion/core": "10.0.28",
     "@mdx-js/react": "1.5.7",
     "@theme-ui/components": "0.3.1",
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
     "theme-ui": "0.3.1"
   }
 }

@@ -5,6 +5,7 @@ date: 2020-03-19
 tags:
   - css
   - design
+  - color
 ---
 
 export const Flex = props => (
@@ -28,19 +29,19 @@ export const Flex = props => (
 
 <Flex>
 
-<div style={{ height: 200, width: 200, minWidth: 200, flexGrow: 1, color: 'tomato', border: 'thin solid tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}>F</div>
+<div style={{ height: 200, width: 200, minWidth: 200, flexGrow: 1, backgroundColor: 'black', color: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}>AAA</div>
 
-When combined with `white`, `tomato` isn't accessible. It results in an
-**F** score and the contrast ratio is **2.9**.
+When combined with `black`, `tomato` is accessible. It results in a
+**AAA** score and the contrast ratio is **7.1**.
 
 </Flex>
 
 <Flex>
 
-<div style={{ height: 200, width: 200, minWidth: 200, flexGrow: 1, backgroundColor: 'black', color: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}>AAA</div>
+<div style={{ height: 200, width: 200, minWidth: 200, flexGrow: 1, color: 'tomato', border: '2px solid black', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}>F</div>
 
-When combined with `black`, `tomato` is accessible. It results in a
-**AAA** score and the contrast ratio is **7.1**.
+When combined with `white`, `tomato` isn't accessible. It results in an
+**F** score and the contrast ratio is **2.9**.
 
 </Flex>
 
@@ -70,7 +71,15 @@ In rgb format, tomato is represented as `rgb(255, 99, 71)`.
 
 <Flex>
 
-<div style={{ height: 200, width: 200, minWidth: 200, maxWidth: 200, border: '16px solid black', flexGrow: 1, color: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}><code>{'{}'}</code></div>
+<div style={{ height: 200, width: 200, minWidth: 200, maxWidth: 200, flexGrow: 1, color: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}><span aria-label="tomato">🍅</span></div>
+
+There's an emoji for tomato.
+
+</Flex>
+
+<Flex>
+
+<div style={{ height: 200, width: 200, minWidth: 200, maxWidth: 200, border: '32px solid black', flexGrow: 1, color: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}><code>{'{}'}</code></div>
 
 <div>
 
@@ -88,9 +97,10 @@ You can create a CSS class to make things `tomato`.
 
 <Flex>
 
-<div style={{ height: 200, width: 200, minWidth: 200, maxWidth: 200, flexGrow: 1, color: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}><span aria-label="tomato">🍅</span></div>
+<div style={{ height: 200, width: 200, minWidth: 200, maxWidth: 200, flexGrow: 1, color: 'tomato', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-around', lineHeight: 1, fontSize: 80, marginRight: 20 }}><span aria-label="tomato">🥬</span></div>
 
-There's also an emoji for tomato.
+Tomato is technically a fruit, but is often mistaken for a vegetable.
+This makes it twice as healthy for you.
 
 </Flex>
 

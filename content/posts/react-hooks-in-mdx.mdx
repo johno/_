@@ -1,0 +1,62 @@
+---
+title: React Hooks in MDX
+slug: /react-hooks-in-mdx
+date: 2020-03-26
+tags:
+  - react
+  - hooks
+  - mdx
+blogchains:
+  - practical-mdx
+  - react-hooks
+---
+
+import { useState } from 'react'
+
+MDX is frequently used to embed components that
+are dynamic, it's one of its key features. It's my
+favorite part, particularly for educational posts
+on complex topics.
+
+You can make things interactive.
+
+But, you can do more, too.
+
+Sometimes I don't need, or want, to create separate
+components for small things that will never be used
+outside of a particular MDX file. This can include
+something interactive or related to data. You can
+achieve this _inside_ your MDX file with React
+hooks.
+
+```mdx
+import { useState } from 'react'
+
+# Here's a button, click it!
+
+export const MyDynamicButton = () => {
+  const [count, setCount] = useState(0)
+  return (
+    <button onClick={() => setCount(count + 1)}>Clicked {count} times!</button>
+  )
+}
+
+Click it! <MyDynamicButton />
+```
+
+**Note**: It's important that you don't include any
+empty lines in the code block since there's currently
+a [parsing bug](https://github.com/mdx-js/mdx/issues/195)
+that will hopefully be addressed in v2.
+
+That's it. Here's the exact code in the code block copied
+over into the very MDX file I wrote this post with:
+
+export const MyDynamicButton = () => {
+  const [count, setCount] = useState(0)
+  return (
+    <button onClick={() => setCount(count + 1)}>Clicked {count} times!</button>
+  )
+}
+
+Click it! <MyDynamicButton />

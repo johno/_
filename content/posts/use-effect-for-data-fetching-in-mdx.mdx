@@ -1,0 +1,72 @@
+---
+title: useEffect for fetching data in MDX
+slug: /use-effect-for-fetching-data-in-mdx
+date: 2020-04-10
+tags:
+  - react
+  - hooks
+  - mdx
+blogchains:
+  - practical-mdx
+  - react-hooks
+---
+
+import { useState, useEffect } from 'react'
+
+The `useEffect` hook from React allows you to create side
+effects in your components. This can combine nicely with
+MDX because you can do a wide array of things including
+fetching data from the client and even updating
+your title.
+
+```mdx
+import { useState, useEffect } from 'react'
+
+# Let's fetch some data and display it!
+
+export const PokemonData = () => {
+  const [pokemon, setPokemon] = useState(null)
+  useEffect(() => {
+    const fetchPokemon = () => {
+      fetch('https://pokeapi.co/api/v2/ability/')
+        .then((result) => result.json())
+        .then((data) => setPokemon(data))
+    }
+    fetchPokemon()
+  }, [])
+  if (!pokemon) {
+    return <h1>Fetching pokemon...</h1>
+  }
+  return <pre>{JSON.stringify(pokemon, null, 2)}</pre>
+}
+
+<PokemonData />
+```
+
+**Note**: It's important that you don't include any
+empty lines in the code block since there's currently
+a [parsing bug](https://github.com/mdx-js/mdx/issues/195)
+that will hopefully be addressed in v2.
+
+That's it. Here's the exact code in the code block copied
+over into the very MDX file I wrote this post with:
+
+export const PokemonData = () => {
+  const [pokemon, setPokemon] = useState(null)
+  useEffect(() => {
+    const fetchPokemon = () => {
+      fetch('https://pokeapi.co/api/v2/ability/')
+        .then((result) => result.json())
+        .then((data) => setPokemon(data))
+    }
+    fetchPokemon()
+  }, [])
+  if (!pokemon) {
+    return <h1>Fetching pokemon...</h1>
+  }
+  return <pre>{JSON.stringify(pokemon, null, 2)}</pre>
+}
+
+<div style={{ maxHeight: '24em', overflowY: 'scroll' }}>
+  <PokemonData />
+</div>

@@ -7,8 +7,8 @@
     "changeset": "changeset",
     "clean": "gatsby clean",
     "deploy": "now switch johno && now --prod",
-    "fix": "manypkg fix",
-    "postinstall": "manypkg check",
+    "pkg:fix": "manypkg fix",
+    "pkg:check": "manypkg check",
     "release": "changeset publish",
     "test": "jest",
     "todo": "yarn workspace todo start"
@@ -51,7 +51,8 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "/.cache/"
+      "/.cache/",
+      "dist"
     ],
     "testEnvironment": "node"
   },

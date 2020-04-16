@@ -11,19 +11,20 @@
     "pkg:check": "manypkg check",
     "release": "changeset publish",
     "test": "jest",
-    "todo": "yarn workspace todo start"
+    "todo": "yarn workspace todo start",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@changesets/cli": "2.6.4",
     "@manypkg/cli": "0.11.1",
     "@theme-ui/components": "0.3.1",
     "chroma-js": "2.1.0",
-    "gatsby": "^2.20.10-recipes.143",
+    "gatsby": "^2.20.23",
     "gatsby-plugin-fathom": "1.2.0",
     "gatsby-theme-austere": "0.1.1",
     "gatsby-theme-blog-tags": "0.0.11",
     "husky": "4.2.5",
-    "jest": "25.3.0",
+    "jest": "^25.3.0",
     "lint-staged": "10.1.3",
     "lodash.sample": "4.2.1",
     "prettier": "2.0.4",

@@ -1,0 +1,52 @@
+---
+title: Retrieve the MDX AST with unified
+slug: /retrieve-the-mdx-ast-with-unified
+date: 2020-04-19
+tags:
+  - react
+  - hooks
+  - mdx
+blogchains:
+  - practical-mdx
+  - react-hooks
+---
+
+Typically unified and MDX (which uses unified under the hood)
+are used as both a parser and compiler in one pass. This is
+what unified calls "processing".
+
+However, sometimes you might _only_ want the AST. Maybe that's
+what you want to store in the database, or you want to partition
+the AST into multiple, smaller ASTs. With unified you can do
+this by calling `parse`.
+
+In order to do so you'll need to pull in both `remark-parse` and
+`remark-mdx` because the MDX parser extends remark.
+
+```js
+const unified = require('unified')
+const remarkParse = require('remark-parse')
+const remarkMdx = require('remark-mdx')
+
+const src = `
+# Hello, world!
+
+<div>!!!</div>
+`
+
+const ast = unified().use(remarkParse).use(remarkMdx).parse(src)
+
+console.log(ast)
+```
+
+And just like that we have the MDX AST. If you're logging the AST to
+inspect it, you can use `unist-util-inspect` to get a pretty print
+version.
+
+```js
+const inspect = require('unist-util-inspect')
+
+// AST code from above removed for brevity
+
+console.log(inspect(ast))
+```

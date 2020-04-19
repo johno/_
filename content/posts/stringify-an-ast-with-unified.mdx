@@ -1,0 +1,79 @@
+---
+title: Stringify an AST with unified
+slug: /stringify-an-ast-with-unified
+date: 2020-04-19
+tags:
+  - react
+  - hooks
+  - mdx
+blogchains:
+  - practical-mdx
+  - react-hooks
+---
+
+Typically unified and MDX (which uses unified under the hood)
+are used as both a parser and compiler in one pass. This is
+what unified calls "processing".
+
+However, sometimes you might already have the AST and you want
+to "compile" it. You can do that by calling `stringify` from
+unified.
+
+In order to do so you'll need to pull in both `remark-stringify` and
+`remark-mdx` because the MDX compiler extends remark.
+
+So, first we can grab the AST by parsing:
+
+```js
+const unified = require('unified')
+const remarkParse = require('remark-parse')
+const remarkMdx = require('remark-mdx')
+
+const src = `
+# Hello, world!
+
+<div>!!!</div>
+`
+
+const ast = unified().use(remarkParse).use(remarkMdx).parse(src)
+```
+
+Then we can stringify it:
+
+```js
+const unified = require('unified')
+const remarkStringify = require('remark-stringify')
+const remarkMdx = require('remark-mdx')
+
+// AST code removed for brevity
+
+const mdx = unified().use(remarkStringify).use(remarkMdx).stringify(ast)
+
+console.log(mdx)
+```
+
+We can then refactor this a bit so we can call
+parse and stringify on the same instance of unified:
+
+```js
+const unified = require('unified')
+const remarkParse = require('remark-parse')
+const remarkStringify = require('remark-stringify')
+const remarkMdx = require('remark-mdx')
+
+const u = unified().use(remarkParse).use(remarkStringify).use(remarkMdx)
+
+const src = `
+# Hello, world!
+
+<div>!!!</div>
+`
+
+const ast = u.parse(src)
+const mdx = u.stringify(src)
+
+console.log(mdx)
+```
+
+Now, we're parsing the AST and then stringifying the AST back to
+MDX.

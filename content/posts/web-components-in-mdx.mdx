@@ -1,0 +1,77 @@
+---
+title: Web components in MDX
+slug: /web-components-in-mdx
+date: 2020-04-22
+tags:
+  - react
+  - hooks
+  - mdx
+  - web-components
+blogchains:
+  - practical-mdx
+---
+
+In MDX, components can be seamlessly imported and rendered, which
+means you can wrap native web components in React and render them
+to an MDX document.
+
+It's important to note that [React and web components aren't 100% compatible](https://reactjs.org/docs/web-components.html),
+but this will get you most of the way.
+
+Firstly, you can create a web component that's wrapped with a
+React component. The important piece is the `useRef` from React
+so that we can get a reference to the web component when it's
+mounted. This allows us to call its increment method.
+
+```js
+import React, { useRef } from 'react'
+
+class Counter extends HTMLElement {
+  constructor() {
+    super()
+    this.shadow = this.attachShadow({ mode: 'open' })
+    this.currentCount = 0
+    this.update()
+  }
+
+  update() {
+    this.shadow.innerHTML = `<div><h2>Count: ${this.currentCount}</h2></div>`
+  }
+
+  increment() {
+    this.currentCount++
+    this.update()
+  }
+}
+
+window.customElements.define('i-counter', Counter)
+
+export const RenderCounter = () => {
+  const counterElement = useRef(null)
+  return (
+    <div>
+      <i-counter ref={counterElement}></i-counter>
+      <button onClick={() => counterElement.current.increment()}>
+        Click me!
+      </button>
+    </div>
+  )
+}
+
+export default () => <RenderCounter />
+```
+
+Now that we have a web component wrapped in a React component
+we can use it directly in an MDX file.
+
+```mdx
+import WebComponent from './web-component'
+
+# Here's a web component wrapped with React in MDX!
+
+<WebComponent />
+```
+
+Web components aren't always a great fit when you're already
+working in React, but if you have a bespoke need to render
+a web component this is how you'd achieve it.

@@ -32,7 +32,7 @@
     "react-dom": "16.13.1",
     "react-feather": "2.0.4",
     "theme-ui": "0.3.1",
-    "three": "0.115.0"
+    "three": "0.116.1"
   },
   "engines": {
     "node": "12.x"

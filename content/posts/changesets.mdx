@@ -1,0 +1,76 @@
+---
+title: Changesets
+slug: /changesets
+date: 2020-05-03
+tags:
+  - tooling
+---
+
+Monorepos are a great way to be more productive when developing software
+and apps because everything is in one place and packages are automatically
+linked. This is particularly beneficial when you want to make sweeping changes
+to a bunch of related packages or update tooling.
+
+We're all happier together.
+
+In the node ecosystem, the tooling is decent. Yarn workspaces are pretty seamless
+and Just Work. This allows you to interlink your packages locally during development.
+However, when a project consists of multiple packages that are meant to be published
+and consumed by users you still need to handle versioning and a changelog.
+
+Over time I'd grown a bit frustrated with the tool in vogue, Lerna. A lot of my
+initial qualms were addressed over time (it's continually getting better and better),
+but I never liked the fact that the notion of a changelog was treated as a separate
+concern. Additionally, contributors to a project could never signify intent around
+how their changes affect semver.
+
+In fact, those that wanted to signify intent would often manually change the version
+in `package.json` files. As a maintainer, you can appreciate their prudence, but it
+always required you to back out that change because the tooling will automatically
+handle the version bump.
+
+Additionally, other changelog generation tools use GitHub releases which I've
+never fully gotten on board with because it's too coupled to GitHub and isn't
+represented in the code itself.
+
+Enter [changesets](https://github.com/atlassian/changesets).
+
+I was a bit skeptical at first (surprise), but was on board to give the tool a shot
+because it directly addressed versioning and changelogs _together_ which was something
+that always felt askew to me.
+
+I became a Happy User very quickly.
+
+Where changesets really shines is when managing a long running branch with a large
+collection of changes. Think of the big "v2" where you have a bunch of PRs collecting
+in your v2 branch. Each contribution can contain its own changeset which a contributor
+can generate and describe the change.
+
+These all end up in a directory as markdown files.
+
+On release, the changesets get gobbled up and end up in a single collection of version changes
+across the monorepo with a changelog for each package. Version management, publishing, and changelog
+generation together. Happy!
+
+That's not all though, changesets has a "but wait, there's more".
+
+Changesets also comes with a [GitHub Action](https://github.com/changesets/action) and
+a [GitHub bot](https://github.com/changesets/bot) to further automate maintainer
+tasks around handling versioning and publishing.
+
+The changeset bot ensures that changes come with a changeset, and if the contributor didn't
+add one it will comment on the issue. This serves as a friendly reminder to a contributor
+to add a changeset while also making it easier on maintainers because they can click
+a quick link and add the changeset in themselves without leaving the GitHub UI.
+
+My favorite part, though, is the GitHub Action that changesets offers. When you merge a
+changeset into master, the GitHub Action will automatically open up a PR that runs
+`changesets version` for you. As you merge in multiple PRs for a release it will continually
+update the PR and handle versions and changeset generation so you don't have to run
+the command locally.
+
+You can additionally add a publish step. This will, when you merge the changeset version PR
+into master, run the build step and then publish the new versions. So, as a maintainer,
+you don't even have to run the versioning and publish locally.
+
+It's pretty dreamy. I'm a changesets convert.

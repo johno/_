@@ -971,14 +971,26 @@
     "@manypkg/get-packages" "^1.0.1"
     semver "^5.4.1"
 
-"@changesets/cli@2.6.4":
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/@changesets/cli/-/cli-2.6.4.tgz#2461a41d34b47946e2a01f92b6ca9601275c8167"
-  integrity sha512-DEOtdun3nLEJtQbB0jcbAmKcmfCcrr2CeMm2OG+Ai/YHO91j4S/2OgOP4oGS6im6twqtDUUtdKPT2x5iKHkEKg==
+"@changesets/assemble-release-plan@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@changesets/assemble-release-plan/-/assemble-release-plan-2.0.2.tgz#66d86cc70286838ee8f7d45cccd161fdf301483e"
+  integrity sha512-luWSta8yUcYxCXJw2IrCDhsBE+AilONt1iZ7Ifj7a9qprcgX9NiPY6R6zyX1KLWB7F3HHj90XD3N4+jNni66SA==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@changesets/errors" "^0.1.4"
+    "@changesets/get-dependents-graph" "^1.1.2"
+    "@changesets/types" "^2.0.1"
+    "@manypkg/get-packages" "^1.0.1"
+    semver "^5.4.1"
+
+"@changesets/cli@2.6.5":
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/@changesets/cli/-/cli-2.6.5.tgz#1da87511306c997735e76a1e216b504730d2ac96"
+  integrity sha512-vy6FET6o0Y29uGxnYfOjj6Sclx6FYDLtmfI2aL3s6JV+FAQSZVfecENtJtFiwvBO6VL5h3hVP5SensjFVXiDRA==
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@changesets/apply-release-plan" "^2.0.1"
-    "@changesets/assemble-release-plan" "^2.0.1"
+    "@changesets/assemble-release-plan" "^2.0.2"
     "@changesets/config" "^1.0.3"
     "@changesets/errors" "^0.1.4"
     "@changesets/get-release-plan" "^1.0.3"
@@ -999,6 +1011,7 @@
     meow "^5.0.0"
     outdent "^0.5.0"
     p-limit "^2.2.0"
+    preferred-pm "^3.0.0"
     semver "^5.4.1"
     spawndamnit "^2.0.0"
     term-size "^2.1.0"
@@ -1026,6 +1039,17 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@changesets/get-dependents-graph/-/get-dependents-graph-1.1.1.tgz#c76bb646d4e2d7a39588b88c6f368ab84a82d129"
   integrity sha512-kxK7I7+qQ6zANu1j9c6LRVtX7/SQ+yG6fVtGJA0Bx8dQ8lG137W1EW08Wb3HlVrdayQqrLy2KhlFwh3FLKbIzg==
+  dependencies:
+    "@changesets/types" "^2.0.1"
+    "@manypkg/get-packages" "^1.0.1"
+    chalk "^2.1.0"
+    fs-extra "^7.0.1"
+    semver "^5.4.1"
+
+"@changesets/get-dependents-graph@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@changesets/get-dependents-graph/-/get-dependents-graph-1.1.2.tgz#01239656903aa9f2e74a5ce19423e676836320d9"
+  integrity sha512-E6r4vMAdiT3qI8pzbK4bcKzeE5tvWB54FClyBKsqA5E8WyD8eDbipYTshaBWnKy0GefTGuhkML2k4U+1d7PCOA==
   dependencies:
     "@changesets/types" "^2.0.1"
     "@manypkg/get-packages" "^1.0.1"
@@ -7010,6 +7034,14 @@ find-workspaces-root@^0.2.0:
     find-up "^4.1.0"
     get-workspaces "^0.6.0"
 
+find-yarn-workspace-root2@^1.2.11:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/find-yarn-workspace-root2/-/find-yarn-workspace-root2-1.2.11.tgz#b14a8be43503ec8c0cdf7f5923a3534860bdd92e"
+  integrity sha512-TkwH3kDD1Z8X9LnrU3gbyYw8KtLZZjsym6c2YIRFCDIMJD1JL9+Blkzpm07db+Q6ZVLISqrW9cN0CvXN4rr5ag==
+  dependencies:
+    micromatch "^4.0.2"
+    pkg-dir "^4.2.0"
+
 firebase@7.14.0:
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-7.14.0.tgz#8a6adfa2fa3200c128bb45e3da029b52917154c8"
@@ -10353,7 +10385,7 @@ js-tokens@^3.0.2:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
   integrity sha1-mGbfOVECEw449/mWvOtlRDIJwls=
 
-js-yaml@^3.10.0, js-yaml@^3.11.0, js-yaml@^3.13.1, js-yaml@^3.5.2, js-yaml@^3.6.1:
+js-yaml@^3.10.0, js-yaml@^3.11.0, js-yaml@^3.13.0, js-yaml@^3.13.1, js-yaml@^3.5.2, js-yaml@^3.6.1:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
   integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
@@ -10693,6 +10725,16 @@ load-json-file@^4.0.0:
     graceful-fs "^4.1.2"
     parse-json "^4.0.0"
     pify "^3.0.0"
+    strip-bom "^3.0.0"
+
+load-yaml-file@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/load-yaml-file/-/load-yaml-file-0.2.0.tgz#af854edaf2bea89346c07549122753c07372f64d"
+  integrity sha512-OfCBkGEw4nN6JLtgRidPX6QxjBQGQf72q3si2uvqyFEMbycSFFHwAZeXx6cJgFM9wmLrf9zBwCP3Ivqa+LLZPw==
+  dependencies:
+    graceful-fs "^4.1.5"
+    js-yaml "^3.13.0"
+    pify "^4.0.1"
     strip-bom "^3.0.0"
 
 loader-fs-cache@^1.0.0:
@@ -13183,6 +13225,16 @@ prebuild-install@^5.3.3:
     tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
     which-pm-runs "^1.0.0"
+
+preferred-pm@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/preferred-pm/-/preferred-pm-3.0.0.tgz#26cc7fbbfc1815e4cb8272d5fdde15dc96220fb8"
+  integrity sha512-NbN+2UuqjakJpyHamsuIWyeFdQcFUQHF9nkw16hpFE++z3px+/KDsj+AF1h0BlnsBJi1Z5U4EKBW7XnHriny8g==
+  dependencies:
+    find-up "^4.1.0"
+    find-yarn-workspace-root2 "^1.2.11"
+    path-exists "^4.0.0"
+    which-pm "2.0.0"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -16914,6 +16966,14 @@ which-pm-runs@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/which-pm-runs/-/which-pm-runs-1.0.0.tgz#670b3afbc552e0b55df6b7780ca74615f23ad1cb"
   integrity sha1-Zws6+8VS4LVd9rd4DKdGFfI60cs=
+
+which-pm@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/which-pm/-/which-pm-2.0.0.tgz#8245609ecfe64bf751d0eef2f376d83bf1ddb7ae"
+  integrity sha512-Lhs9Pmyph0p5n5Z3mVnN0yWcbQYUAD7rbQUiMsQxOJ3T57k7RFe35SUwWMf7dsbDZks1uOmw4AecB/JMDj3v/w==
+  dependencies:
+    load-yaml-file "^0.2.0"
+    path-exists "^4.0.0"
 
 which@^1.2.14, which@^1.2.9, which@^1.3.1:
   version "1.3.1"

@@ -58,7 +58,7 @@
     "testEnvironment": "node"
   },
   "resolutions": {
-    "@babel/helpers": "7.9.2",
+    "@babel/helpers": "7.9.6",
     "@emotion/core": "10.0.28",
     "@mdx-js/react": "1.6.1",
     "@theme-ui/components": "0.3.1",

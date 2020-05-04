@@ -2076,16 +2076,16 @@
     core-js "^3.4.1"
     regenerator-runtime "^0.13.3"
 
-"@manypkg/cli@0.11.1":
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/@manypkg/cli/-/cli-0.11.1.tgz#1be7f661e0e1b7132809ff485f19694db4f29ce0"
-  integrity sha512-Ya4kKY8+VW4L0UXn0MfX7x6pezT5hgZeIVwwCnDMCjcR0RlRrpIk3NV6kX6A4QkZVe9ifA8ZRX6kCbjeXTY0Mg==
+"@manypkg/cli@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@manypkg/cli/-/cli-0.12.0.tgz#4a9b82dcd3bd9434bb95876537c87e4d2ee27bdb"
+  integrity sha512-T04bCQiNdM9zO5URSjOASdxGj0xOrs47Y4j44+LVJzPiBrxGrL2426Q6mVSr12QnnzpocaIILRZbF5111T9hMw==
   dependencies:
     "@babel/runtime" "^7.5.5"
+    "@manypkg/get-packages" "^1.0.0"
     chalk "^2.4.2"
     detect-indent "^6.0.0"
     find-up "^4.1.0"
-    find-workspaces-root "^0.2.0"
     fs-extra "^8.1.0"
     get-workspaces "^0.6.0"
     meow "^5.0.0"
@@ -2107,7 +2107,7 @@
     find-up "^4.1.0"
     fs-extra "^8.1.0"
 
-"@manypkg/get-packages@^1.0.1":
+"@manypkg/get-packages@^1.0.0", "@manypkg/get-packages@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@manypkg/get-packages/-/get-packages-1.0.1.tgz#0b46907555626ae773abb828e6c1cb313aa44777"
   integrity sha512-paGfOt9yW+4/kkK9pM5DlnZDfrP7pp75TDimA8VJQlfxxD7/yHpRsBQZh+soqArr9uqwnCw2XkDggG7BlPdQ3Q==
@@ -7060,16 +7060,6 @@ find-versions@^3.0.0, find-versions@^3.2.0:
   integrity sha512-P8WRou2S+oe222TOCHitLy8zj+SIsVJh52VP4lvXkaFVnOFFdoWv1H1Jjvel1aI6NCFOAaeAVm8qrI0odiLcww==
   dependencies:
     semver-regex "^2.0.0"
-
-find-workspaces-root@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/find-workspaces-root/-/find-workspaces-root-0.2.0.tgz#46e487deed4faa02b3e30007d3ce6d13f8deb69e"
-  integrity sha512-VvMqY2reYnYztgO0CBbxSFw/Cey2W0RrZnx6/4gl4m1okp0efnP0wxNQMtfj6aYMqmo0QQFl5Z+27WV0TVWgow==
-  dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@types/node" "^12.7.1"
-    find-up "^4.1.0"
-    get-workspaces "^0.6.0"
 
 find-yarn-workspace-root2@^1.2.11:
   version "1.2.11"

@@ -12,7 +12,7 @@
     "@emotion/core": "10.0.28",
     "@mdx-js/mdx": "1.6.1",
     "@mdx-js/react": "1.6.1",
-    "firebase": "7.14.2",
+    "firebase": "7.14.3",
     "gatsby": "2.21.19",
     "gatsby-plugin-mdx": "1.2.6",
     "gatsby-plugin-react-helmet": "3.3.1",

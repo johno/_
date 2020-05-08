@@ -1,0 +1,184 @@
+---
+title: Recipes interpreter with a custom React reconciler
+slug: /recipes-interpreter
+date: 2020-05-08
+tags:
+  - recipes
+  - react
+  - mdx
+blogchains:
+  - recipes
+---
+
+[Kyle Mathews](https://twitter.com/kylemathews) had the idea to use a custom React reconciler to actually render a recipe in order to "interpret" it. This was so mind melting to me, but was something we decided to leave for a future exploration when shipping the MVP.
+
+Our current implementation (May 8, 2020) parses out a recipe using MDX and used the AST to create a set of instructions. This got us pretty far with any resources that are on disk or are flat in nature. Light and simple.
+
+It worked greatly for adding a Gatsby plugin, manipulating the package.json, or even installing packages from npm. However, this started to break down when we needed to work with remote resources.
+
+When I began with remote resources I initially decided to target GitHub and Contentful. Both have powerful APIs, yet are on different ends of the spectrum in terms of what they do. One being a git host with a large surrounding feature set (and a GraphQL API), the other a headless CMS (with a powerful client library).
+
+Turns out we'd need the reconciler sooner than later. Remote resources quickly made it apparent that nesting/composition was a preferable DX because a lot of resources have a natural parent/child relationship.
+
+For example, consider a resource to create a Contentful space with a blog post content type. Right off the bat you end up needing to create a space, which in turn needs an environment (prod vs staging), which is then where you can apply your content type.
+
+Without nesting, while still being declarative and idempotent, you end up with interdependent props that leak the parent/child relationship in a peculiar way.
+
+Below is a first pass at what that would look like:
+
+```mdx
+# Contentful blog setup
+
+---
+
+Create a new space
+
+<ContentfulSpace name="blog" />
+
+---
+
+Create an environment
+
+<ContentfulEnvironment name="production" spaceName="blog" />
+
+---
+
+Create the BlogPost type.
+
+<ContentfulType
+  spaceName="blog"
+  environmentName="production"
+  schema={`
+    type BlogPost {
+      title: String!
+      date: Date!
+      body: String!
+    }
+  `}
+/>
+```
+
+It's not terrible, but it isn't great either. The props interlinking isn't ergonomic and is extremely error prone. Ideally, an API should look something like:
+
+```mdx
+<ContentfulSpace name="blog">
+  <ContentfulEnvironment name="production">
+    <ContentfulContentType
+      schema={`
+        type BlogPost {
+          title: String!
+          date: Date!
+          body: String!
+        }
+      `}
+    />
+  </ContentfulEnvironment>
+</ContentfulSpace>
+```
+
+It's still declarative, more delightful to write, less error prone, and naturally/ergonomically expresses parent/child relationships.
+
+There's another hidden benefit, too. Right now, since we're using static analysis, it'd be difficult to support other niceties that MDX offers like variable support which can be used to clean up Recipes JSX. With a React reconciler-based implementation we could, for example, create a type that we share between multiple Contentful environments.
+
+```mdx
+export const blogPostType = `
+  type BlogPost {
+    title: String!
+    date: Date!
+    body: String!
+  }
+`
+
+<ContentfulSpace name="blog">
+  <ContentfulEnvironment name="staging">
+    <ContentfulContentType schema={blogPostType} />
+  </ContentfulEnvironment>
+  <ContentfulEnvironment name="production">
+    <ContentfulContentType schema={blogPostType} />
+  </ContentfulEnvironment>
+</ContentfulSpace>
+```
+
+Here's another example for a Github repo configuration:
+
+```mdx
+export const labels = [
+  { color: 'tomato', description: '1' },
+  { color: 'tomato', description: '2' },
+  { color: 'tomato', description: '3' },
+  { color: 'tomato', description: '4' }
+]
+
+export const projectColumns = [
+  'backlog',
+  'up next',
+  'in progress',
+  'in review',
+  'done'
+]
+
+<GithubRepo name="johno/super">
+  <GithubProject name="kanbannnnn">
+    {projectColumns.map((col) => (
+      <GithubProjectColumn key={col} name={col} />
+    ))}
+  </GithubProject>
+  {labels.map((label) => (
+    <GithubLabel key={label.description} {...label} />
+  ))}
+</GithubRepo>
+```
+
+This also brings out interesting implications for resource API signatures. When we create a Contentful content type we have the following arguments:
+
+```js
+contentfulContentType.create(context, { schema })
+```
+
+With the unnested API, we also need to expose the `spaceName` and `environmentName` which actually leads us to end up with:
+
+```js
+contentfulContentType.create(context, { schema, spaceName, environmentName })
+```
+
+This is peculiar because the parent/child relationship forces us to expose even the grandparent name. Though, in essence, this is contextual information. It can also be addressed with a state file, which we also plan on implementing, but the ergonomics are still a bit off.
+
+When we revisit the React reconciler idea again, this contextual information is ergonomically exposed with a built-in feature: React context.
+
+Each step in the composition can expose its context that the children can access in order to handle their processing. Hypothetically, it could look something similar to:
+
+```js
+const space = spaceResource.read(context, props.name)
+
+return (
+  <ContentfulProvider value={{ space }}>
+    {children}
+  </ContentfulProvider>
+```
+
+Then, the content type implementation might look something like:
+
+```js
+const context = useContentful()
+const contentType = contentTypeResource.read(context, props)
+```
+
+This reconciler idea becomes even more interesting, too, because it turns the interpreter into something that can better handle conditional logic.
+
+```js
+if (someCondition) {
+  return <GithubLabel color="tomato" description="Some conditional thing" />
+} else {
+  return <GithubLabel color="tomato" description="The default description" />
+}
+```
+
+The API for the recipes internals would be pretty clean when compared to how it currently works. Hypothetically, plan vs apply modes can be toggled on and off, too.
+
+```js
+ReactRecipes.render(<Recipe mode="plan" />, statefile)
+```
+
+In addition to remote resources, Kyle brought up another architectural benefit that's pretty interesting. When inputs are missing we can "suspend" and prompt the user for missing details, env vars, etc. Since we already plan on supporting user inputs soon, this will be a 2 for 1!
+
+We've got time set aside next week to explore this custom React reconciler, excited to see where it can potentially go.

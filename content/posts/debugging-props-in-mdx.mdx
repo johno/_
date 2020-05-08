@@ -1,0 +1,25 @@
+---
+title: Debugging props in mdx
+slug: /debugging-props-in-mdx
+date: 2020-05-08
+tags:
+  - react
+  - mdx
+blogchains:
+  - practical-mdx
+---
+
+When you're working with an MDX document you might need
+to figure out what props are being passed. You can use
+a neat JSX debug trick to do so:
+
+```mdx
+# Hello, world!
+
+<pre>{JSON.stringify(props, null, 2)}</pre>
+```
+
+The `JSON.stringify` turns the props object into a string
+and the `2` argument adds two space indentation to the
+resulting string which is passed to the `pre` tag which
+preserves formatting.

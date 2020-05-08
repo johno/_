@@ -10,19 +10,63 @@ blogchains:
   - recipes
 ---
 
-[Kyle Mathews](https://twitter.com/kylemathews) had the idea to use a custom React reconciler to actually render a recipe in order to "interpret" it. This was so mind melting to me, but was something we decided to leave for a future exploration when shipping the MVP.
+[Kyle Mathews](https://twitter.com/kylemathews) had the idea to use a custom React reconciler to actually
+render a recipe in order to "interpret" it. This was so mind melting to me, but was something we decided
+to leave for a future exploration when shipping the MVP.
 
-Our current implementation (May 8, 2020) parses out a recipe using MDX and used the AST to create a set of instructions. This got us pretty far with any resources that are on disk or are flat in nature. Light and simple.
+Our current implementation (May 8, 2020) parses out a recipe using MDX and used the AST to create a set of
+instructions. This got us pretty far with any resources that are on disk or are flat in nature. Light and
+simple.
 
-It worked greatly for adding a Gatsby plugin, manipulating the package.json, or even installing packages from npm. However, this started to break down when we needed to work with remote resources.
+It worked greatly for adding a Gatsby plugin, manipulating the package.json, or even installing packages
+from npm. However, this started to break down when we needed to work with remote resources.
 
-When I began with remote resources I initially decided to target GitHub and Contentful. Both have powerful APIs, yet are on different ends of the spectrum in terms of what they do. One being a git host with a large surrounding feature set (and a GraphQL API), the other a headless CMS (with a powerful client library).
+When I began with remote resources I initially decided to target GitHub and Contentful. Both have powerful
+APIs, yet are on different ends of the spectrum in terms of what they do. One being a git host with a large
+surrounding feature set (and a GraphQL API), the other a headless CMS (with a powerful client library).
 
-Turns out we'd need the reconciler sooner than later. Remote resources quickly made it apparent that nesting/composition was a preferable DX because a lot of resources have a natural parent/child relationship.
+Writing the resources themselves for two providers (GitHub and Contentful) was a breeze since the resources
+themselves implement a simple CRUD interface that's a thin wrapper around an existing library. For example,
+here's a GitHub repository create (called with `<Github name="johno/test-test-test" visibility="PRIVATE" />`):
 
-For example, consider a resource to create a Contentful space with a blog post content type. Right off the bat you end up needing to create a space, which in turn needs an environment (prod vs staging), which is then where you can apply your content type.
+```js
+const create = async (_context, { name, visibility }) => {
+  const result = await client(
+    `
+    mutation($name: String!, $visibility: RepositoryVisibility!) {
+      createRepository(input: { name: $name, visibility: $visibility }) {
+        repository {
+          name
+          url
+        }
+      }
+    }
+  `,
+    {
+      name,
+      visibility
+    }
+  )
 
-Without nesting, while still being declarative and idempotent, you end up with interdependent props that leak the parent/child relationship in a peculiar way.
+  const { repository } = result.createRepository
+
+  return {
+    ...repository,
+    id: name,
+    _message: message(repository)
+  }
+}
+```
+
+Turns out we'd need the reconciler sooner than later. Remote resources quickly made it apparent that
+nesting/composition was a preferable DX because a lot of resources have a natural parent/child relationship.
+
+For example, consider a resource to create a Contentful space with a blog post content type. Right off the
+bat you end up needing to create a space, which in turn needs an environment (prod vs staging), which is
+then where you can apply your content type.
+
+Without nesting, while still being declarative and idempotent, you end up with interdependent props that
+leak the parent/child relationship in a peculiar way.
 
 Below is a first pass at what that would look like:
 
@@ -188,3 +232,7 @@ We've got time set aside next week to explore this custom React reconciler, exci
 - [Building a Custom React Renderer by Sophie Alpert](https://www.youtube.com/watch?v=CGpMlWVcHok)
 - https://github.com/vadimdemedes/ink
 - https://github.com/maxchehab/phelia
+- https://github.com/react-spring/react-three-fiber
+- https://github.com/diegomura/react-pdf
+- https://github.com/chentsulin/awesome-react-renderer
+- https://github.com/airbnb/react-sketchapp

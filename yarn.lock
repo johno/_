@@ -7675,10 +7675,10 @@ gatsby-telemetry@^1.3.4:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-theme-blog-core@1.5.5:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/gatsby-theme-blog-core/-/gatsby-theme-blog-core-1.5.5.tgz#d2f43e86c9c1a2d1ef5915f266decd585369581b"
-  integrity sha512-tvDyfAjBILwkoEVKNxIxcwT/qWcEpX4QelqHvMDy/jnoAyucoY16V9Mo1GSdEc3q7QrFyJ0NToqUPnVfoVGp5Q==
+gatsby-theme-blog-core@1.5.6:
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/gatsby-theme-blog-core/-/gatsby-theme-blog-core-1.5.6.tgz#49b78161783ee8aa7ff12a361f609cc6c0ed63c3"
+  integrity sha512-65QZD+lk8TWvUdAhomTGwDnZehdUYKvO8eE28HWmZubXYnJt7Z7TaiKd7YYdtQe0xzysM5Zq41FOTDtURtUHNA==
   dependencies:
     "@mdx-js/mdx" "^1.6.1"
     gatsby-core-utils "^1.2.2"
@@ -7719,10 +7719,10 @@ gatsby-transformer-sharp@^2.5.2:
     semver "^5.7.1"
     sharp "^0.25.1"
 
-gatsby@2.21.30:
-  version "2.21.30"
-  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.21.30.tgz#e6d33d083afd3cb83c0ce9709ec554491d100d97"
-  integrity sha512-p/Qi9icLbCW0SZLAyPC4IAbLSWZl8ozRKqlIHsa91fkcuArIszSQXrpY5jMJ0QmWSWZAKhG4o1gSpjKSUeOxhQ==
+gatsby@2.21.31:
+  version "2.21.31"
+  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.21.31.tgz#dd8c71c224062307968a3eb508d1f19aad2e9dcd"
+  integrity sha512-eT3vr5xk99oo/aEjmQZVVi6ZPJ3VTUEgBNHeXbOqgx0LmpJUVnx5cBHxnilv9yGgmW4AW0piZtWti3yGVOP8Rg==
   dependencies:
     "@babel/code-frame" "^7.8.3"
     "@babel/core" "^7.9.6"

@@ -1,0 +1,60 @@
+---
+title: Move directory between repos while preserving git history
+slug: /move-directory-between-repos-with-git-history
+date: 2020-05-18
+tags:
+  - git
+---
+
+When creating a new repo that comes from code in an existing
+repository, it's useful to maintain the git history when possible
+because it serves as additional documentation and context. It
+also ensures the original author of the code is credited!
+
+Here's how you can achieve it in a few commands.O
+
+**Create your new repo**
+
+```sh
+mkdir new-repo
+```
+
+**Clone the source repo**
+
+```sh
+git clone https://github.com/johno/a-repo
+```
+
+**Filter all commits aside from the directory you care about in the source repo**
+
+```sh
+git filter-branch --subdirectory-filter my-dir -- -- all
+```
+
+\*\*Add a "local remote" to the source repository"
+
+```sh
+git remote add source-repo ../a-repo
+```
+
+**Then fetch the "local remote"**
+
+```sh
+git fetch source-repo
+```
+
+**Create a branch from the source's master**
+
+```sh
+git branch source-repo remotes/source-repo/master
+```
+
+**Then merge in the source repo**
+
+```sh
+git merge source-repo --allow-unrelated-histories
+```
+
+## Related
+
+- [Gist by trongthanh which I followed](https://gist.github.com/trongthanh/2779392)

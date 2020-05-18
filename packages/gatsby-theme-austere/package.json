@@ -10,7 +10,7 @@
     "gatsby-plugin-react-helmet": "3.3.1",
     "gatsby-plugin-sitemap": "2.4.2",
     "gatsby-plugin-theme-ui": "0.3.0",
-    "gatsby-theme-blog-core": "1.5.10",
+    "gatsby-theme-blog-core": "1.5.12",
     "react-helmet": "6.0.0",
     "theme-ui": "0.3.1"
   },

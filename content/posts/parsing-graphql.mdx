@@ -1,0 +1,99 @@
+---
+title: Parsing GraphQL
+slug: /parsing-graphql
+date: 2020-05-18
+tags:
+  - recipes
+  - react
+  - graphql
+blogchains:
+  - recipes
+---
+
+Using the GraphQL SDL (Schema Definition Language) is an ergonomic way
+to add a schema-defining API to other libraries, components, etc. For
+example, in Gatsby Recipes, we use it to allow you to define a schema
+for third party providers that might have type definitions. One of those
+examples is Contentful where we offer a GraphQL SDL API for defining
+content types in Recipes.
+
+In order to achieve this API we need to parse the schema that's passed
+to the component and pull out the information that we need.
+
+```js
+<ContentfulType
+  schema={`
+    type BlogPost {
+      title: String
+      body: String @metadata(type: "Text", title: "Content")
+    }
+  `}
+/>
+```
+
+There's a library, `graphql-tools` which does a lot of the heavy lifting.
+The idea is that we create an executable schema, a directive visitor, and
+a reduce function to pull out the information which can be used internally
+for a particular provider.
+
+```js
+const {
+  makeExecutableSchema,
+  SchemaDirectiveVisitor
+} = require(`graphql-tools`)
+
+const gqlFieldsToObject = (fields) =>
+  Object.entries(fields).reduce((acc, [key, value]) => {
+    acc[key] = {
+      type: value.type,
+      metadata: value.metadata
+    }
+    return acc
+  }, {})
+
+class MetadataDirective extends SchemaDirectiveVisitor {
+  visitFieldDefinition(field) {
+    field.metadata = this.args
+  }
+}
+
+const makeMetadataDirective = (metadata) => {
+  if (!metadata || !metadata.length) {
+    return ''
+  }
+
+  const metadataArgs = metadata.map((tag) => `${tag}: String`).join('\n')
+
+  return `
+    directive @metadata(
+      ${metadataArgs}
+    ) on FIELD_DEFINITION
+  `
+}
+
+module.exports = (typeDefs, { metadata } = {}) => {
+  const metadataDirective = makeMetadataDirective(metadata)
+
+  const { _typeMap: typeMap } = makeExecutableSchema({
+    typeDefs: metadataDirective + typeDefs,
+    schemaDirectives: {
+      metadata: MetadataDirective
+    }
+  })
+
+  return Object.entries(typeMap)
+    .filter(([key, value]) => {
+      if (key.startsWith(`_`) || !value._fields) {
+        return false
+      }
+
+      return true
+    })
+    .map(([key, value]) => {
+      return {
+        name: key,
+        fields: gqlFieldsToObject(value._fields)
+      }
+    })
+}
+```

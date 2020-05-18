@@ -1,0 +1,29 @@
+---
+title: Code style
+slug: /code-style
+date: 2020-05-01
+tags:
+  - code
+---
+
+- **Working code is better than clean code.** We like to spend a lot of time bikeshedding
+  about formatting, functional or not functional, and other trivialities when we should be
+  more worried about whether it works.
+- **If code reviews include nitpicks like whitespace formatting your tooling is wrong.**
+  Code reviews should be about substance, APIs, and architecture.
+- **Public APIs are more important than internal code style.** The code inside a function
+  can be refactored at any time. The Public API is set in stone.
+- **Functional programming is worth the investment.** There can be a learning curve to
+  FP, especially in languages that aren't truly functional, but avoiding mutation and
+  imperative loops help you to avoid subtle bugs, especially in concurrent systems.
+  But we can't forget, "working code is better than functional code".
+- **Smaller functions aren't always better.** Restricting/linting function length is
+  an arbitrary heuristic that can lead to worse code. A function is a unit of work, not a
+  daisy chain of two line methods.
+- **Code generation is a beautiful thing.** It's often more work up front, and sometimes
+  harder to reason about, but code you don't write is code that doesn't break. One example
+  of this is generating GraphQL types from a resource's schema/validation. It's common in
+  systems to propagate changes throughout a codebase in many different files when you do
+  something trivial like add a property. In complex systems it's easy to "forget a place"
+  and have to spend hours debugging.
+- **There's nothing wrong with copy paste**.

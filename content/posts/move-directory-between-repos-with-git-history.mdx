@@ -55,6 +55,19 @@ git branch source-repo remotes/source-repo/master
 git merge source-repo --allow-unrelated-histories
 ```
 
+**Lastly, clean up the source repo**
+
+```sh
+git remote rm source-repo
+git branch -d source-repo
+```
+
+**And commit**
+
+```sh
+git push origin master
+```
+
 ## Related
 
 - [Gist by trongthanh which I followed](https://gist.github.com/trongthanh/2779392)

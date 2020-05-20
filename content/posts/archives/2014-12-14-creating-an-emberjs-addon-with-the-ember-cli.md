@@ -9,7 +9,7 @@ slug: /ember/2014/12/14/creating-an-emberjs-addon-with-the-ember-cli
 ---
 
 Thanks to the power of the Ember CLI, reusing code and functionality between apps has never been easier. To
-get an idea of the addons that already exist in this ecosystem, check out <http://emberaddons.com>. At the
+get an idea of the addons that already exist in this ecosystem, check out http://emberaddons.com. At the
 time of writing this, there are already more than 400 addons listed. Many of which can drastically help
 you cut down on development time. So, let's get started!
 
@@ -92,13 +92,13 @@ like so:
 'use strict'
 
 module.exports = {
-  normalizeEntityName: function() {
+  normalizeEntityName: function () {
     // this prevents an error when the entityName is
     // not specified (since that doesn't actually matter
     // to us
   },
 
-  afterInstall: function() {
+  afterInstall: function () {
     return this.addBowerPackageToProject('remarkable')
   }
 }
@@ -116,7 +116,7 @@ var path = require('path')
 module.exports = {
   name: 'ember-remarkable',
 
-  blueprintsPath: function() {
+  blueprintsPath: function () {
     return path.join(__dirname, 'blueprints')
   }
 }
@@ -152,11 +152,11 @@ var path = require('path')
 module.exports = {
   name: 'ember-remarkable',
 
-  blueprintsPath: function() {
+  blueprintsPath: function () {
     return path.join(__dirname, 'blueprints')
   },
 
-  included: function(app) {
+  included: function (app) {
     this._super.included(app)
     this.app.import(app.bowerDirectory + '/remarkable/dist/remarkable.js')
   }
@@ -189,7 +189,7 @@ import { mdRemarkable } from 'ember-remarkable/helpers/md-remarkable'
 
 module('MdRemarkableHelper')
 
-test('it correctly converts markdown to html', function() {
+test('it correctly converts markdown to html', function () {
   var result = mdRemarkable('# This should be a h1')
   equal(result.toString().trim(), '<h1>This should be a h1</h1>')
 })
@@ -248,7 +248,7 @@ Now we can create the shim:
 ```javascript
 /* globals Remarkable */
 
-define('remarkable', [], function() {
+define('remarkable', [], function () {
   'use strict'
 
   return {
@@ -269,11 +269,11 @@ var path = require('path')
 module.exports = {
   name: 'ember-remarkable',
 
-  blueprintsPath: function() {
+  blueprintsPath: function () {
     return path.join(__dirname, 'blueprints')
   },
 
-  included: function(app) {
+  included: function (app) {
     this._super.included(app)
     this.app.import(app.bowerDirectory + '/remarkable/dist/remarkable.js')
     this.app.import('vendor/ember-remarkable/shim.js', {
@@ -362,7 +362,7 @@ export default mdText
 ### Implementing the component
 
 _Note:_ This post will gloss over components and how they work in Ember. If you'd like to dive deeper
-into Ember Components please visit: <http://emberjs.com/guides/components/>.
+into Ember Components please visit: http://emberjs.com/guides/components/.
 
 Firstly, we will define a few properties: `text`, `typographer`, and `linkify`. These will be options
 that can be passed into the component `{{ "{{md-text text=someText linkify=true" }}}}`.
@@ -379,14 +379,14 @@ export default Ember.Component.extend({
   typographer: false,
   linkify: false,
 
-  parsedMarkdown: function() {
+  parsedMarkdown: function () {
     var md = new Remarkable(this.get('buildOptions'))
     var html = md.render(this.get('text'))
 
     return new Ember.Handlebars.SafeString(html)
   }.property('text'),
 
-  buildOptions: function() {
+  buildOptions: function () {
     return {
       typographer: this.get('typographer'),
       linkify: this.get('linkify')
@@ -427,7 +427,7 @@ we are ready to get started.
 Firstly, we can add a rendering test to ensure that the component is correctly rendered to the page:
 
 ```javascript
-test('it renders', function() {
+test('it renders', function () {
   // creates the component instance
   var component = this.subject()
   equal(component._state, 'preRender')
@@ -441,7 +441,7 @@ test('it renders', function() {
 Then, we want a test to make sure the proper text was displayed to the page:
 
 ```javascript
-test('it displays text', function() {
+test('it displays text', function () {
   var component = this.subject()
   component.set('text', '# Markdown is fun')
 
@@ -453,7 +453,7 @@ test('it displays text', function() {
 And lastly, we want to make sure that we are calling remarkable correctly, and resulting in HTML:
 
 ```javascript
-test('it properly parses the markdown', function() {
+test('it properly parses the markdown', function () {
   var component = this.subject()
   component.set('text', '# Markdown is fun')
 
@@ -474,7 +474,7 @@ moduleForComponent('md-text', 'MdTextComponent', {
   // needs: ['component:foo', 'helper:bar']
 })
 
-test('it renders', function() {
+test('it renders', function () {
   // creates the component instance
   var component = this.subject()
   equal(component._state, 'preRender')
@@ -484,7 +484,7 @@ test('it renders', function() {
   equal(component._state, 'inDOM')
 })
 
-test('it displays text', function() {
+test('it displays text', function () {
   var component = this.subject()
   component.set('text', '# Markdown is fun')
 
@@ -492,7 +492,7 @@ test('it displays text', function() {
   equal($component.text().trim(), 'Markdown is fun')
 })
 
-test('it properly parses the markdown', function() {
+test('it properly parses the markdown', function () {
   var component = this.subject()
   component.set('text', '# Markdown is fun')
 
@@ -510,6 +510,6 @@ makes it relatively trivial to break application logic into standalone addons fo
 It's also beneficial because an addon is an easily digestible collection of logic that can be tested
 and extended upon in isolation. In my opinion, this leads to developer happiness.
 
-The source code for this post can be found here: <https://github.com/johnotander/ember-remarkable>.
+The source code for this post can be found here: https://github.com/johnotander/ember-remarkable.
 
 Thanks for reading.

@@ -147,4 +147,4 @@ end
 
 This will result in `"#{ id }-#{ first_name }-#{ last_name }-#{ favorite_food }"`. Yay.
 
-You can find the gem here: <https://github.com/johnotander/urls_for_humans>
+You can find the gem here: https://github.com/johnotander/urls_for_humans

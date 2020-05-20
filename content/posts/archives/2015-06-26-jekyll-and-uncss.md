@@ -56,10 +56,10 @@ var stylesheetLocation = '_site/css/'
 var stylesheetSourceLocation = 'css/'
 var stylesheetName = 'main.css'
 
-var jekyllUncss = function() {
+var jekyllUncss = function () {
   var css = fs.readFileSync(stylesheetLocation + stylesheetName, 'utf8')
 
-  glob('_site/**/*.html', function(err, files) {
+  glob('_site/**/*.html', function (err, files) {
     if (err) {
       console.log(err)
     }
@@ -70,7 +70,7 @@ var jekyllUncss = function() {
         raw: css,
         ignoreSheets: [/\/css\//]
       },
-      function(err, output) {
+      function (err, output) {
         if (err) {
           console.log(err)
         }
@@ -101,4 +101,4 @@ That's it. Now any unused CSS in `main.css` is removed in `un.main.css` and no l
 
 For example, the default Jekyll CSS is 8.5KB. After running uncss, it's now 5.1KB. That's a 40% decrease.
 
-Source code: <https://github.com/e-x-a-m-p-l-e-s/jekyll-uncss-example>
+Source code: https://github.com/e-x-a-m-p-l-e-s/jekyll-uncss-example

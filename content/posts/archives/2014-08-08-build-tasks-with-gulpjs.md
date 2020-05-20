@@ -69,7 +69,7 @@ Then add a default task, even though it won't do anything yet because we haven't
 ```javascript
 var gulp = require('gulp')
 
-gulp.task('default', function() {})
+gulp.task('default', function () {})
 ```
 
 Now we can run `$ gulp` from the project directory, and we will get the following output:
@@ -117,7 +117,7 @@ var prefix = require('gulp-autoprefixer')
 Then, we add a new task called 'scss' and add it to the default task list:
 
 ```javascript
-gulp.task('scss', function() {})
+gulp.task('scss', function () {})
 
 gulp.task('default', ['scss'])
 ```
@@ -150,7 +150,7 @@ If you were to run this, it would copy the `basscss.scss` file and place it in `
 Then we want to pipe it to the `sass` and `rename` plugins, so that it will compile the SCSS to CSS and then rename the file:
 
 ```javascript
-gulp.task('scss', function() {
+gulp.task('scss', function () {
   return gulp
     .src('src/scss/basscss/basscss.scss')
     .pipe(sass())
@@ -164,7 +164,7 @@ In this scenario, we add two more pipes that modify the stream. First the stream
 Now, let's throw in the other tasks that we listed off before:
 
 ```javascript
-gulp.task('scss', function() {
+gulp.task('scss', function () {
   return gulp
     .src('src/scss/basscss/basscss.scss')
     .pipe(sass())
@@ -189,7 +189,7 @@ var cssmin = require('gulp-minify-css')
 var csslint = require('gulp-csslint')
 var prefix = require('gulp-autoprefixer')
 
-gulp.task('scss', function() {
+gulp.task('scss', function () {
   return gulp
     .src('src/scss/basscss/basscss.scss')
     .pipe(sass())
@@ -219,7 +219,7 @@ var uglify = require('gulp-uglify')
 Then, similarly to the 'scss' task, we need to create a 'js' task and pipe in our plugins:
 
 ```javascript
-gulp.task('js', function() {
+gulp.task('js', function () {
   return gulp
     .src('src/js/**/*.js')
     .pipe(jshint())
@@ -244,7 +244,7 @@ var prefix = require('gulp-autoprefixer')
 var jshint = require('gulp-jshint')
 var uglify = require('gulp-uglify')
 
-gulp.task('scss', function() {
+gulp.task('scss', function () {
   return gulp
     .src('src/scss/basscss/basscss.scss')
     .pipe(sass())
@@ -255,7 +255,7 @@ gulp.task('scss', function() {
     .pipe(gulp.dest('dist/css'))
 })
 
-gulp.task('js', function() {
+gulp.task('js', function () {
   return gulp
     .src('src/js/**/*.js')
     .pipe(jshint())
@@ -266,11 +266,11 @@ gulp.task('js', function() {
 gulp.task('default', ['scss', 'js'])
 ```
 
-The source code for this example is available on Github: <https://github.com/johnotander/gulpfile-example>.
+The source code for this example is available on Github: https://github.com/johnotander/gulpfile-example.
 
 ## Further Reading:
 
-- <http://travismaynard.com/writing/getting-started-with-gulp>
-- <https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md#getting-started>
-- <http://www.sitepoint.com/introduction-gulp-js/>
-- <https://www.codefellows.org/blog/quick-intro-to-gulp-js>
+- http://travismaynard.com/writing/getting-started-with-gulp
+- https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md#getting-started
+- http://www.sitepoint.com/introduction-gulp-js/
+- https://www.codefellows.org/blog/quick-intro-to-gulp-js

@@ -57,9 +57,9 @@ The universal selector is often used for `box-sizing` and other globals. However
 
 ## Further reading
 
-- <http://benfrain.com/css-performance-revisited-selectors-bloat-expensive-styles/>
-- <https://speakerdeck.com/jonrohan/githubs-css-performance>
-- <https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors>
-- <https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Writing_efficient_CSS>
-- <http://www.html5rocks.com/en/tutorials/speed/css-paint-times/>
-- <http://xn--h4hg.ws/2014/12/18/caring/>
+- http://benfrain.com/css-performance-revisited-selectors-bloat-expensive-styles/
+- https://speakerdeck.com/jonrohan/githubs-css-performance
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_selectors
+- https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Writing_efficient_CSS
+- http://www.html5rocks.com/en/tutorials/speed/css-paint-times/
+- http://xn--h4hg.ws/2014/12/18/caring/

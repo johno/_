@@ -108,7 +108,7 @@ This is advantageous for a few reasons. Firstly, the declaration of `color: blue
 
 ## Further reading
 
-- <https://coderwall.com/p/7p7w2a>
-- <http://css-tricks.com/the-extend-concept/>
-- <http://thesassway.com/editorial/sass-doesnt-create-bad-code-bad-coders-do>
-- <http://miguelcamba.com/blog/2013/07/11/sass-placeholders-versus-mixins-and-extends/>
+- https://coderwall.com/p/7p7w2a
+- http://css-tricks.com/the-extend-concept/
+- http://thesassway.com/editorial/sass-doesnt-create-bad-code-bad-coders-do
+- http://miguelcamba.com/blog/2013/07/11/sass-placeholders-versus-mixins-and-extends/

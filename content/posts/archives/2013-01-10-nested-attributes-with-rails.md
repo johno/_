@@ -86,7 +86,7 @@ By utilizing the `accepts_nested_attributes_for` method, we can quickly, and eff
 
 Parent => Child => Child to the Child => ... where `child_attributes=(attributes)` and `child_to_the_child_attributes=(attributes)`.
 
-<http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html>
+[ActiveRecord::NestedAttributes::ClassMethods](http://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html)
 
 ## A Forest that has_many Trees
 
@@ -264,4 +264,4 @@ This snippet ensures that the `trees/fields` partial will be rendered for each T
 
 Just like that we have implemented a `has_many`/`belongs_to` relationship which requires only one controller and only one form view partial for the dependent model, Tree in this case. Pretty clean, pretty simple, absolutely automagical.
 
-Don't forget to check the [source](https://github.com/johnotander/nested_attr) if something's unclear, or email me: <johnotander@icloud.com>.
+Don't forget to check the [source](https://github.com/johnotander/nested_attr).

@@ -92,7 +92,7 @@ with different ordering. Consider JSX, the following two code snippets will rend
 
 The Cartesian product between sets _A_ and _B_ looks like the following in mathematical notation:
 
-_A × B = { (a, b) | a ∈ A and b ∈ B }_
+_A × B = {'{'} (a, b) | a ∈ A and b ∈ B }_
 
 It looks a bit intimidating, but it essentially means that if _A_ is represented as rows in
 a table, while _B_ is columns, you can combine them. All new table cells are part of the
@@ -171,7 +171,7 @@ as part of some docs generation step.
 
 ```js
 // ...
-export default props => <Cartesian component={Button} {...props.propTypes} />
+export default (props) => <Cartesian component={Button} {...props.propTypes} />
 ```
 
 When the prop types in the Button's source code change, the resulting Cartesian product

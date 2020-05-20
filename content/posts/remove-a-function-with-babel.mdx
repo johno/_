@@ -1,0 +1,39 @@
+---
+title: Remove a function with babel
+slug: /remove-a-function-with-babel
+date: 2020-05-20
+tags:
+  - babel
+  - jsx
+  - mdx
+  - ast
+---
+
+When you're processing a JSX AST you might want to remove
+a function based on its function name.
+
+You can use the `FunctionDeclaration` visitor and then
+check the function name at `path.node.id.name` where
+`id` refers to the function's "identifier".
+
+If you're only looking for a particular function that
+will only be found once in a file, don't forget to
+optimize with `path.stop()` which will stop the visitor
+from continuing to traverse the tree.
+
+All together:
+
+```js
+export default () => {
+  return {
+    visitor: {
+      FunctionDeclaration(path) {
+        if (path.node.id.name === '_extends') {
+          path.remove()
+          path.stop()
+        }
+      }
+    }
+  }
+}
+```

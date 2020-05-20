@@ -73,7 +73,7 @@ installing
   create tests/unit/components/foo-bar-test.js
 ```
 
-This allows me to focus on the more important tasks at hand, like naming things. <3.
+This allows me to focus on the more important tasks at hand, like naming things. &lt;3.
 
 ### A lack of flexibility is a good thing
 

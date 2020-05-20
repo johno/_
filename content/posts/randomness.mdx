@@ -63,7 +63,10 @@ convert it to hex:
 
 ```js
 function randomHexColor() {
-  return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+  return (
+    '#' +
+    ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+  )
 }
 ```
 
@@ -101,7 +104,7 @@ For randomly creating design values like color, a PRNG is plenty adequate.
 
 ## Entropy
 
-When it comes to computation, [entropy](https://en.wikipedia.org/wiki/Entropy_(computing))
+When it comes to computation, [entropy](<https://en.wikipedia.org/wiki/Entropy_(computing)>)
 refers to the general randomness of what's being computed. In some ways it's the "noise" or
 "chaos" factor. The hex color generator from earlier has high entropy.
 
@@ -110,12 +113,19 @@ We can see this in action when we compute 1,000 random colors and place them tog
 export const RandomColors = ({ count = 1000 }) => {
   const [els, setEls] = React.useState([])
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   const regenEls = () => {
     const newEls = []
     for (let i = 0; i < count; i++) {
-      newEls.push(<div style={{ height: 16, width: 16, backgroundColor: randomHexColor() }} />)
+      newEls.push(
+        <div
+          style={{ height: 16, width: 16, backgroundColor: randomHexColor() }}
+        />
+      )
     }
     setEls(newEls)
   }
@@ -146,19 +156,30 @@ Let's take a look at two distributions, one is random and one is uniform:
 
 export const RandomDistribution = ({ width = '40%', steps = 100 }) => {
   const [els, setEls] = React.useState([])
-  const randomBool = () => Math.random() > 1/4
+  const randomBool = () => Math.random() > 1 / 4
   const regenEls = () => {
     console.log('regenerating els')
     const newEls = []
     for (let i = 0; i < steps; i++) {
-      newEls.push(<div style={{ height: '2vw', width: '2vw', backgroundColor: randomBool() ? 'white' : 'black' }} />)
+      newEls.push(
+        <div
+          style={{
+            height: '2vw',
+            width: '2vw',
+            backgroundColor: randomBool() ? 'white' : 'black'
+          }}
+        />
+      )
     }
     setEls(newEls)
   }
   React.useEffect(() => regenEls(), [])
   console.log(els)
   return (
-    <div onClick={regenEls} style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap', width }}>
+    <div
+      onClick={regenEls}
+      style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap', width }}
+    >
       {els}
     </div>
   )
@@ -168,13 +189,17 @@ export const UniformDistribution = ({ width = '40%', steps = 100 }) => {
   const els = []
   for (let i = 0; i < steps; i++) {
     const isBlack = i % 3 === 0 && i % 2 !== 0
-    els.push(<div style={{ height: '2vw', width: '10%', backgroundColor: isBlack ? 'black' : 'white' }} />)
+    els.push(
+      <div
+        style={{
+          height: '2vw',
+          width: '10%',
+          backgroundColor: isBlack ? 'black' : 'white'
+        }}
+      />
+    )
   }
-  return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', width }}>
-      {els}
-    </div>
-  )
+  return <div style={{ display: 'flex', flexWrap: 'wrap', width }}>{els}</div>
 }
 
 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -210,18 +235,27 @@ between _0_ and _1,600_. This will result in substantially fewer total colors.
 export const RandomColorsLowEntropy = ({ count = 1000 }) => {
   const [els, setEls] = React.useState([])
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*1600).toString(16)).slice(-6)
+    return (
+      '#' + ('000000' + Math.floor(Math.random() * 1600).toString(16)).slice(-6)
+    )
   }
   const regenEls = () => {
     const newEls = []
     for (let i = 0; i < count; i++) {
-      newEls.push(<div style={{ height: 16, width: 16, backgroundColor: randomHexColor() }} />)
+      newEls.push(
+        <div
+          style={{ height: 16, width: 16, backgroundColor: randomHexColor() }}
+        />
+      )
     }
     setEls(newEls)
   }
   React.useEffect(() => regenEls(), [])
   return (
-    <div onClick={regenEls} style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}>
+    <div
+      onClick={regenEls}
+      style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}
+    >
       {els}
     </div>
   )
@@ -241,17 +275,26 @@ export const RandomColorsLowEntropyAdjust = ({ count = 1000 }) => {
   const [numColors, setNumColors] = React.useState(1600)
   const els = []
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*numColors).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * numColors).toString(16)).slice(-6)
+    )
   }
   for (let i = 0; i < count; i++) {
-    els.push(<div style={{ height: 16, width: 16, backgroundColor: randomHexColor() }} />)
+    els.push(
+      <div
+        style={{ height: 16, width: 16, backgroundColor: randomHexColor() }}
+      />
+    )
   }
   return (
     <div>
-      <pre>{`function randomHexColor (){\n  return '#' + ('000000' + Math.floor(Math.random()*`}<strong>{numColors}</strong>{`).toString(16)).slice(-6)\n}`}</pre>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {els}
-      </div>
+      <pre>
+        {`function randomHexColor (){\n  return '#' + ('000000' + Math.floor(Math.random()*`}
+        <strong>{numColors}</strong>
+        {`).toString(16)).slice(-6)\n}`}
+      </pre>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>{els}</div>
       <label style={{ fontWeight: 'bold' }}>
         <input
           type="range"
@@ -259,7 +302,7 @@ export const RandomColorsLowEntropyAdjust = ({ count = 1000 }) => {
           min="0"
           step="5"
           value={numColors}
-          onChange={e => setNumColors(e.target.value)}
+          onChange={(e) => setNumColors(e.target.value)}
           style={{
             marginRight: 8
           }}
@@ -283,7 +326,10 @@ to purple to green. It might make you feel lost.
 
 export const ColorSteppingTrulyRandom = () => {
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   const [colors, setColors] = React.useState([
     randomHexColor(),
@@ -300,14 +346,16 @@ export const ColorSteppingTrulyRandom = () => {
     }, 2000)
     return () => clearInterval(interval)
   }, [])
-  const avgDistance = colors.map((color, i) => {
-    if (!colors[i+1]) {
-      return null
-    }
-    return chroma.distance(color, colors[i+1])
-  })
-    .filter(Boolean)
-    .reduce((acc, curr) => acc + curr) / 4
+  const avgDistance =
+    colors
+      .map((color, i) => {
+        if (!colors[i + 1]) {
+          return null
+        }
+        return chroma.distance(color, colors[i + 1])
+      })
+      .filter(Boolean)
+      .reduce((acc, curr) => acc + curr) / 4
   return (
     <div>
       <h3>Average color distance: {Math.round(avgDistance)}</h3>
@@ -375,7 +423,10 @@ Click the color swatch below to generate a new one.
 
 export const RandomColorRegenerator = () => {
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   const [color, setColor] = React.useState(randomHexColor())
   return (
@@ -417,7 +468,10 @@ color = chroma.mix(color, randomHexColor(), Math.random())
 
 export const RandomMixingColors = ({ count = 420 }) => {
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   let color = randomHexColor()
   const els = []
@@ -425,11 +479,7 @@ export const RandomMixingColors = ({ count = 420 }) => {
     els.push(<div style={{ height: 16, width: 16, backgroundColor: color }} />)
     color = chroma.mix(color, randomHexColor(), Math.random())
   }
-  return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {els}
-    </div>
-  )
+  return <div style={{ display: 'flex', flexWrap: 'wrap' }}>{els}</div>
 }
 
 <RandomMixingColors />
@@ -447,9 +497,12 @@ I put the ratio on a slider with _.01_ steps to see how the ratio affected
 the series of colors.
 
 export const RandomMixingColorsRatio = ({ count = 420 }) => {
-  const [ratio, setRatio] = React.useState(.5)
+  const [ratio, setRatio] = React.useState(0.5)
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   let color = randomHexColor()
   const els = []
@@ -459,9 +512,7 @@ export const RandomMixingColorsRatio = ({ count = 420 }) => {
   }
   return (
     <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {els}
-      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>{els}</div>
       <div>
         <label style={{ fontWeight: 'bold' }}>
           <input
@@ -470,7 +521,7 @@ export const RandomMixingColorsRatio = ({ count = 420 }) => {
             min="0"
             step=".01"
             value={ratio}
-            onChange={e => setRatio(e.target.value)}
+            onChange={(e) => setRatio(e.target.value)}
             style={{
               marginRight: 8
             }}
@@ -495,35 +546,28 @@ for performing the blend. So, we sampled a random algorithm and combined the pre
 color with a new, random color.
 
 ```js
-chroma.blend(color, randomHexColor(), sample([
-  'overlay',
-  'multiply',
-  'darken',
-  'lighten'
-]))
+chroma.blend(
+  color,
+  randomHexColor(),
+  sample(['overlay', 'multiply', 'darken', 'lighten'])
+)
 ```
 
 export const RandomBlendColors = ({ count = 420 }) => {
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   let color = randomHexColor()
   const els = []
   for (let i = 0; i < count; i++) {
     els.push(<div style={{ height: 16, width: 16, backgroundColor: color }} />)
-    const blendAlgorithms = [
-      'overlay',
-      'multiply',
-      'darken',
-      'lighten'
-    ]
+    const blendAlgorithms = ['overlay', 'multiply', 'darken', 'lighten']
     color = chroma.blend(color, randomHexColor(), sample(blendAlgorithms))
   }
-  return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {els}
-    </div>
-  )
+  return <div style={{ display: 'flex', flexWrap: 'wrap' }}>{els}</div>
 }
 
 <RandomBlendColors />
@@ -542,7 +586,10 @@ input that dictated which algorithm would be used.
 export const RandomBlendColorsSelect = ({ count = 240 }) => {
   const [algorithm, setAlgorithm] = React.useState('multiply')
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   let color = randomHexColor()
   const els = []
@@ -562,23 +609,21 @@ export const RandomBlendColorsSelect = ({ count = 240 }) => {
   }
   return (
     <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {els}
-      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>{els}</div>
       <label style={{ fontWeight: 'bold' }}>
-          <select
-            style={{
-              marginRight: 8
-            }}
-            value={algorithm}
-            onChange={e => setAlgorithm(e.target.value)}
-          >
-            {blendAlgorithms.map(algo => (
-              <option key={algo}>{algo}</option>
-            ))}
-          </select>
-          Blend algorithm {algorithm}
-        </label>
+        <select
+          style={{
+            marginRight: 8
+          }}
+          value={algorithm}
+          onChange={(e) => setAlgorithm(e.target.value)}
+        >
+          {blendAlgorithms.map((algo) => (
+            <option key={algo}>{algo}</option>
+          ))}
+        </select>
+        Blend algorithm {algorithm}
+      </label>
     </div>
   )
 }
@@ -606,8 +651,16 @@ manipulation function was selected at random.
 
 ```js
 const adjustments = [
-  '*1.5', '*1.25', '*1.1', '*.75', '*.1', '/1.5', '/1.25',
-  '/1.1', '/.75', '/.1'
+  '*1.5',
+  '*1.25',
+  '*1.1',
+  '*.75',
+  '*.1',
+  '/1.5',
+  '/1.25',
+  '/1.1',
+  '/.75',
+  '/.1'
 ]
 const fns = [
   () => chroma(color).set('hsl.h', sample(adjustments)),
@@ -622,7 +675,10 @@ color = fn()
 
 export const RandomHSLRotateColors = ({ count = 420 }) => {
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   let color = randomHexColor()
   const els = []
@@ -638,7 +694,7 @@ export const RandomHSLRotateColors = ({ count = 420 }) => {
       '/1.25',
       '/1.1',
       '/.75',
-      '/.1',
+      '/.1'
     ]
     const fns = [
       () => chroma(color).set('hsl.h', sample(adjustments)),
@@ -650,11 +706,7 @@ export const RandomHSLRotateColors = ({ count = 420 }) => {
     const fn = sample(fns)
     color = fn()
   }
-  return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {els}
-    </div>
-  )
+  return <div style={{ display: 'flex', flexWrap: 'wrap' }}>{els}</div>
 }
 
 <RandomHSLRotateColors />
@@ -677,7 +729,10 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
   const [darken, setDarken] = React.useState(5)
   const [brighten, setBrighten] = React.useState(5)
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   let color = randomHexColor()
   const els = []
@@ -693,7 +748,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
       '/1.25',
       '/1.1',
       '/.75',
-      '/.1',
+      '/.1'
     ]
     const fns = []
     for (let i = 0; i < hue; i++) {
@@ -716,7 +771,14 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
   }
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', marginRight: 8 }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          width: '50%',
+          marginRight: 8
+        }}
+      >
         {els}
       </div>
       <div>
@@ -728,7 +790,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
               max="10"
               step="1"
               value={hue}
-              onChange={e => setHue(e.target.value)}
+              onChange={(e) => setHue(e.target.value)}
             />
             Hue {hue}
           </label>
@@ -741,7 +803,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
               max="10"
               step="1"
               value={saturate}
-              onChange={e => setSaturate(e.target.value)}
+              onChange={(e) => setSaturate(e.target.value)}
             />
             Saturate {saturate}
           </label>
@@ -754,7 +816,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
               max="10"
               step="1"
               value={desaturate}
-              onChange={e => setDesaturate(e.target.value)}
+              onChange={(e) => setDesaturate(e.target.value)}
             />
             Desaturate {desaturate}
           </label>
@@ -767,7 +829,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
               max="10"
               step="1"
               value={darken}
-              onChange={e => setDarken(e.target.value)}
+              onChange={(e) => setDarken(e.target.value)}
             />
             Darken {darken}
           </label>
@@ -780,7 +842,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
               max="10"
               step="1"
               value={brighten}
-              onChange={e => setBrighten(e.target.value)}
+              onChange={(e) => setBrighten(e.target.value)}
             />
             Brighten {brighten}
           </label>
@@ -804,9 +866,12 @@ create a single color generator with memory?
 
 The results aren't too bad.
 
-export const regenColorWithMemory = color => {
+export const regenColorWithMemory = (color) => {
   const randomHexColor = () => {
-    return '#' + ('000000' + Math.floor(Math.random()*16777215).toString(16)).slice(-6)
+    return (
+      '#' +
+      ('000000' + Math.floor(Math.random() * 16777215).toString(16)).slice(-6)
+    )
   }
   color = color || randomHexColor()
   const mix = () => chroma.mix(color, randomHexColor(), Math.random())
@@ -819,7 +884,8 @@ export const regenColorWithMemory = color => {
     'burn',
     'dodge'
   ]
-  const blend = () => chroma.blend(color, randomHexColor(), sample(blendAlgorithms))
+  const blend = () =>
+    chroma.blend(color, randomHexColor(), sample(blendAlgorithms))
   const adjustments = [
     '*1.5',
     '*1.25',
@@ -830,7 +896,7 @@ export const regenColorWithMemory = color => {
     '/1.25',
     '/1.1',
     '/.75',
-    '/.1',
+    '/.1'
   ]
   const hueAdjust = () => chroma(color).set('hsl.h', sample(adjustments))
   const saturate = () => chroma(color).saturate()
@@ -867,9 +933,14 @@ export const RandomEvolvingColors = ({ count = 50 }) => {
       setColors(newColors)
     }
   }
-  const els = colors.map((color, i) => <div key={i} style={{ height: 16, width: '2%', backgroundColor: color }} />)
+  const els = colors.map((color, i) => (
+    <div key={i} style={{ height: 16, width: '2%', backgroundColor: color }} />
+  ))
   return (
-    <div onClick={regenColors} style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}>
+    <div
+      onClick={regenColors}
+      style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}
+    >
       {els}
     </div>
   )
@@ -880,7 +951,11 @@ export const RandomEvolvingColors = ({ count = 50 }) => {
 Though, what's the average color distance in comparison to pure
 random?
 
-export const RandomEvolvingColorsComparison = ({ count = 50, width= '2%', height = 16 }) => {
+export const RandomEvolvingColorsComparison = ({
+  count = 50,
+  width = '2%',
+  height = 16
+}) => {
   const [colors, setColors] = React.useState([])
   const [randColors, setRandColors] = React.useState([])
   React.useEffect(() => regenColors(), [])
@@ -896,34 +971,51 @@ export const RandomEvolvingColorsComparison = ({ count = 50, width= '2%', height
       setRandColors(newRandColors)
     }
   }
-  const avgDistance = colors => {
-    const sumOfDistance = colors.map((color, i) => {
-      if (!colors[i+1]) {
-        return null
-      }
-      return chroma.distance(color, colors[i+1])
-    })
+  const avgDistance = (colors) => {
+    const sumOfDistance = colors
+      .map((color, i) => {
+        if (!colors[i + 1]) {
+          return null
+        }
+        return chroma.distance(color, colors[i + 1])
+      })
       .filter(Boolean)
       .reduce((acc, curr) => acc + curr, 0)
     return Math.round(sumOfDistance / colors.length)
   }
-  const els = colors.map((color, i) => <div key={i} style={{ height, width, backgroundColor: color }} />)
-  const randEls = randColors.map((color, i) => <div key={i} style={{ height, width, backgroundColor: color }} />)
+  const els = colors.map((color, i) => (
+    <div key={i} style={{ height, width, backgroundColor: color }} />
+  ))
+  const randEls = randColors.map((color, i) => (
+    <div key={i} style={{ height, width, backgroundColor: color }} />
+  ))
   return (
-    <div onClick={regenColors} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: -20 }}>
+    <div
+      onClick={regenColors}
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        marginTop: -20
+      }}
+    >
       <div style={{ width: '45%' }}>
         <h3>Memory-based</h3>
         <div style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}>
           {els}
         </div>
-        <h5 style={{ marginTop: 10 }}>Average color distance: {avgDistance(colors)}</h5>
+        <h5 style={{ marginTop: 10 }}>
+          Average color distance: {avgDistance(colors)}
+        </h5>
       </div>
       <div style={{ width: '45%' }}>
         <h3>Pure random</h3>
         <div style={{ cursor: 'pointer', display: 'flex', flexWrap: 'wrap' }}>
           {randEls}
         </div>
-        <h5 style={{ marginTop: 10 }}>Average color distance: {avgDistance(randColors)}</h5>
+        <h5 style={{ marginTop: 10 }}>
+          Average color distance: {avgDistance(randColors)}
+        </h5>
       </div>
     </div>
   )
@@ -953,14 +1045,23 @@ export const RandomEvolvingColorsSlider = () => {
   const [entropy, setEntropy] = React.useState(50)
   const randomBool = (percentile = 1 / 2) => Math.random() >= percentile
   const regenColor = () => {
-    const newColor = randomBool(entropy / 100) ? regenColorWithMemory(color) : regenColorWithMemory()
+    const newColor = randomBool(entropy / 100)
+      ? regenColorWithMemory(color)
+      : regenColorWithMemory()
     setColor(newColor)
   }
   return (
     <div>
       <div
         onClick={regenColor}
-        style={{ height: 240, width: 240, cursor: 'pointer', display: 'flex', flexWrap: 'wrap', backgroundColor: color }}
+        style={{
+          height: 240,
+          width: 240,
+          cursor: 'pointer',
+          display: 'flex',
+          flexWrap: 'wrap',
+          backgroundColor: color
+        }}
       />
       <label style={{ fontWeight: 'bold', userSelect: 'none', marginTop: 16 }}>
         Entropy {entropy}% <br />
@@ -970,7 +1071,7 @@ export const RandomEvolvingColorsSlider = () => {
           min="0"
           step="10"
           value={entropy}
-          onChange={e => setEntropy(e.target.value)}
+          onChange={(e) => setEntropy(e.target.value)}
           style={{
             marginRight: 16
           }}
@@ -992,7 +1093,7 @@ At its most basic, the code looks something like:
 const [color, setColor] = useState(randomHexColor())
 const [entropy, setEntropy] = useState(50)
 
-const randomBool = percentile => Math.random() >= percentile
+const randomBool = (percentile) => Math.random() >= percentile
 
 const regenColor = () => {
   const newColor = randomBool(entropy / 100)
@@ -1018,7 +1119,7 @@ colors that are of high entropy.
 I also want to explore multiple color generation and handling relationship
 between colors in a palette.
 
-Thanks for reading <3.
+Thanks for reading &lt;3.
 
 <!--
 

@@ -57,5 +57,5 @@ Now you have the same `validates_presence_of` validation which plays nicely with
 
 Another important thing to note is that `inverse_of` doesn't work with `:through` and `:polymorphic` associations.
 
-<http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html>
-<https://github.com/rails/rails/issues/1383>
+- http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html
+- https://github.com/rails/rails/issues/1383

@@ -1,0 +1,73 @@
+---
+title: An introduction to React Suspense
+slug: /introduction-to-react-suspense
+date: 2020-05-26
+tags:
+  - react
+  - suspense
+  - recipes
+---
+
+React Suspense is an (experimental) React primitive that tells React that a particular
+component is still waiting on data. Generally speaking, a lot of React developers building
+apps won’t typically interact with Suspense, it’ll be more common for building libraries
+that help with data fetching. It’s sort of low-level, but allows for tight integrations
+with React at the library/tool level.
+
+One of the key benefits of React Suspense is the fact that it lets you render as you fetch.
+Other common patterns pre-Suspense forced you to render the component and the kick off a fetch
+in a `useEffect` hook. This is a bit clunky and results in a lot of layout thrashing as
+information comes in and isn’t the best UX or DX.
+
+Interestingly, we recently had to work with it directly for some features in Gatsby Recipes,
+particularly in our custom react renderer. Though, we used the functionality for quite a
+different usage than rendering to DOM. Throughout the building process of that functionality
+I got to learn how to use Suspect, so let’s check out it out:
+
+_Note: The [official React docs](https://reactjs.org/docs/concurrent-mode-suspense.html)
+[link a CodeSandbox](https://codesandbox.io/s/frosty-hermann-bztrp)
+that you can play with directly if you’re interested._
+
+At its simplest the Suspense component sets up a boundary for data fetching that can suspend
+while a request is happening. The way you get this to work is be throwing a promise which is a
+pretty interesting API. Though, it makes sense because React will catch the promise and then
+wait for it to resolve before attempting to re-render.
+
+Here’s a short example:
+
+```js
+import React, { Suspense } from 'react'
+
+const pokemonResource = () => {
+  const promise = fetch('https://pokeapi.co/api/v2/ability/')
+    .then((res) => res.json())
+    .catch((e) => {
+      return { error: true }
+    })
+
+  throw promise
+}
+const Pokemon = () => {
+  return (
+    <Suspense fallback={<h1>Loading Pokemon...</h1>}>
+      <PokemonList />
+    </Suspense>
+  )
+}
+
+const PokemonList = () => {
+  const pokemon = pokemonResource()
+
+  return <pre>{JSON.stringify(pokemon, null, 2)}</pre>
+}
+```
+
+There are two primary pieces that make this all work. Firstly, the Suspense component which
+handles the catching of the promise we threw. The second important piece is the `pokemonResource`
+which performs a fetch against the API and then throws that promise. We add in a `then` for the
+happy path and a `catch` to the promise chain.
+
+Those values, from the promise chain, are what the component eventually sees when the fetch
+ends up resolving. So, there’s a bit of song and dance inside the resource to make Suspense
+work (and also why this functionality is intended to be wrapped up by library authors).
+But it isn’t _too_ magical.

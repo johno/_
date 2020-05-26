@@ -1,0 +1,44 @@
+---
+title: Symbolic links with git
+slug: /symbolic-links-with-git
+date: 2020-05-26
+tags:
+  - git
+  - devtip
+---
+
+In git it's important that all references to a file are **relative to the
+git repo itself**. I get this backwards _all the time_.
+
+So, if you want to link the `docs/readme.md` to
+`packages/som-package-name/readme.md`
+(the original source file) you must operate relative
+to your destination file:
+
+**Create the directory**
+
+```
+❯ mkdir docs
+```
+
+**Change to the directory**
+
+```
+❯ cd docs
+```
+
+**Create the symbolic link with the original file**
+
+```
+❯ ln -s ../packages/gatsby-theme-documentation/readme.md readme.md
+```
+
+**List out the contents of the directory**
+
+```
+❯ ls
+readme.md
+```
+
+Now, you can update either file and it will be properly updated and GitHub
+will nicely render it, too.

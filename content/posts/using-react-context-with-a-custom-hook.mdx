@@ -1,0 +1,108 @@
+---
+title: Using React context with a custom hook
+slug: /using-react-context-with-a-custom-hook
+date: 2020-05-26
+tags:
+  - react
+  - hooks
+---
+
+React Context is a great, builtin API for passing data from a parent component to any of
+its children. It’s designed to let you avoid having to use prop drilling and leaking
+implementation details through intermediary components.
+
+Here’s a basic implementation for a color mode context with a custom context hook:
+
+```js
+import React, { useContext } from 'react'
+
+const ColorModeContext = React.createContext('light')
+export const ColorModeProvider = ColorModeContext.Provider
+
+export const useColorMode = () => {
+  const colorMode = useContext(ColorModeContext)
+  return colorMode
+}
+```
+
+Now, the library can be used like so:
+
+```js
+// layout.js
+import React from 'react'
+import { ColorModeProvider } from './color-mode'
+
+export default ({ children }) => {
+  ;<ColorModeProvider>{children}</ColorModeProvider>
+}
+```
+
+Anywhere in your component tree you can now tap into the provider with the `useColorMode` hook:
+
+```js
+import React from 'react'
+import { useColorMode } from './color-mode'
+
+export default (props) => {
+  const colorMode = useColorMode()
+
+  return <p>The color mode is: {colorMode}</p>
+}
+```
+
+This is pretty powerful, but what if you want to add some sort of “setter” function for the color
+mode? You can do that by using React’s `useState` hook and adding an updater to your provider:
+
+```js
+// color-mode.js
+import React, { useContext } from 'react'
+
+const ColorModeContext = React.createContext()
+
+export const ColorModeProvider ({ children }) => {
+  const [colorMode, setColorMode] = useState('light')
+
+  return (
+    <ColorModeContext.Provider value={{ colorMode, update: setColorMode }}>
+      {children}
+    </ColorModeContext.Provider>
+  )
+}
+
+export const useColorMode = () => {
+  const { colorMode, update } = useContext(ColorModeContext)
+  return { colorMode, update }
+}
+```
+
+With the updates to the provider, you can now pull in the updater as part of the hook.
+
+```js
+import React from 'react'
+import { useColorMode } from './color-mode'
+
+export default (props) => {
+  const { colorMode, update } = useColorMode()
+  const otherColorMode = colorMode === 'light' ? 'dark' : 'light'
+
+  return (
+    <div>
+      <p>The color mode is: {colorMode}</p>
+      <button
+        onClick={() => {
+          update(otherColorMode)
+        }}
+      >
+        Set color mode to {otherColorMode}
+      </button>
+    </div>
+  )
+}
+```
+
+Just like that you have a clean API with vanilla React context and a custom hook.
+Components that care about the color mode can leverage the hook without you needing
+to prop drill the information all over the place.
+
+This pattern is great for global settings in your app, theming, and even more complex
+functionality like authentication or shopping carts.

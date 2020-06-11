@@ -22,6 +22,14 @@ module.exports = {
       options: {
         siteId: 'FFYAPMRP'
       }
+    },
+    {
+      resolve: 'gatsby-theme-mdx-deck',
+      options: {
+        mdx: false,
+        contentPath: 'content/decks',
+        basePath: '/decks'
+      }
     }
   ]
 }

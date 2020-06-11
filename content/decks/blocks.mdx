@@ -1,0 +1,263 @@
+import { Global } from '@emotion/core'
+import {
+  Package,
+  Edit2,
+  GitPullRequest,
+  Layers,
+  ArrowDown,
+  ArrowUp,
+  ArrowRight,
+  Terminal,
+  Code,
+  Layout as LayoutIcon,
+  PenTool,
+  Grid,
+  Sidebar
+} from 'react-feather'
+
+export const Emphasis = (props) => (
+  <p
+    {...props}
+    style={{
+      fontSize: 24,
+      color: '#fff',
+      margin: 0,
+      marginBottom: 80,
+      lineHeight: 1,
+      padding: '0 32px',
+      border: '4px solid #fff',
+      display: 'inline-block'
+    }}
+  />
+)
+
+export const DarkSlide = (props) => (
+  <>
+    <Global
+      styles={{
+        body: {
+          margin: 0
+        },
+        h1: {
+          margin: 0
+        },
+        'h1 + p': {
+          marginTop: 0
+        },
+        a: {
+          color: 'white !important'
+        }
+      }}
+    />
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'black',
+        color: 'white',
+        textAlign: 'left',
+        padding: 32,
+        paddingLeft: 64,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}
+      {...props}
+    />
+  </>
+)
+
+![Blocks logo](https://user-images.githubusercontent.com/1424573/61592179-e0fda080-ab8c-11e9-9109-166cc7c86b43.png)
+
+---
+
+<DarkSlide>
+
+# Themes Team
+
+Gatsby is for everyone, not just coders
+
+</DarkSlide>
+
+---
+
+<Edit2 size={300} />
+
+---
+
+# Gatsby as a platform
+
+---
+
+<DarkSlide>
+
+# Why Blocks?
+
+</DarkSlide>
+
+---
+
+<Package size={400} />
+
+---
+
+# Existing tools
+
+- Squarespace
+- Wix
+- CMS
+- Framer
+- Webflow
+
+---
+
+<ArrowDown size={100} />
+<Layers size={400} />
+<ArrowDown size={100} />
+
+---
+
+<ArrowUp size={100} />
+<Layers size={400} />
+<ArrowUp size={100} />
+
+---
+
+<GitPullRequest size={400} />
+
+---
+
+<DarkSlide>
+
+# Blocks is different
+
+</DarkSlide>
+
+---
+
+# Interoperability
+
+<Code size={200} /> <LayoutIcon size={200} /> <Terminal size={200} />
+
+---
+
+# Inspiration
+
+- Swift UI
+- Wordpress themes/plugins
+- Visual Basic
+- Dreamweaver
+
+---
+
+# Wait, did you say Dreamweaver?
+
+---
+
+# Goodbye HTML + CSS
+
+---
+
+# Hello, JSX
+
+---
+
+<ArrowUp size={100} />
+<Layers size={400} />
+<ArrowUp size={100} />
+
+---
+
+<DarkSlide>
+
+# It's open source
+
+</DarkSlide>
+
+---
+
+<Package size={200} />
+
+# No more black box
+
+---
+
+<Grid size={400} />
+
+Modular, hackable, bring your own components
+
+---
+
+<Sidebar size={400} />
+
+# 80-90% of needs
+
+---
+
+![](https://user-images.githubusercontent.com/1424573/69644337-c13a2580-1021-11ea-8c76-379386372db1.gif)
+
+---
+
+<DarkSlide>
+
+# How does it work?
+
+</DarkSlide>
+
+---
+
+<Code size={200} /> <ArrowRight
+  style={{ margin: '0 60px', color: '#999' }}
+  size={200}
+/> <LayoutIcon size={200} /> <ArrowRight
+  style={{ margin: '0 60px', color: '#999' }}
+  size={200}
+/> <Code size={200} />
+
+---
+
+<DarkSlide>
+
+# What's next?
+
+</DarkSlide>
+
+---
+
+# gatsby-plugin-blocks
+
+---
+
+# Accessibility
+
+---
+
+# Sidebar UX
+
+---
+
+# Template building
+
+---
+
+# Integration with Admin/Cloud
+
+---
+
+# Design tooling exploration
+
+<PenTool size={200} />
+
+---
+
+<DarkSlide>
+
+# ![Blocks logo](https://user-images.githubusercontent.com/1424573/61592179-e0fda080-ab8c-11e9-9109-166cc7c86b43.png)
+
+<br />
+
+[@blocks_ui](https://twitter.com/blocks_ui) •
+[blocks-ui.com](https://blocks-ui.com) •
+[github.com/blocks](https://github.com/blocks)
+
+</DarkSlide>

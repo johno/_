@@ -36,9 +36,6 @@
     "theme-ui": "0.3.1",
     "three": "0.116.1"
   },
-  "engines": {
-    "node": "12.x"
-  },
   "workspaces": [
     "packages/*"
   ],

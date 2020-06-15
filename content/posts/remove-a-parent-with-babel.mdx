@@ -1,0 +1,61 @@
+---
+title: Remove a parent with babel
+slug: /remove-a-parent-with-babel
+date: 2020-06-15
+tags:
+  - babel
+  - jsx
+  - mdx
+  - ast
+---
+
+When you're processing a JSX AST you might want to remove
+a parent of a particular node. In this example we'll search
+for a member expression based on its name and then remove
+the assignment expression it's a part of.
+
+```js
+const foo = {}
+foo.bar = 'baz' // Line we want to remove
+```
+
+First, you can create a member expression visitor that
+will match the names:
+
+```js
+MemberExpression(path) {
+  if (path.node.object.name !== 'foo') {
+    return
+  }
+  if (path.node.property.name !== 'bar') {
+    return
+  }
+
+  // We've found our member expression
+}
+```
+
+Once we've found our member expression we can reference
+the `parentPath` and call `remove` to remove the entire
+parent node from the AST.
+
+All together:
+
+```js
+export default () => {
+  return {
+    visitor: {
+      MemberExpression(path) {
+        if (path.node.object.name !== 'foo') {
+          return
+        }
+        if (path.node.property.name !== 'bar') {
+          return
+        }
+
+        path.parentPath.remove()
+      }
+    }
+  }
+}
+```

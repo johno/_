@@ -18,16 +18,16 @@ export default ({ children }) => {
           name="viewport"
           content="width=device-width,initial-scale=1,shrink-to-fit=no,viewport-fit=cover"
         />
-        <title>Todos</title>
-        <meta property="description" content="A todo app for minimalists" />
+        <title>two(2)duo</title>
+        <meta property="description" content="An MDX platform" />
         <link
           rel="shortcut icon"
           href="https://user-images.githubusercontent.com/1424573/70815603-07fe7e00-1d8b-11ea-85f1-a502d881c954.png"
         />
-        <meta property="og:url" content="https://todos.johno.com" />
+        <meta property="og:url" content="https://twoduo.com" />
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en" />
-        <meta property="og:site_name" content="Todos" />
+        <meta property="og:site_name" content="twoduo" />
       </Helmet>
       <Global
         styles={{

@@ -16,23 +16,20 @@ export const providers = {
   google: new app.auth.GoogleAuthProvider()
 }
 
-export const getTodo = async id => {
-  const doc = await db()
-    .collection('todos')
-    .doc(id)
-    .get()
+export const getTodo = async (id) => {
+  const doc = await db().collection('pages').doc(id).get()
 
   return { ...doc.data(), id }
 }
 
-export const getTodos = async user => {
+export const getTodos = async (user) => {
   const docRefs = await db()
-    .collection('todos')
+    .collection('pages')
     .where('userId', '==', user.uid)
     .get()
 
   const docs = []
-  docRefs.forEach(doc => {
+  docRefs.forEach((doc) => {
     docs.push({
       ...doc.data(),
       id: doc.id
@@ -42,16 +39,13 @@ export const getTodos = async user => {
   return docs
 }
 
-export const updateTodo = async doc => {
-  await db()
-    .collection('todos')
-    .doc(doc.id)
-    .set(doc)
+export const updateTodo = async (doc) => {
+  await db().collection('pages').doc(doc.id).set(doc)
 }
 
-export const markToggleComplete = async doc => {
+export const markToggleComplete = async (doc) => {
   await db()
-    .collection('todos')
+    .collection('pages')
     .doc(doc.id)
     .set({
       ...doc,
@@ -63,7 +57,7 @@ export const createTodo = async (user, data = {}) => {
   const id = uuid()
 
   await db()
-    .collection('todos')
+    .collection('pages')
     .doc(id)
     .set({
       id,

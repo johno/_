@@ -10,19 +10,6 @@ import useCurrentUser from '../use-current-user'
 const Todo = ({ todo, isActive, onClick }) => {
   const [isComplete, setIsComplete] = useState(todo.isComplete)
 
-  const handleToggle = () => {
-    markToggleComplete(todo)
-    setIsComplete(!isComplete)
-  }
-
-  const completeStyles = isComplete
-    ? {
-        opacity: 0.6,
-        backgroundColor: 'muted',
-        textDecoration: 'line-through'
-      }
-    : {}
-
   return (
     <section
       onClick={onClick}
@@ -41,7 +28,6 @@ const Todo = ({ todo, isActive, onClick }) => {
           borderRadius: 4,
           border: 'thin solid transparent',
           cursor: 'pointer',
-          ...completeStyles,
           '&:hover': {
             outline: 'none',
             border: 'thin solid #eee',
@@ -58,11 +44,6 @@ const Todo = ({ todo, isActive, onClick }) => {
         >
           {todo.title}
         </h3>
-        {isComplete ? (
-          <XSquare aria-label="Mark as incomplete" onClick={handleToggle} />
-        ) : (
-          <CheckSquare aria-label="Mark as complete" onClick={handleToggle} />
-        )}
       </div>
       {isActive ? (
         <div sx={{ textAlign: 'right', px: 3, py: 2 }}>
@@ -81,7 +62,7 @@ const NewTodo = ({ currentUser, onSubmit }) => {
     return null
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     onSubmit(e, { title })
     setTitle('')
   }
@@ -102,13 +83,13 @@ const NewTodo = ({ currentUser, onSubmit }) => {
             overflow: 'hidden'
           }}
         >
-          Todo title
+          Page title
         </span>
         <input
           type="text"
-          placeholder="Add a todo..."
+          placeholder="Create a new page..."
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           sx={{
             border: 0,
             fontSize: [3, 4, 4],
@@ -130,7 +111,7 @@ const NewTodo = ({ currentUser, onSubmit }) => {
       </label>
       <input
         type="submit"
-        value="Create todo"
+        value="Create a new page"
         sx={{
           position: 'absolute',
           left: -10000,
@@ -151,8 +132,8 @@ export default () => {
 
   const getAllTodos = async () => {
     const records = await getTodos(currentUser)
-    const completeTodos = records.filter(r => r.isComplete)
-    const incompleteTodos = records.filter(r => !r.isComplete)
+    const completeTodos = records.filter((r) => r.isComplete)
+    const incompleteTodos = records.filter((r) => !r.isComplete)
     setTodos([...incompleteTodos, ...completeTodos])
   }
 
@@ -171,7 +152,7 @@ export default () => {
   return (
     <div>
       <NewTodo currentUser={currentUser} onSubmit={handleSubmit} />
-      {todos.map(todo => {
+      {todos.map((todo) => {
         const isActive = activeTodoId === todo.id
         return (
           <Todo

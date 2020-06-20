@@ -9,9 +9,13 @@
     "deploy": "firebase deploy && now switch johno && now --prod"
   },
   "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.10.3",
+    "@babel/standalone": "^7.10.3",
     "@emotion/core": "10.0.28",
     "@mdx-js/mdx": "1.6.3",
     "@mdx-js/react": "1.6.3",
+    "@monaco-editor/react": "^3.3.2",
+    "babel-plugin-remove-export-keywords": "^1.6.6",
     "firebase": "7.14.4",
     "gatsby": "2.22.3",
     "gatsby-plugin-mdx": "1.2.11",

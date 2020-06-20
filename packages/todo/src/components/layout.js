@@ -48,8 +48,12 @@ export default ({ children }) => {
               color: 'inherit'
             }}
           >
-            <span role="img" aria-label="Anchor logo">
-              ⚓︎
+            <span
+              role="img"
+              aria-label="Anchor logo"
+              sx={{ fontWeight: 'bold' }}
+            >
+              two(2)duo
             </span>
           </Link>
           <div sx={{ ml: 'auto' }} />
@@ -59,7 +63,8 @@ export default ({ children }) => {
                 sx={{
                   cursor: 'pointer',
                   textDecoration: 'none',
-                  color: 'inherit'
+                  color: 'inherit',
+                  fontWeight: 'bold'
                 }}
                 onClick={async () => {
                   await logout()
@@ -74,7 +79,8 @@ export default ({ children }) => {
               sx={{
                 cursor: 'pointer',
                 textDecoration: 'none',
-                color: 'inherit'
+                color: 'inherit',
+                fontWeight: 'bold'
               }}
               onClick={async () => {
                 await login()

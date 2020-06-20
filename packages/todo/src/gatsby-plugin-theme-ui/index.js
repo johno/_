@@ -96,6 +96,10 @@ export default {
     },
     img: {
       maxWidth: '100%'
+    },
+    hr: {
+      border: 'thin solid #666',
+      my: [4, 5, 6]
     }
   }
 }

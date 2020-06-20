@@ -23,8 +23,5 @@
     "react-feather": "2.0.8",
     "react-helmet": "6.0.0",
     "theme-ui": "0.3.1"
-  },
-  "engines": {
-    "node": "12.x"
   }
 }

@@ -150,7 +150,6 @@ export default () => {
     <div>
       <NewTodo currentUser={currentUser} onSubmit={handleSubmit} />
       {todos.map((todo) => {
-        const isActive = activeTodoId === todo.id
         return <Todo key={todo.id} todo={todo} sx={{ mb: 2 }} />
       })}
     </div>

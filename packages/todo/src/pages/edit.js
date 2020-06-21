@@ -144,6 +144,7 @@ export default () => {
               theme="light"
               loading={<h1>Loading page content...</h1>}
               options={{
+                wordBasedSuggestions: false,
                 minimap: {
                   enabled: false
                 },

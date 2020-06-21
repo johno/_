@@ -3,14 +3,20 @@ import React from 'react'
 import { transform } from '@babel/standalone'
 import mdx from '@mdx-js/mdx'
 import { ThemeProvider, Styled, jsx } from 'theme-ui'
+import { DesignSystemProvider } from 'johno-ds'
 import { mdx as createElement, MDXProvider } from '@mdx-js/react'
 import babelPluginTransformReactJsx from '@babel/plugin-transform-react-jsx'
 import babelPluginRemoveExportKeywords from 'babel-plugin-remove-export-keywords'
+
+import babelPluginRemoveShortcodes from '../babel-plugins/remove-shortcodes'
+
+import * as buitinComponents from './builtins'
 
 const transformJsx = (jsx) => {
   const { code } = transform(jsx, {
     plugins: [
       babelPluginRemoveExportKeywords,
+      babelPluginRemoveShortcodes,
       [babelPluginTransformReactJsx, { useBuiltIns: true }]
     ]
   })
@@ -33,6 +39,7 @@ const Renderer = ({
   ...props
 }) => {
   const fullScope = {
+    ...buitinComponents,
     mdx: createElement,
     MDXProvider,
     React,
@@ -49,8 +56,7 @@ const Renderer = ({
     const srcCode = transformJsx(jsxFromMdx)
 
     const fn = new Function(...scopeKeys, transformCodeForEval(srcCode))
-
-    console.log(theme)
+    const el = fn(...scopeValues)
 
     return (
       <ThemeProvider theme={theme}>
@@ -63,7 +69,7 @@ const Renderer = ({
             py: [3, 4, 5]
           }}
         >
-          {fn(...scopeValues)}
+          {el}
         </main>
       </ThemeProvider>
     )

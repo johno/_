@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { useState, useEffect, useRef } from 'react'
 import { jsx } from 'theme-ui'
+import * as presets from '@theme-ui/presets'
 import getQueryParam from 'get-query-param'
 import Monaco from '@monaco-editor/react'
 
@@ -46,9 +47,18 @@ export default () => {
     setTodo({ ...todo, [key]: e.target.value })
   }
 
+  const handlePresetChange = (e) => {
+    const presetName = e.target.value
+    const theme = presets[presetName]
+
+    setTodo({ ...todo, theme, presetName })
+  }
+
   if (!todo) {
     return <Layout />
   }
+
+  console.log({ todo })
 
   return (
     <Layout>
@@ -57,41 +67,69 @@ export default () => {
           display: 'flex'
         }}
       >
-        <div sx={{ width: '50%' }}>
-          <label>
-            <span
-              sx={{
-                position: 'absolute',
-                left: -10000,
-                top: 'auto',
-                width: 1,
-                height: 1,
-                overflow: 'hidden'
-              }}
-            >
-              Todo title
-            </span>
-            <input
-              type="text"
-              placeholder="Add a todo..."
-              value={todo.title}
-              onChange={handleChange('title')}
-              sx={{
-                border: 0,
-                fontSize: [3, 4, 4],
-                fontWeight: 'bold',
-                py: 2,
-                borderRadius: 4,
-                border: 'thin solid transparent',
-                width: '100%',
-                mb: 3,
-                '&:focus': {
-                  outline: 'none',
-                  border: 'thin solid transparent'
-                }
-              }}
-            />
-          </label>
+        <div sx={{ width: '50%', mr: 2 }}>
+          <div
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <label>
+              <span
+                sx={{
+                  position: 'absolute',
+                  left: -10000,
+                  top: 'auto',
+                  width: 1,
+                  height: 1,
+                  overflow: 'hidden'
+                }}
+              >
+                Page title
+              </span>
+              <input
+                type="text"
+                placeholder="Begin writing..."
+                value={todo.title}
+                onChange={handleChange('title')}
+                sx={{
+                  border: 0,
+                  fontSize: [3, 4, 4],
+                  fontWeight: 'bold',
+                  py: 2,
+                  borderRadius: 4,
+                  border: 'thin solid transparent',
+                  width: '100%',
+                  mb: 3,
+                  '&:focus': {
+                    outline: 'none',
+                    border: 'thin solid transparent'
+                  }
+                }}
+              />
+            </label>
+            <label>
+              <span
+                sx={{
+                  position: 'absolute',
+                  left: -10000,
+                  top: 'auto',
+                  width: 1,
+                  height: 1,
+                  overflow: 'hidden'
+                }}
+              >
+                Theme
+              </span>
+              <select value={todo.presetName} onChange={handlePresetChange}>
+                <option>Select a theme</option>
+                {Object.keys(presets).map((preset) => (
+                  <option key={preset}>{preset}</option>
+                ))}
+              </select>
+            </label>
+          </div>
           <div
             sx={{
               height: '100vh'
@@ -117,7 +155,7 @@ export default () => {
           </div>
         </div>
         <div sx={{ width: '50%' }}>
-          <Render>{todo.content || ''}</Render>
+          <Render theme={todo.theme}>{todo.content || ''}</Render>
         </div>
       </div>
     </Layout>

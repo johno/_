@@ -1,6 +1,8 @@
+/** @jsx jsx */
 import React from 'react'
 import { transform } from '@babel/standalone'
 import mdx from '@mdx-js/mdx'
+import { ThemeProvider, Styled, jsx } from 'theme-ui'
 import { mdx as createElement, MDXProvider } from '@mdx-js/react'
 import babelPluginTransformReactJsx from '@babel/plugin-transform-react-jsx'
 import babelPluginRemoveExportKeywords from 'babel-plugin-remove-export-keywords'
@@ -27,14 +29,16 @@ const Renderer = ({
   children: mdxSrc,
   scope = {},
   components = {},
+  theme = {},
   ...props
 }) => {
   const fullScope = {
     mdx: createElement,
     MDXProvider,
     React,
-    components,
+    components: { ...Styled, ...components },
     props,
+    theme,
     ...scope
   }
   const scopeKeys = Object.keys(fullScope)
@@ -46,7 +50,23 @@ const Renderer = ({
 
     const fn = new Function(...scopeKeys, transformCodeForEval(srcCode))
 
-    return fn(...scopeValues)
+    console.log(theme)
+
+    return (
+      <ThemeProvider theme={theme}>
+        <main
+          sx={{
+            bg: 'background',
+            fontFamily: 'body',
+            color: 'text',
+            px: [2, 3, 4],
+            py: [3, 4, 5]
+          }}
+        >
+          {fn(...scopeValues)}
+        </main>
+      </ThemeProvider>
+    )
   } catch (e) {
     return (
       <div>

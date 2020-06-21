@@ -2,17 +2,13 @@
 import { jsx } from 'theme-ui'
 import { useState, useEffect } from 'react'
 import { Link } from 'gatsby'
-import { ArrowRight, XSquare, CheckSquare } from 'react-feather'
 
-import { getTodos, createTodo, markToggleComplete } from '../lib'
+import { getTodos, createTodo } from '../lib'
 import useCurrentUser from '../use-current-user'
 
-const Todo = ({ todo, isActive, onClick }) => {
-  const [isComplete, setIsComplete] = useState(todo.isComplete)
-
+const Todo = ({ todo }) => {
   return (
     <section
-      onClick={onClick}
       sx={{
         width: '24em',
         mx: 'auto'
@@ -39,19 +35,21 @@ const Todo = ({ todo, isActive, onClick }) => {
           }
         }}
       >
-        <h3
-          sx={{ m: 0, textDecoration: isComplete ? 'strikethrough' : 'none' }}
-        >
-          {todo.title}
+        <h3 sx={{ m: 0, width: '100%' }}>
+          <Link
+            sx={{
+              color: 'inherit',
+              display: 'flex',
+              textDecoration: 'none',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+            to={`/edit?id=${todo.id}`}
+          >
+            {todo.title}
+          </Link>
         </h3>
       </div>
-      {isActive ? (
-        <div sx={{ textAlign: 'right', px: 3, py: 2 }}>
-          <Link sx={{ color: 'inherit' }} to={`/edit?id=${todo.id}`}>
-            <ArrowRight />
-          </Link>
-        </div>
-      ) : null}
     </section>
   )
 }
@@ -128,7 +126,6 @@ const NewTodo = ({ currentUser, onSubmit }) => {
 export default () => {
   const { currentUser } = useCurrentUser()
   const [todos, setTodos] = useState([])
-  const [activeTodoId, setActiveTodoId] = useState(null)
 
   const getAllTodos = async () => {
     const records = await getTodos(currentUser)
@@ -154,15 +151,7 @@ export default () => {
       <NewTodo currentUser={currentUser} onSubmit={handleSubmit} />
       {todos.map((todo) => {
         const isActive = activeTodoId === todo.id
-        return (
-          <Todo
-            key={todo.id}
-            todo={todo}
-            isActive={isActive}
-            onClick={() => setActiveTodoId(isActive ? null : todo.id)}
-            sx={{ mb: 2 }}
-          />
-        )
+        return <Todo key={todo.id} todo={todo} sx={{ mb: 2 }} />
       })}
     </div>
   )

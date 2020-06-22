@@ -32,7 +32,9 @@ export default ({ children }) => {
       <Global
         styles={{
           body: {
-            margin: 0
+            margin: 0,
+            maxWidth: '100vw',
+            overflowX: 'hidden'
           },
           '*': {
             boxSizing: 'border-box'

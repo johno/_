@@ -64,10 +64,11 @@ export default () => {
     <Layout>
       <div
         sx={{
-          display: 'flex'
+          display: 'flex',
+          flexWrap: ['wrap', 'nowrap', 'nowrap']
         }}
       >
-        <div sx={{ width: '50%', mr: 2 }}>
+        <div sx={{ width: ['100%', '50%', '50%'], mr: 2 }}>
           <div
             sx={{
               display: 'flex',
@@ -155,7 +156,7 @@ export default () => {
             />
           </div>
         </div>
-        <div sx={{ width: '50%' }}>
+        <div sx={{ width: ['100%', '50%', '50%'] }}>
           <Render theme={todo.theme}>{todo.content || ''}</Render>
         </div>
       </div>

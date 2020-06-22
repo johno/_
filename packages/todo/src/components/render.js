@@ -9,7 +9,7 @@ import babelPluginRemoveExportKeywords from 'babel-plugin-remove-export-keywords
 
 import babelPluginRemoveShortcodes from '../babel-plugins/remove-shortcodes'
 
-import * as buitinComponents from './builtins'
+import * as builtinComponents from './builtins'
 
 const transformJsx = (jsx) => {
   const { code } = transform(jsx, {
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true }
+    return { hasError: true, error }
   }
 
   componentDidCatch(error, errorInfo) {
@@ -46,8 +46,17 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      console.log('we have an error')
-      return <h1>We have an error!!!!!</h1>
+      return (
+        <div>
+          <h1>We encountered an unknown error</h1>
+          <pre>{JSON.stringify(this.state.error, null, 2)}</pre>
+          <builtinComponents.Button
+            onClick={() => this.setState({ hasError: false, error: null })}
+          >
+            Try rerendering
+          </builtinComponents.Button>
+        </div>
+      )
     }
 
     //return null
@@ -64,7 +73,7 @@ const Renderer = ({
   ...props
 }) => {
   const fullScope = {
-    ...buitinComponents,
+    ...builtinComponents,
     mdx: createElement,
     MDXProvider,
     React,
@@ -76,37 +85,27 @@ const Renderer = ({
   const scopeKeys = Object.keys(fullScope)
   const scopeValues = Object.values(fullScope)
 
-  try {
-    const jsxFromMdx = mdx.sync(mdxSrc, { skipExport: true })
-    const srcCode = transformJsx(jsxFromMdx)
+  const jsxFromMdx = mdx.sync(mdxSrc, { skipExport: true })
+  const srcCode = transformJsx(jsxFromMdx)
 
-    const fn = new Function(...scopeKeys, transformCodeForEval(srcCode))
-    const el = fn(...scopeValues)
+  const fn = new Function(...scopeKeys, transformCodeForEval(srcCode))
+  const el = fn(...scopeValues)
 
-    return (
-      <ThemeProvider theme={theme}>
-        <main
-          sx={{
-            bg: 'background',
-            fontFamily: 'body',
-            color: 'text',
-            px: [2, 3, 4],
-            py: [3, 4, 5]
-          }}
-        >
-          {el}
-        </main>
-      </ThemeProvider>
-    )
-  } catch (e) {
-    return (
-      <div>
-        <h1>⛔️ Invalid MDX</h1>
-        <pre>{JSON.stringify(e, null, 2)}</pre>
-        <pre>{JSON.stringify(e.stack, null, 2)}</pre>
-      </div>
-    )
-  }
+  return (
+    <ThemeProvider theme={theme}>
+      <main
+        sx={{
+          bg: 'background',
+          fontFamily: 'body',
+          color: 'text',
+          px: [2, 3, 4],
+          py: [3, 4, 5]
+        }}
+      >
+        {el}
+      </main>
+    </ThemeProvider>
+  )
 }
 
 export default (props) => (

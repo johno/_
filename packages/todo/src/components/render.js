@@ -3,7 +3,6 @@ import React from 'react'
 import { transform } from '@babel/standalone'
 import mdx from '@mdx-js/mdx'
 import { ThemeProvider, Styled, jsx } from 'theme-ui'
-import { DesignSystemProvider } from 'johno-ds'
 import { mdx as createElement, MDXProvider } from '@mdx-js/react'
 import babelPluginTransformReactJsx from '@babel/plugin-transform-react-jsx'
 import babelPluginRemoveExportKeywords from 'babel-plugin-remove-export-keywords'
@@ -29,6 +28,32 @@ const transformCodeForEval = (jsx) => {
   return React.createElement(MDXProvider, { components },
     React.createElement(MDXContent, props)
   );`
+}
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.log({ error, errorInfo })
+  }
+
+  render() {
+    if (this.state.hasError) {
+      console.log('we have an error')
+      return <h1>We have an error!!!!!</h1>
+    }
+
+    //return null
+
+    return this.props.children
+  }
 }
 
 const Renderer = ({
@@ -84,4 +109,8 @@ const Renderer = ({
   }
 }
 
-export default (props) => <Renderer {...props} />
+export default (props) => (
+  <ErrorBoundary>
+    <Renderer {...props} />
+  </ErrorBoundary>
+)

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { jsx } from 'theme-ui'
 import { useState, useEffect } from 'react'
-import { Link } from 'gatsby'
+import { Link, navigate } from 'gatsby'
 
 import { getTodos, createTodo } from '../lib'
 import useCurrentUser from '../use-current-user'
@@ -142,8 +142,8 @@ export default () => {
 
   const handleSubmit = async (e, { title }) => {
     e.preventDefault()
-    await createTodo(currentUser, { title })
-    getAllTodos()
+    const res = await createTodo(currentUser, { title })
+    navigate(`/edit?id=${res.id}`)
   }
 
   return (

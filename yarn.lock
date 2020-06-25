@@ -2029,13 +2029,13 @@
     core-js "^3.4.1"
     regenerator-runtime "^0.13.3"
 
-"@manypkg/cli@0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@manypkg/cli/-/cli-0.13.0.tgz#89af036933de367b5f8c6027032c86e265d761d7"
-  integrity sha512-H38xh5mJ0Cwev6Dke+vcyKEj152u7jl5aNaqx/QDVnjLpbSTUExENxIQ9smKeLDX/ZskEzbvLETMwNXAbAdq7Q==
+"@manypkg/cli@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@manypkg/cli/-/cli-0.14.0.tgz#0fc56a621d0f61c2a7cc46ca2c8da0b4ac635080"
+  integrity sha512-orXFFDjc0n1dNi+nWQvmz+HUBZqMUl+nislQVwe/vUefaSrtnwHWME/NqBreKRnE4j0PecMFLPL6sI7DCesSzg==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@manypkg/get-packages" "^1.0.0"
+    "@manypkg/get-packages" "^1.1.0"
     chalk "^2.4.2"
     detect-indent "^6.0.0"
     find-up "^4.1.0"
@@ -2060,13 +2060,34 @@
     find-up "^4.1.0"
     fs-extra "^8.1.0"
 
-"@manypkg/get-packages@^1.0.0", "@manypkg/get-packages@^1.0.1":
+"@manypkg/find-root@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@manypkg/find-root/-/find-root-1.1.0.tgz#a62d8ed1cd7e7d4c11d9d52a8397460b5d4ad29f"
+  integrity sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    "@types/node" "^12.7.1"
+    find-up "^4.1.0"
+    fs-extra "^8.1.0"
+
+"@manypkg/get-packages@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@manypkg/get-packages/-/get-packages-1.0.1.tgz#0b46907555626ae773abb828e6c1cb313aa44777"
   integrity sha512-paGfOt9yW+4/kkK9pM5DlnZDfrP7pp75TDimA8VJQlfxxD7/yHpRsBQZh+soqArr9uqwnCw2XkDggG7BlPdQ3Q==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@manypkg/find-root" "^1.0.0"
+    fs-extra "^8.1.0"
+    globby "^11.0.0"
+    read-yaml-file "^1.1.0"
+
+"@manypkg/get-packages@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@manypkg/get-packages/-/get-packages-1.1.0.tgz#ca3b2168728e3453083d3916e974efb25cbbce00"
+  integrity sha512-s1Bceeu/zy769nFJRa0F6WzHKf0J21vrRN1jrTeZJ+q3LDxspV3JbQkgCLgYVlWD0d81cXK1gCwR1+oJhBejHQ==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    "@manypkg/find-root" "^1.1.0"
     fs-extra "^8.1.0"
     globby "^11.0.0"
     read-yaml-file "^1.1.0"

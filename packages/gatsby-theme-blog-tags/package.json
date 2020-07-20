@@ -1,0 +1,19 @@
+{
+  "name": "gatsby-theme-blog-tags",
+  "description": "Add tag support to gatsby-theme-blog-core",
+  "version": "0.0.11",
+  "author": "John Otander",
+  "license": "MIT",
+  "peerDependencies": {
+    "gatsby": "^2.24.11",
+    "gatsby-theme-blog-core": "^2.0.1"
+  },
+  "dependencies": {
+    "lodash.kebabcase": "^4.1.1"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-theme",
+    "gatsby-plugin"
+  ]
+}

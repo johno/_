@@ -5,8 +5,8 @@
   "author": "John Otander",
   "license": "MIT",
   "peerDependencies": {
-    "gatsby": "^2.24.7",
-    "gatsby-theme-blog-core": "^2.0.0"
+    "gatsby": "^2.24.11",
+    "gatsby-theme-blog-core": "^2.0.1"
   },
   "dependencies": {
     "lodash.kebabcase": "^4.1.1"

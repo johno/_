@@ -34,7 +34,7 @@
     "react-dom": "16.13.1",
     "react-feather": "2.0.8",
     "theme-ui": "0.3.1",
-    "three": "0.118.3"
+    "three": "0.119.1"
   },
   "workspaces": [
     "packages/*"

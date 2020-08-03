@@ -7762,10 +7762,10 @@ gatsby-cli@^2.12.66:
     yargs "^15.3.1"
     yurnalist "^1.1.2"
 
-gatsby-cli@^2.12.70:
-  version "2.12.70"
-  resolved "https://registry.yarnpkg.com/gatsby-cli/-/gatsby-cli-2.12.70.tgz#664f663571dcb93e7ca88d65888f353c6cd65b2f"
-  integrity sha512-8neTXNeyE8oMoha0IWqZJxXcSN1koWgjDi5g4mKu87hbFU3qT3jhgj+wwShAAR/2nXD4lRlSnPB89NHZ8dM/hA==
+gatsby-cli@^2.12.71:
+  version "2.12.71"
+  resolved "https://registry.yarnpkg.com/gatsby-cli/-/gatsby-cli-2.12.71.tgz#891d45909940a1b5a6e00929ff73aab6bce9282a"
+  integrity sha512-6BFVow1xDT9uK2/os4xQJY93sGn52lqTUmULHFf0yqocpUt3Ie0QOsjE+OiEAYdXsDsXnZWXUwfzex38roPtrw==
   dependencies:
     "@babel/code-frame" "^7.10.3"
     "@hapi/joi" "^15.1.1"
@@ -7781,7 +7781,7 @@ gatsby-cli@^2.12.70:
     fs-exists-cached "^1.0.0"
     fs-extra "^8.1.0"
     gatsby-core-utils "^1.3.14"
-    gatsby-recipes "^0.2.0"
+    gatsby-recipes "^0.2.1"
     gatsby-telemetry "^1.3.25"
     hosted-git-info "^3.0.4"
     ink "^2.7.1"
@@ -8128,10 +8128,10 @@ gatsby-recipes@^0.1.56:
     ws "^7.3.0"
     xstate "^4.11.0"
 
-gatsby-recipes@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/gatsby-recipes/-/gatsby-recipes-0.2.0.tgz#366e433249ec1c1cfe7e529b23fa320dc77da9a5"
-  integrity sha512-XO1GAHqnIUI5T/R5a/6ZZhFGvd/Wag3CSa7loLNC6mv6GXq3nbS8gEhIbNfamC3BTK9r8k9wRteerCpF+6jvlg==
+gatsby-recipes@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/gatsby-recipes/-/gatsby-recipes-0.2.1.tgz#9fc51a6b98bb8977e5f26d8877322407d6df35e7"
+  integrity sha512-hsWqERnPnkT41hsZabnTV5wI1598qv2+ap2iGgPXRnF1pIA7mnIBIFEMBr0+tIlpyDQrdnfenaRE8tzj4H83YA==
   dependencies:
     "@babel/core" "^7.9.6"
     "@babel/generator" "^7.9.6"
@@ -8499,10 +8499,10 @@ gatsby@2.24.11:
     xstate "^4.11.0"
     yaml-loader "^0.6.0"
 
-gatsby@2.24.25:
-  version "2.24.25"
-  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.24.25.tgz#e38fafbf3120674d1d516cccbcd2a73ba9e2f7c0"
-  integrity sha512-iHE3fjoSFMIC6vVCVfICmSYjBq8vL2EdOgx46N7w4y3iEG4O+gkWcMGz6om12rCIBiqaPfeIBEPVVoRj4e3/gQ==
+gatsby@2.24.26:
+  version "2.24.26"
+  resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-2.24.26.tgz#9b6d0e46e73eaf37a302c6f1eb41957bc30af969"
+  integrity sha512-rZ8YEWdv+gJnp/gZe61JQYQkZrPGjRep0GHreEmMwwsnTSlA3hdrL7Uz+PqCWY3jtnbvr55EZmL88rHgH8KCvA==
   dependencies:
     "@babel/code-frame" "^7.10.3"
     "@babel/core" "^7.10.3"
@@ -8565,7 +8565,7 @@ gatsby@2.24.25:
     find-cache-dir "^3.3.1"
     fs-exists-cached "1.0.0"
     fs-extra "^8.1.0"
-    gatsby-cli "^2.12.70"
+    gatsby-cli "^2.12.71"
     gatsby-core-utils "^1.3.14"
     gatsby-graphiql-explorer "^0.4.12"
     gatsby-legacy-polyfills "^0.0.2"
@@ -16563,7 +16563,7 @@ text-table@0.2.0, text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-theme-ui@0.3.1, theme-ui@^0.2.49:
+theme-ui@0.3.1, theme-ui@^0.2.49, theme-ui@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/theme-ui/-/theme-ui-0.3.1.tgz#b00ee2c03eb3d820536af8b121c64d13b3777cf0"
   integrity sha512-My/TSALqp7Dst5Ez7nJA+94Q8zJhc26Z0qGo8kEWyoqHHJ5TU8xdhjLPBltTdQck3T32cSq5USIeSKU3JtxYUQ==

@@ -16,7 +16,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@changesets/cli": "2.9.2",
+    "@changesets/cli": "2.11.1",
     "@manypkg/cli": "0.14.0",
     "@theme-ui/components": "0.3.1",
     "chroma-js": "2.1.0",

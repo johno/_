@@ -1,9 +1,0 @@
-{
-  "name": "gatsby-plugin-component-graph",
-  "version": "0.1.0",
-  "repository": "johno/_/packages/gatsby-plugin-component-graph",
-  "dependencies": {
-    "gatsby-source-filesystem": "2.3.23",
-    "gatsby-transformer-json": "2.4.11"
-  }
-}

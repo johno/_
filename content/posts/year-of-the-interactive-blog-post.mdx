@@ -7,6 +7,8 @@ tags:
   - digital-garden
 ---
 
+import * as React from 'react'
+
 Component frameworks like React and Vue have become the norm in frontend
 development. We're also seeing the pendulum swing to self-hosted platforms
 as folks grow frustrated with walled gardens like Medium. I think this is
@@ -48,7 +50,7 @@ export const Slider = () => {
         max="2"
         min="0"
         value={position}
-        onChange={e => setPosition(e.target.value)}
+        onChange={(e) => setPosition(e.target.value)}
       />
     </div>
   )

@@ -1,1 +1,0 @@
-# gatsby-theme-austere

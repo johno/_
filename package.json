@@ -16,7 +16,7 @@
     "jest": "^26.2.2",
     "lint-staged": "10.2.11",
     "lodash.sample": "4.2.1",
-    "prettier": "2.0.5",
+    "prettier": "2.1.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-feather": "2.0.8",

@@ -3,6 +3,7 @@
   "name": "johno.com",
   "type": "module",
   "scripts": {
+    "postinstall": "breadbox --dest public/web_modules",
     "build": "toast incremental .",
     "changeset": "changeset",
     "deploy": "now switch johno && now --prod",
@@ -15,10 +16,11 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@changesets/cli": "2.9.2",
     "@manypkg/cli": "0.14.0",
     "@sector/breadbox": "^0.0.4",
+    "@toastdotdev/mdx": "0.0.6",
     "chroma-js": "2.1.0",
+    "gray-matter": "^4.0.2",
     "husky": "4.2.5",
     "jest": "^26.2.2",
     "lint-staged": "10.2.11",
@@ -27,8 +29,6 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-feather": "2.0.8",
-    "theme-ui": "^0.3.1",
-    "three": "0.119.1",
     "toast": "^0.3.19"
   },
   "workspaces": [
@@ -50,5 +50,24 @@
       "dist"
     ],
     "testEnvironment": "node"
+  },
+  "snowpack": {
+    "exclude": [
+      "public/**/*",
+      "toast.js",
+      "fetch-mdx-post-files.js"
+    ],
+    "installOptions": {
+      "alias": {
+        "react": "preact/compat"
+      }
+    },
+    "knownEntrypoints": [
+      "preact",
+      "preact/hooks",
+      "@mdx-js/preact",
+      "react-helmet",
+      "preact/compat"
+    ]
   }
 }

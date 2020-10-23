@@ -5,18 +5,9 @@
   "scripts": {
     "postinstall": "breadbox --dest public/web_modules",
     "build": "toast incremental .",
-    "changeset": "changeset",
-    "deploy": "now switch johno && now --prod",
-    "nuke": "yarn clean && rm -rf node_modules && rm yarn.lock",
-    "pkg:fix": "manypkg fix",
-    "pkg:check": "manypkg check",
-    "release": "changeset publish",
-    "test": "jest",
-    "todo": "yarn workspace todo start",
-    "test:watch": "jest --watch"
+    "deploy": "now switch johno && now --prod"
   },
   "dependencies": {
-    "@manypkg/cli": "0.14.0",
     "@sector/breadbox": "^0.0.4",
     "@toastdotdev/mdx": "0.0.6",
     "chroma-js": "2.1.0",
@@ -31,9 +22,6 @@
     "react-feather": "2.0.8",
     "toast": "^0.3.19"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -44,12 +32,8 @@
       "prettier --write"
     ]
   },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/.cache/",
-      "dist"
-    ],
-    "testEnvironment": "node"
+  "engines": {
+    "node": "14.14.x"
   },
   "snowpack": {
     "exclude": [
@@ -67,7 +51,10 @@
       "preact/hooks",
       "@mdx-js/preact",
       "react-helmet",
-      "preact/compat"
+      "preact/compat",
+      "chroma-js",
+      "lodash.sample",
+      "react-feather"
     ]
   }
 }

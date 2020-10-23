@@ -1,11 +1,10 @@
 {
   "private": true,
   "name": "johno.com",
+  "type": "module",
   "scripts": {
-    "start": "gatsby develop",
-    "build": "gatsby build",
+    "build": "toast incremental .",
     "changeset": "changeset",
-    "clean": "gatsby clean",
     "deploy": "now switch johno && now --prod",
     "nuke": "yarn clean && rm -rf node_modules && rm yarn.lock",
     "pkg:fix": "manypkg fix",
@@ -18,13 +17,8 @@
   "dependencies": {
     "@changesets/cli": "2.9.2",
     "@manypkg/cli": "0.14.0",
-    "@theme-ui/components": "0.3.1",
+    "@sector/breadbox": "^0.0.4",
     "chroma-js": "2.1.0",
-    "gatsby": "2.24.26",
-    "gatsby-plugin-fathom": "1.3.0",
-    "gatsby-plugin-mdx": "^1.2.33",
-    "gatsby-theme-austere": "0.1.1",
-    "gatsby-theme-blog-tags": "0.0.11",
     "husky": "4.2.5",
     "jest": "^26.2.2",
     "lint-staged": "10.2.11",
@@ -34,7 +28,8 @@
     "react-dom": "16.13.1",
     "react-feather": "2.0.8",
     "theme-ui": "^0.3.1",
-    "three": "0.119.1"
+    "three": "0.119.1",
+    "toast": "^0.3.19"
   },
   "workspaces": [
     "packages/*"
@@ -55,15 +50,5 @@
       "dist"
     ],
     "testEnvironment": "node"
-  },
-  "resolutions": {
-    "@babel/helpers": "7.9.6",
-    "@emotion/core": "10.0.28",
-    "@mdx-js/mdx": "2.0.0-next.3",
-    "@mdx-js/react": "2.0.0-next.3",
-    "@theme-ui/components": "0.3.1",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "theme-ui": "0.3.1"
   }
 }

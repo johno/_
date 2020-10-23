@@ -1235,7 +1235,7 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@sector/breadbox@^0.0.4":
+"@sector/breadbox@0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@sector/breadbox/-/breadbox-0.0.4.tgz#80e24c71ae407d63b70f736128fe2fe4b8599fff"
   integrity sha512-cTJr/P/nTjIbR4NxOPrRtLAc7/QA1RY/j6fRd36xqBuKkWDS/3njW9ZlDFif4pXZcCzgSYQMPz62bK9jEv4Vag==
@@ -3297,7 +3297,7 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
   integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
 
-gray-matter@^4.0.2:
+gray-matter@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/gray-matter/-/gray-matter-4.0.2.tgz#9aa379e3acaf421193fce7d2a28cebd4518ac454"
   integrity sha512-7hB/+LxrOjq/dd8APlK0r24uL/67w7SkYnfwhNFwg/VDIGWGmduTDYf3WNstLW2fbbmRwrDGCVSJ2isuf2+4Hw==
@@ -4298,7 +4298,7 @@ jest-worker@^26.6.1:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jest@^26.2.2:
+jest@26.6.1:
   version "26.6.1"
   resolved "https://registry.yarnpkg.com/jest/-/jest-26.6.1.tgz#821e8280d2bdeeed40ac7bc43941dceff0f1b650"
   integrity sha512-f+ahfqw3Ffy+9vA7sWFGpTmhtKEMsNAZiWBVXDkrpIO73zIz22iimjirnV78kh/eWlylmvLh/0WxHN6fZraZdA==
@@ -6438,7 +6438,7 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-toast@^0.3.19:
+toast@0.3.19:
   version "0.3.19"
   resolved "https://registry.yarnpkg.com/toast/-/toast-0.3.19.tgz#be769408d394e500f0474ad1a8c0a21e88b0e05a"
   integrity sha512-T1Jn6UExR2MUIDfeZq9O4gobIFERxkUOA+oCegJmnNt/iuua4aiyuQmJDnOqcP9Al/FutYnaZ6OgPiP34zMivA==

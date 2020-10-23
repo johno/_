@@ -8,19 +8,19 @@
     "deploy": "now switch johno && now --prod"
   },
   "dependencies": {
-    "@sector/breadbox": "^0.0.4",
+    "@sector/breadbox": "0.0.4",
     "@toastdotdev/mdx": "0.0.6",
     "chroma-js": "2.1.0",
-    "gray-matter": "^4.0.2",
+    "gray-matter": "4.0.2",
     "husky": "4.2.5",
-    "jest": "^26.2.2",
+    "jest": "26.6.1",
     "lint-staged": "10.2.11",
     "lodash.sample": "4.2.1",
     "prettier": "2.0.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-feather": "2.0.8",
-    "toast": "^0.3.19"
+    "toast": "0.3.19"
   },
   "husky": {
     "hooks": {

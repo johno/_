@@ -1,0 +1,75 @@
+:root {
+  --font-family: system-ui, sans-serif;
+
+  --color-background: #fff;
+  --color-text: #000;
+  --color-primary: tomato;
+  --color-accent: #444;
+  --color-code-background: #fafafa;
+  --color-code: #111;
+  --color-divider: #666;
+
+  --container-width: 36em;
+
+  --space-0: 0;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 32px;
+  --space-4: 64px;
+
+  --font-size-0: 16px;
+  --font-size-1: 18px;
+  --font-size-2: 20px;
+  --font-size-3: 24px;
+  --font-size-4: 32px;
+
+  --font-weight-heading: 600;
+  --font-weight-paragraph: 400;
+  --font-weight-link: 600;
+
+  --line-height-body: 1.4;
+  --line-height-heading: 1.1;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-1);
+  line-height: var(--line-height-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  width: var(--container-width);
+  margin: var(--space-4) auto;
+}
+
+a,
+a:visited {
+  font-weight: var(--font-weight-link);
+  color: var(--color-text);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+  margin: var(--space-3) 0 0;
+}
+
+pre {
+  background-color: var(--color-code-background);
+  color: var(--color-code);
+  overflow: auto;
+  padding: var(--space-3);
+}
+
+hr {
+  margin: var(--space-4) 0;
+  border: thin solid var(--color-divider);
+}

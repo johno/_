@@ -12,8 +12,27 @@ tags:
 
 import chroma from 'chroma-js'
 import sample from 'lodash.sample'
-import { ArrowRight, Lock, Unlock } from 'react-feather'
 import * as React from 'react'
+
+export const ArrowRight = () => {
+  /* From feathericons.com by Cole Bemis */
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>
+  )
+}
 
 As part of my work I find myself thinking about computational design,
 randomness, and color. A lot.
@@ -137,7 +156,7 @@ export const RandomColors = ({ count = 1000 }) => {
       style={{
         display: 'flex',
         flexWrap: 'wrap',
-        cursor: 'pointer'
+        cursor: 'pointer',
       }}
     >
       {els}
@@ -167,7 +186,7 @@ export const RandomDistribution = ({ width = '40%', steps = 100 }) => {
           style={{
             height: '2vw',
             width: '2vw',
-            backgroundColor: randomBool() ? 'white' : 'black'
+            backgroundColor: randomBool() ? 'white' : 'black',
           }}
         />
       )
@@ -195,7 +214,7 @@ export const UniformDistribution = ({ width = '40%', steps = 100 }) => {
         style={{
           height: '2vw',
           width: '10%',
-          backgroundColor: isBlack ? 'black' : 'white'
+          backgroundColor: isBlack ? 'black' : 'white',
         }}
       />
     )
@@ -305,7 +324,7 @@ export const RandomColorsLowEntropyAdjust = ({ count = 1000 }) => {
           value={numColors}
           onChange={(e) => setNumColors(e.target.value)}
           style={{
-            marginRight: 8
+            marginRight: 8,
           }}
         />
         Color range {numColors}
@@ -336,7 +355,7 @@ export const ColorSteppingTrulyRandom = () => {
     randomHexColor(),
     randomHexColor(),
     randomHexColor(),
-    randomHexColor()
+    randomHexColor(),
   ])
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -363,7 +382,7 @@ export const ColorSteppingTrulyRandom = () => {
       <div
         style={{
           display: 'flex',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <div
@@ -371,7 +390,7 @@ export const ColorSteppingTrulyRandom = () => {
             flex: 1,
             height: '10vh',
             transition: 'background-color 1s ease-in-out',
-            backgroundColor: colors[0]
+            backgroundColor: colors[0],
           }}
         />
         <ArrowRight />
@@ -380,7 +399,7 @@ export const ColorSteppingTrulyRandom = () => {
             flex: 1,
             height: '10vh',
             transition: 'background-color 1s ease-in-out',
-            backgroundColor: colors[1]
+            backgroundColor: colors[1],
           }}
         />
         <ArrowRight />
@@ -389,7 +408,7 @@ export const ColorSteppingTrulyRandom = () => {
             flex: 1,
             height: '10vh',
             transition: 'background-color 1s ease-in-out',
-            backgroundColor: colors[2]
+            backgroundColor: colors[2],
           }}
         />
         <ArrowRight />
@@ -397,7 +416,7 @@ export const ColorSteppingTrulyRandom = () => {
           style={{
             flex: 1,
             height: '10vh',
-            backgroundColor: colors[3]
+            backgroundColor: colors[3],
           }}
         />
       </div>
@@ -437,7 +456,7 @@ export const RandomColorRegenerator = () => {
         height: 240,
         cursor: 'pointer',
         width: 240,
-        backgroundColor: color
+        backgroundColor: color,
       }}
     />
   )
@@ -524,7 +543,7 @@ export const RandomMixingColorsRatio = ({ count = 420 }) => {
             value={ratio}
             onChange={(e) => setRatio(e.target.value)}
             style={{
-              marginRight: 8
+              marginRight: 8,
             }}
           />
           Mix ratio {ratio}
@@ -601,7 +620,7 @@ export const RandomBlendColorsSelect = ({ count = 240 }) => {
     'lighten',
     'screen',
     'burn',
-    'dodge'
+    'dodge',
   ]
   for (let i = 0; i < count; i++) {
     els.push(<div style={{ height: 16, width: 16, backgroundColor: color }} />)
@@ -614,7 +633,7 @@ export const RandomBlendColorsSelect = ({ count = 240 }) => {
       <label style={{ fontWeight: 'bold' }}>
         <select
           style={{
-            marginRight: 8
+            marginRight: 8,
           }}
           value={algorithm}
           onChange={(e) => setAlgorithm(e.target.value)}
@@ -661,14 +680,14 @@ const adjustments = [
   '/1.25',
   '/1.1',
   '/.75',
-  '/.1'
+  '/.1',
 ]
 const fns = [
   () => chroma(color).set('hsl.h', sample(adjustments)),
   () => chroma(color).saturate(),
   () => chroma(color).desaturate(),
   () => chroma(color).darken(),
-  () => chroma(color).brighten()
+  () => chroma(color).brighten(),
 ]
 const fn = sample(fns)
 color = fn()
@@ -695,14 +714,14 @@ export const RandomHSLRotateColors = ({ count = 420 }) => {
       '/1.25',
       '/1.1',
       '/.75',
-      '/.1'
+      '/.1',
     ]
     const fns = [
       () => chroma(color).set('hsl.h', sample(adjustments)),
       () => chroma(color).saturate(),
       () => chroma(color).desaturate(),
       () => chroma(color).darken(),
-      () => chroma(color).brighten()
+      () => chroma(color).brighten(),
     ]
     const fn = sample(fns)
     color = fn()
@@ -749,7 +768,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
       '/1.25',
       '/1.1',
       '/.75',
-      '/.1'
+      '/.1',
     ]
     const fns = []
     for (let i = 0; i < hue; i++) {
@@ -777,7 +796,7 @@ export const RandomHSLRotateColorsAdjust = ({ count = 460 }) => {
           display: 'flex',
           flexWrap: 'wrap',
           width: '50%',
-          marginRight: 8
+          marginRight: 8,
         }}
       >
         {els}
@@ -883,7 +902,7 @@ export const regenColorWithMemory = (color) => {
     'lighten',
     'screen',
     'burn',
-    'dodge'
+    'dodge',
   ]
   const blend = () =>
     chroma.blend(color, randomHexColor(), sample(blendAlgorithms))
@@ -897,7 +916,7 @@ export const regenColorWithMemory = (color) => {
     '/1.25',
     '/1.1',
     '/.75',
-    '/.1'
+    '/.1',
   ]
   const hueAdjust = () => chroma(color).set('hsl.h', sample(adjustments))
   const saturate = () => chroma(color).saturate()
@@ -916,7 +935,7 @@ export const regenColorWithMemory = (color) => {
     saturate,
     desaturate,
     darken,
-    brighten
+    brighten,
   ]
   const fn = sample(fns)
   return fn()
@@ -955,7 +974,7 @@ random?
 export const RandomEvolvingColorsComparison = ({
   count = 50,
   width = '2%',
-  height = 16
+  height = 16,
 }) => {
   const [colors, setColors] = React.useState([])
   const [randColors, setRandColors] = React.useState([])
@@ -997,7 +1016,7 @@ export const RandomEvolvingColorsComparison = ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginTop: -20
+        marginTop: -20,
       }}
     >
       <div style={{ width: '45%' }}>
@@ -1061,7 +1080,7 @@ export const RandomEvolvingColorsSlider = () => {
           cursor: 'pointer',
           display: 'flex',
           flexWrap: 'wrap',
-          backgroundColor: color
+          backgroundColor: color,
         }}
       />
       <label style={{ fontWeight: 'bold', userSelect: 'none', marginTop: 16 }}>
@@ -1074,7 +1093,7 @@ export const RandomEvolvingColorsSlider = () => {
           value={entropy}
           onChange={(e) => setEntropy(e.target.value)}
           style={{
-            marginRight: 16
+            marginRight: 16,
           }}
         />
       </label>

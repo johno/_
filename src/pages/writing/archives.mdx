@@ -1,0 +1,19 @@
+# Writing (all)
+
+export const Posts = ({ posts }) => {
+  return (
+    <ul>
+      {Object.entries(posts).map(([key, val]) => {
+        return (
+          <li key={key}>
+            <a href={val.slug}>{val.title}</a>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+<Posts posts={props.posts} />
+
+<pre>{JSON.stringify(props, null, 2)}</pre>

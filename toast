@@ -1,5 +1,0 @@
-For vercel, pin node version
-
-  "engines": {
-    "node": "14.x"
-  },

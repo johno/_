@@ -5,7 +5,8 @@
   "scripts": {
     "postinstall": "breadbox --dest public/web_modules",
     "build": "toast incremental .",
-    "deploy": "now switch johno && now --prod"
+    "deploy": "now switch johno && now --prod",
+    "clean": "rm -rf node_modules .tmp public"
   },
   "dependencies": {
     "@sector/breadbox": "^0.0.4",

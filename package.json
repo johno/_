@@ -5,7 +5,7 @@
   "scripts": {
     "build": "toast incremental . && cp src/styles.css public",
     "clean": "rm -rf node_modules .tmp public",
-    "deploy": "now switch johno && now --prod",
+    "deploy": "vercel switch johno && yarn build && vercel",
     "serve": "serve public",
     "postinstall": "breadbox --dest public/web_modules"
   },

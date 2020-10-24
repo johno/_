@@ -5,3 +5,5 @@ node_modules
 .now
 *.log
 .tmp
+
+.vercel

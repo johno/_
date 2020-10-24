@@ -1,15 +1,29 @@
 :root {
   --font-family: system-ui, sans-serif;
 
-  --color-background: #fff;
-  --color-text: #000;
-  --color-primary: tomato;
-  --color-accent: #444;
-  --color-code-background: #fafafa;
-  --color-code: #111;
-  --color-divider: #666;
+  /* http://www.colorbox.io/#steps=11#hue_start=259#hue_end=261#hue_curve=easeInQuad#sat_start=1#sat_end=0#sat_curve=easeInCubic#sat_rate=130#lum_start=90#lum_end=0#lum_curve=easeInOutCubic#minor_steps_map=0 */
+  --gray-0: #e3e3e6;
+  --gray-1: #d5d4d7;
+  --gray-2: #c6c5c8;
+  --gray-3: #a4a3a5;
+  --gray-4: #818082;
+  --gray-5: #605f60;
+  --gray-6: #424243;
+  --gray-7: #2a2a2a;
+  --gray-8: #171718;
+  --gray-9: #0a0a0a;
+  --gray-10: #030303;
+  --gray-11: #000000;
 
-  --container-width: 36em;
+  --color-background: #fff;
+  --color-text: var(--gray-11);
+  --color-primary: tomato;
+  --color-accent: var(--gray-7);
+  --color-code-background: var(--gray-1);
+  --color-code: var(--gray-8);
+  --color-divider: var(--gray-4);
+
+  --width-container: 36em;
 
   --space-0: 0;
   --space-1: 8px;
@@ -37,7 +51,7 @@ body {
   line-height: var(--line-height-body);
   background-color: var(--color-background);
   color: var(--color-text);
-  width: var(--container-width);
+  width: var(--width-container);
   margin: var(--space-4) auto;
 }
 

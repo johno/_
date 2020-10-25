@@ -194,7 +194,6 @@ export const RandomDistribution = ({ width = '40%', steps = 100 }) => {
     setEls(newEls)
   }
   React.useEffect(() => regenEls(), [])
-  console.log(els)
   return (
     <div
       onClick={regenEls}

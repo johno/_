@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    name: Test
+    name: Publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -13,10 +13,10 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@master
         with:
-          node-version: 14.x
+          node-version: 14.15.x
 
       - name: Install
         run: yarn
 
-      - name: Test
-        run: yarn test
+      - name: Build
+        run: yarn build

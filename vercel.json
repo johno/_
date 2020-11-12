@@ -1,4 +1,5 @@
 {
   "version": 2,
-  "cleanUrls": true
+  "cleanUrls": true,
+  "alias": ["johno.com"]
 }

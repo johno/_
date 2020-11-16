@@ -1,0 +1,78 @@
+---
+title: Wrap a JSX element with babel
+slug: /wrap-a-jsx-element-with-babel
+date: 2020-11-16
+tags:
+  - babel
+  - jsx
+  - mdx
+  - ast
+---
+
+When you're processing a JSX AST, particularly for adding
+in developer tooling, you might want to wrap JSX elements
+so that you can compose additional functionality like hover
+interaction, selection, etc.
+
+For example we might have the following input:
+
+```js
+<h1>Hello, world!</h1>
+```
+
+And we want the following output:
+
+```js
+<Wrapper>
+  <h1>Hello, world!</h1>
+</Wrapper>
+```
+
+To achieve this, we'll need to visit all `JSXElement` nodes,
+if that node isn't a `Wrapper` and its parent isn't either,
+we can wrap it.
+
+All together:
+
+```js
+export default api => {
+  const { types: t } = api
+
+  const isWrapper = node => {
+    return (
+      t.isJSXElement(node) &&
+      t.isJSXIdentifier(node.openingElement) &&
+      node.openingElement.name.name === 'Wrapper'
+    )
+  }
+
+  return {
+    visitor: {
+      JSXElement: {
+        exit: path => {
+          if (isWrapper(path.node) || isWrapper(path.parent)) {
+            return
+          }
+
+          path.replaceWith(
+            t.jsxElement(
+              t.jsxOpeningElement(t.jsxIdentifier('Wrapper')),
+              t.jsxClosingElement(t.jsxIdentifier('Wrapper')),
+              [path.node]
+            )
+          )
+        }
+      }
+    }
+  }
+}
+
+```
+
+Checking the parent to make sure it's also not a wrapper might
+seem strange, but this is required to make sure that we don't
+end up recursively wrapping the same element. That would result
+in an infinite loop.
+
+This code snippet is adapted from that of [Cole Bemis](https://twitter.com/colebemis)
+which resulted from a [project he's working on](https://twitter.com/colebemis/status/1327275979950100480).

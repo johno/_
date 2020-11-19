@@ -1,0 +1,28 @@
+---
+title: Looking up an alias definition
+slug: /looking-up-an-alias-definition
+date: 2020-11-16
+tags:
+  - sh
+---
+
+If you have a bash alias and can't remember exactly
+what it does, you can use the `which` command and it
+will show the entire alias.
+
+This is great for remembering what default options are
+or refreshing your memory on what the more granular
+parts might be.
+
+For example, I have a `stayup` alias for my Mac which
+I use to make sure my machine doesn't go to sleep while
+I'm running a script.
+
+Sometimes I might want to keep my computer awake all
+night so I look up the alias and then modify the
+command it maps to for my one-off need.
+
+```sh
+❯ which stayup
+stayup: aliased to caffeinate -u -t 3600
+```

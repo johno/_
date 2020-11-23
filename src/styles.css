@@ -87,3 +87,7 @@ hr {
   margin: var(--space-4) 0;
   border: thin solid var(--color-divider);
 }
+
+img {
+  max-width: 100%;
+}

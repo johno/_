@@ -1,0 +1,50 @@
+---
+title: 80/20
+slug: /80-20
+date: 2020-11-23
+tags:
+  - software
+  - arch
+  - em
+---
+
+In software we often hear the term "80/20" rule.
+Depending on context it can mean a couple different
+things, but first, where does it come from?
+
+## Pareto principle
+
+Wikipedia says that the [Pareto principle](https://en.wikipedia.org/wiki/Pareto_principle)
+states: 80% of consequences come from 20% of the causes (the "vital few").
+
+As far as I could find, this is the origin of the 80/20
+terminology.
+
+## 80/20 in software
+
+### Time estimation
+
+Time estimation was my first exposure to this rule in
+software. In summary, it essentially says that the last 20%
+of work takes 80% of the time. This is after 80% of the
+time estimation was already used up for the last 80% of
+work.
+
+Thus, the shipping date will be about 160% of the estimation.
+This is most likely still an improper estimate because it's
+less that 2x/200%.
+
+### Bugs
+
+This also comes from the wiki page on the Pareto principle,
+but Microsoft found that fixing the top 20% of bugs fixed
+80% of the errors for a given system.
+
+Abstractly, this does make sense, because it's often buggy
+codepaths that can lean to undefined behavior in a multitude
+of ways.
+
+### Feature usage
+
+80% of users only need 20% of the features. When you're building
+things, aim for that 20%.

@@ -7,9 +7,12 @@ tags:
   - dev
 ---
 
-- `CTRL+O`: Move backward through jump list
-- `CTRL+I`: Move forward through jump list
+- `CTRL+o`: Move backward through jump list
+- `CTRL+i`: Move forward through jump list
 - `g;`: Move backward through the change list
 - `g,`: Move forward through the change list
 - `:only`: Write and close all windows but the current
-- `CTRL+W` + `H`/`J`/`K`/`L`: Move window in the direction
+- `CTRL+w` + `H`/`J`/`K`/`L`: Move window in the direction
+- `CTRL+V` for visual block mode, hjkl to navigate
+- `:g/\[x\]/norm ddGp` for all lines that match the pattern, delete line, jump to bottom of page, then paste
+- `:v/\[x\]/norm ddGp` for all lines that don't match the pattern, delete line, jump to bottom of page, then paste

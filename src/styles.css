@@ -76,6 +76,13 @@ h6 {
   margin: var(--space-3) 0 0;
 }
 
+blockquote {
+  padding: var(--space-3) var(--space-2);
+  font-weight: var(--font-weight-heading);
+  line-height: var(--line-height-heading);
+  font-size: var(--font-size-3);
+}
+
 pre {
   background-color: var(--color-code-background);
   color: var(--color-code);

@@ -1,0 +1,65 @@
+---
+title: Bash loop
+slug: /bash-loop
+date: 2020-11-30
+tags:
+  - bash
+---
+
+## For loop
+
+```sh
+#!/bin/sh
+for f in a b c
+do
+  echo "Hello, $f"
+done
+```
+
+### Looping over files
+
+In addition to passing what will be iterated over in
+the for loop, you can also pass it files dynamically.
+
+```sh
+#!/bin/sh
+for f in *.mdx
+do
+  echo "Hello, $f"
+done
+```
+
+## Infinite while loop
+
+If you want to repeatedly run a script or command you
+can use an infinite bash while loop. If you want to
+pause between invocations you can also call `sleep`.
+
+Below we will run yarn build and then sleep for ten
+seconds. Then repeat. Until the script is stopped.
+
+```sh
+```
+
+## Infinite while loop
+
+If you want to repeatedly run a script or command you
+can use an infinite bash while loop. If you want to
+pause between invocations you can also call `sleep`.
+
+Below we will run yarn build and then sleep for ten
+seconds. Then repeat. Until the script is stopped.
+
+```sh
+#!/bin/sh
+while [ true ]
+do
+    yarn build
+    sleep 10
+done
+```
+
+Note: Don't forget to `chmod +x SCRIPT_NAME.sh` so
+that you can invoke as `./SCRIPT_NAME.sh`.
+
+

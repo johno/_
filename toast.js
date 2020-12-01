@@ -13,7 +13,7 @@ export const sourceData = async ({ setDataForSlug }) => {
       directory: './src/pages',
     }),
     fetchMdxFromDisk({
-      directory: './content/posts',
+      directory: './src/posts',
     }),
   ])
 

@@ -1,4 +1,11 @@
-# Component shadowing and namespaces
+---
+title: Gatsby themes shadowing and aliases
+slug: /gatsby-themes-shadowing-and-aliases
+date: 2019-08-11
+tags:
+  - gatsby
+  - gatsby-themes
+---
 
 Child themes can be leveraged as a way to share more foundational concerns like content sourcing and data handling. They can also be used to customize the look of appearances via component shadowing. Currently child themes can shadow their parents using the existing namespace strategy. So, when a parent theme (`gatsby-theme-blog`) has a component BlogPost that a child theme wants to shadow, the child theme can create the following file `src/gatsby-theme-blog/components/BlogPost.js` and customize the rendering of the blog post.
 

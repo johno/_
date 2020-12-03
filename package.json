@@ -2,13 +2,6 @@
   "private": true,
   "name": "johno.com",
   "type": "module",
-  "scripts": {
-    "build": "toast incremental . && cp src/styles.css public",
-    "clean": "rm -rf node_modules .tmp public",
-    "deploy": "vercel switch johno && yarn build && vercel --prod",
-    "serve": "serve public",
-    "postinstall": "breadbox --dest public/web_modules"
-  },
   "dependencies": {
     "@sector/breadbox": "^0.0.4",
     "@toastdotdev/mdx": "0.1.3",

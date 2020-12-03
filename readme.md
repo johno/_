@@ -4,6 +4,6 @@ My digital garden.
 
 ```
 ghclone johno/_
-yarn
-yarn start
+make
+make build
 ```

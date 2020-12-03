@@ -1,0 +1,113 @@
+---
+title: Generate blog post frontmatter with bash
+slug: /generate-blog-post-frontmatter-with-bash
+date: 2020-12-03
+---
+
+There are many ways that you can automate creating a
+new blog post. For me, I've opted to keep it simple
+with a bash script that creates the necessary minimal
+frontmatter and then creates the file.
+
+It even goes so far as reading user input for the title.
+
+## User input
+
+In order to read the user input I use the `read` command
+and assign it to a variable.
+
+```sh
+echo "Name of post"
+
+read NAME
+
+echo $NAME
+```
+
+## Slugify a string
+
+Next, I turn a title into a slug for both the url of
+the post and the file that I write to disk.
+
+I achieve this by:
+
+- echoing the name
+- replacing spaces with hypens
+- lowercasing
+- removing non-alphanumeric characters
+
+```sh
+SLUG=$(
+  echo "$NAME" |
+  sed 's/ /-/g' |
+  tr '[:upper:]' '[:lower:]' |
+  tr -cd '[:alnum:]_-'
+)
+```
+
+## Getting the date
+
+Bash comes with a `date` command that defaults to the current
+date and has formatting options. Here I want the `yyyy-mm-dd`
+format.
+
+```sh
+DATE=$(date '+%Y-%m-%d')
+```
+
+## Initializing frontmatter
+
+I then create a string for the frontmatter using the variables
+I've instantiated.
+
+```sh
+FRONTMATTER=$(cat <<-END
+---
+title: $NAME
+slug: /$SLUG
+date: $DATE
+---
+END)
+```
+
+## Write the frontmatter to disk
+
+And then we write the frontmatter string to the `src/posts`
+directory.
+
+```sh
+echo "$FRONTMATTER" > src/posts/$SLUG.mdx
+```
+
+## Conclusion
+
+There are many different ways to achieve this automation. In
+fact, any programming language will allow you to do this, potentially
+even with less code.
+
+However, I opted to use bash because it's the lowest common
+denominator for all machines I work on and any future versions
+of my blog will be compatible.
+
+### Full bash script
+
+```sh
+#!/bin/bash
+
+echo "Name of post"
+
+read NAME
+
+SLUG=$(echo "$NAME" | sed 's/ /-/g' | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]_-')
+DATE=$(date '+%Y-%m-%d')
+
+FRONTMATTER=$(cat <<-END
+---
+title: $NAME
+slug: /$SLUG
+date: $DATE
+---
+END)
+
+echo "$FRONTMATTER" > src/posts/$SLUG.mdx
+```

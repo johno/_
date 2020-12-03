@@ -31,7 +31,7 @@ export const sourceData = async ({ setDataForSlug }) => {
 
         postData.push({ ...data, slug })
 
-        return { slug, filename, file: content, data }
+        return { slug, filename, file: content, data, showTitle: true }
       })
     )
 

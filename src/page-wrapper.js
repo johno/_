@@ -8,6 +8,7 @@ export default ({
   children,
   title = "johno.com",
   description = "Writing about code and design",
+  showTitle,
   ...props
 }) => {
   return (
@@ -19,6 +20,7 @@ export default ({
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
       </Helmet>
+      {showTitle ? <h1>{title}</h1> : null}
       <MDXProvider components={{ Iframe }}>
         {children}
       </MDXProvider>

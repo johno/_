@@ -1,0 +1,101 @@
+---
+title: Using pg, the tiny, low-level node library for postgres
+slug: /using-pg-the-tiny-low-level-node-library-for-postgres
+date: 2020-12-03
+---
+
+[`pg`](https://node-postgres.com/) or, node-postgres is a delightful
+little library for working with PostgreSQL databases.
+
+**Note:** If you're working with user input I recommend going
+with a full-fledged ORM, otherwise you might open yourself up
+to SQL Injection.
+
+## Installing
+
+```sh
+yarn add pg dotenv
+```
+
+## Create a .env file
+
+```sh
+PGUSER=postgres
+PGDATABASE=test
+PGPASSWORD=password
+PGHOST=localhost
+PGPORT=5432
+```
+
+## Initialize the client with env
+
+```js
+require('dotenv').configure()
+const { Client } = require('pg')
+
+const client = new Client()
+```
+
+## Create a table
+
+```js
+await client.query(`
+  CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+  CREATE TABLE IF NOT EXISTS colors (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(256) UNIQUE,
+    hex VARCHAR(256) UNIQUE
+  );
+`)
+```
+
+## Insert into the table
+
+```js
+const query = {
+  text: 'INSERT INTO colors(name, hex) VALUES($1, $2)',
+  values: ['tomato', '#ff6347'],
+}
+
+await client.query(query)
+```
+
+### Insert objects
+
+This is a bit of a hack, but useful for one-off scripts.
+
+```js
+const color = {
+  name: 'tomato',
+  hex: '#ff6347'
+}
+
+const query = {
+  text: `
+    INSERT INTO statsReadings(${Object.keys(color).join(', ')})
+    VALUES(${Object.keys(color).map((_, i) => `\$${i + 1}`)})
+    `,
+  values: Object.values(color),
+}
+
+await client.query(query)
+```
+
+### Query values
+
+```js
+const { rows } = await client.query(`
+  SELECT id, name, hex FROM colors
+`)
+```
+
+## Conclusion
+
+As I noted before, this is not a library you want to use if
+you're working with user input because higher-level ORMs handle
+important aspects like escaping.
+
+However, for read only databases and backend scraping/storage it's
+nice to use because it doesn't hide away the SQL in an API. It's
+also pretty fast, too. One might even say blazing fast.

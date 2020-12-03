@@ -11,6 +11,7 @@ export default ({
   showTitle,
   ...props
 }) => {
+  console.log(showTitle)
   return (
     <div>
       <Helmet>

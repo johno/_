@@ -29,9 +29,10 @@ export const sourceData = async ({ setDataForSlug }) => {
         const { data, content } = fm(file);
         const slug = data.slug || defaultPostSlug(filename);
 
-        postData.push({ ...data, slug, showTitle: true });
+        postData.push({ ...data, slug });
+        const fullData = { ...data, slug, showTitle: true };
 
-        return { slug, filename, file: content, data };
+        return { slug, filename, file: content, data: fullData };
       })
     );
 

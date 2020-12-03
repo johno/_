@@ -17,3 +17,9 @@ serve:
 
 dev:
 	./scripts/dev.sh
+
+deploy-vercel:
+	vercel switch johno
+	vercel --prod
+
+deploy: build deploy-vercel

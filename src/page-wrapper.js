@@ -1,5 +1,8 @@
 import { h, Fragment } from "preact";
 import { Helmet } from "react-helmet";
+import { MDXProvider } from '@mdx-js/preact'
+
+import { Iframe } from './components/iframe.js'
 
 export default ({
   children,
@@ -16,8 +19,9 @@ export default ({
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
       </Helmet>
-      {title ? <h1>{title}</h1> : null}
-      {children}
+      <MDXProvider components={{ Iframe }}>
+        {children}
+      </MDXProvider>
     </div>
   );
 };

@@ -1,0 +1,97 @@
+---
+title: CORS handling with Netlify Functions
+slug: /cors-handling-with-netlify-functions
+date: 2020-12-05
+---
+
+If you're using Netlify Functions for a separate API
+that might be requested from the browser you'll need
+to add [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+
+For large APIs with many functions I'll typically
+write a helper utility, but here I'll show you how
+I do a one-off implementation.
+
+Create a `CORS_HEADERS` constant with the proper
+headers. This allows all origins. If you know that
+your requests will only come from a particular URL
+I'd recommend setting that (and probably adding
+localhost).
+
+```js
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers':
+    'Origin, X-Requested-With, Content-Type, Accept',
+}
+```
+
+Check for the `OPTIONS` request from the browser
+and return the CORS headers.
+
+```js
+exports.handler = async (event, _context) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: CORS_HEADERS,
+    }
+  }
+
+  // ...
+}
+```
+
+Return the CORS headers with the JSON response:
+
+```js
+return {
+  statusCode: 200,
+  headers: {
+    ...CORS_HEADERS,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    hello: 'browser!'
+  })
+}
+```
+
+## Conclusion
+
+It's a bit clunky to have to manually handle
+the `OPTIONS` request that checks for the
+proper CORS headers, but generally speaking
+it works and doesn't obfuscate what's happening
+if you're working on a pretty simple project
+that only has one endpoint.
+
+### All together
+
+```js
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers':
+    'Origin, X-Requested-With, Content-Type, Accept',
+}
+
+exports.handler = async (event, _context) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: CORS_HEADERS,
+    }
+  }
+
+  return {
+    statusCode: 200,
+    headers: {
+      ...CORS_HEADERS,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      hello: 'browser!'
+    })
+  }
+}
+```

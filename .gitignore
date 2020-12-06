@@ -1,9 +1,7 @@
-.cache
 public
 node_modules
 *.swp
 .now
 *.log
 .tmp
-
 .vercel

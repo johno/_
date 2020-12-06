@@ -23,3 +23,6 @@ deploy-vercel:
 	vercel --prod
 
 deploy: build deploy-vercel
+
+test:
+	yarn workspace tachyons-compiler jest

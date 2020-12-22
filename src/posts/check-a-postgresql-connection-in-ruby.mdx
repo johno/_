@@ -1,0 +1,26 @@
+---
+title: Check a PostgresQL connection in ruby
+slug: /check-a-postgresql-connection-in-ruby
+date: 2020-12-22
+tags:
+  - ruby
+---
+
+Sometimes it's helpful to spin up a quick ruby script
+to check a postgres connection if you're debugging a
+proxy or the db instance itself.
+
+```rb
+require "pg"
+
+begin
+    con = PG.connect host: "127.0.0.1", port: 5432,
+        dbname: "my-random-db-name", user: "postgres",
+        password: "password"
+    puts con.server_version
+rescue PG::Error => e
+    puts e.message
+ensure
+    con.close if con
+end
+```

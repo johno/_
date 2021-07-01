@@ -1,5 +1,8 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "alias": ["johno.com"]
+  "alias": ["johno.com"],
+  "rewrites": [
+    { "source": "/", "destination": "https://components.ai/files/pub/G7sXhpmlhNPtvajrVSb6" }
+  ]
 }

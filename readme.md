@@ -4,6 +4,5 @@ My digital garden.
 
 ```
 ghclone johno/_
-make
-make build
+make && make build
 ```

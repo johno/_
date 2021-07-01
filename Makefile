@@ -8,6 +8,7 @@ new:
 build:
 	./node_modules/.bin/toast incremental .
 	cp src/styles.css public
+	rm public/index.html
 
 clean:
 	rm -rf node_modules .tmp public
